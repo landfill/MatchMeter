@@ -2,6 +2,7 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>Match Meter - 매치미터</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <link rel="stylesheet" href="./dist/output.css">
@@ -10,42 +11,41 @@
   <canvas id="three-background" class="fixed inset-0 z-0 pointer-events-none"></canvas>
   
   <div class="relative z-10 max-w-4xl mx-auto bg-white/90 backdrop-blur-lg rounded-3xl shadow-2xl p-6 md:p-10 border border-white/20">
-      <div class="flex justify-between items-center mb-8">
-        <div class="flex-1 max-w-20"></div>
-        <div class="text-center px-4">
-          <h1 class="text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold text-gray-800 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent whitespace-nowrap">
+      <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-6 sm:mb-8 gap-4">
+        <div class="text-center sm:flex-1">
+          <h1 class="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-gray-800 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
             📊 Match Meter 📊
           </h1>
-          <p id="subtitle" class="text-gray-600 mt-2 text-base md:text-lg">매치미터 - 이름으로 알아보는 궁합 지수</p>
+          <p id="subtitle" class="text-gray-600 mt-2 text-sm sm:text-base md:text-lg">매치미터 - 이름으로 알아보는 궁합 지수</p>
         </div>
-        <div class="flex-1 max-w-20 flex justify-end">
+        <div class="flex justify-center sm:justify-end">
           <button 
             id="languageToggle" 
             onclick="toggleLanguage()" 
-            class="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-4 py-2 rounded-lg font-medium text-sm hover:from-blue-600 hover:to-purple-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 whitespace-nowrap"
+            class="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-4 py-2 rounded-lg font-medium text-sm hover:from-blue-600 hover:to-purple-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105"
           >
             <span id="toggleText">🌍 EN</span>
           </button>
         </div>
       </div>
       
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-        <div class="space-y-2">
+      <div class="flex gap-2 sm:gap-3 md:gap-4 lg:gap-6 mb-6 sm:mb-8">
+        <div class="flex-1 space-y-2">
           <label id="label1" class="text-sm md:text-base font-medium text-gray-700">📝 첫 번째 이름</label>
           <input 
             type="text" 
             id="name1" 
             placeholder="예: 김민수" 
-            class="w-full px-4 py-3 md:py-4 rounded-xl border-2 border-blue-200 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-200 transition-all duration-300 bg-white/70 backdrop-blur-sm text-base md:text-lg"
+            class="w-full px-3 py-3 sm:px-4 sm:py-3 md:py-4 rounded-xl border-2 border-blue-200 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-200 transition-all duration-300 bg-white/70 backdrop-blur-sm text-base md:text-lg"
           />
         </div>
-        <div class="space-y-2">
+        <div class="flex-1 space-y-2">
           <label id="label2" class="text-sm md:text-base font-medium text-gray-700">📝 두 번째 이름</label>
           <input 
             type="text" 
             id="name2" 
             placeholder="예: 박지민" 
-            class="w-full px-4 py-3 md:py-4 rounded-xl border-2 border-blue-200 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-200 transition-all duration-300 bg-white/70 backdrop-blur-sm text-base md:text-lg"
+            class="w-full px-3 py-3 sm:px-4 sm:py-3 md:py-4 rounded-xl border-2 border-blue-200 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-200 transition-all duration-300 bg-white/70 backdrop-blur-sm text-base md:text-lg"
           />
         </div>
       </div>
