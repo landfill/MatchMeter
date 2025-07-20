@@ -1,0 +1,13 @@
+{
+  "name": "match-by-name",
+  "version": "1.0.0",
+  "description": "Korean name compatibility calculator",
+  "main": "index.html",
+  "scripts": {
+    "build-css": "tailwindcss -i ./src/input.css -o ./dist/output.css --watch",
+    "build": "tailwindcss -i ./src/input.css -o ./dist/output.css --minify"
+  },
+  "devDependencies": {
+    "tailwindcss": "^3.4.0"
+  }
+}

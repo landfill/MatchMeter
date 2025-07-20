@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>Match Meter - 매치미터</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <link rel="stylesheet" href="./dist/output.css">
+</head>
+<body class="bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 p-4 md:p-8">
+  <canvas id="three-background" class="fixed inset-0 z-0 pointer-events-none"></canvas>
+  
+  <div class="relative z-10 max-w-4xl mx-auto bg-white/90 backdrop-blur-lg rounded-3xl shadow-2xl p-6 md:p-10 border border-white/20">
+      <div class="flex justify-between items-center mb-8">
+        <div class="flex-1 max-w-20"></div>
+        <div class="text-center px-4">
+          <h1 class="text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold text-gray-800 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent whitespace-nowrap">
+            📊 Match Meter 📊
+          </h1>
+          <p id="subtitle" class="text-gray-600 mt-2 text-base md:text-lg">매치미터 - 이름으로 알아보는 궁합 지수</p>
+        </div>
+        <div class="flex-1 max-w-20 flex justify-end">
+          <button 
+            id="languageToggle" 
+            onclick="toggleLanguage()" 
+            class="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-4 py-2 rounded-lg font-medium text-sm hover:from-blue-600 hover:to-purple-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 whitespace-nowrap"
+          >
+            <span id="toggleText">🌍 EN</span>
+          </button>
+        </div>
+      </div>
+      
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+        <div class="space-y-2">
+          <label id="label1" class="text-sm md:text-base font-medium text-gray-700">📝 첫 번째 이름</label>
+          <input 
+            type="text" 
+            id="name1" 
+            placeholder="예: 김민수" 
+            class="w-full px-4 py-3 md:py-4 rounded-xl border-2 border-blue-200 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-200 transition-all duration-300 bg-white/70 backdrop-blur-sm text-base md:text-lg"
+          />
+        </div>
+        <div class="space-y-2">
+          <label id="label2" class="text-sm md:text-base font-medium text-gray-700">📝 두 번째 이름</label>
+          <input 
+            type="text" 
+            id="name2" 
+            placeholder="예: 박지민" 
+            class="w-full px-4 py-3 md:py-4 rounded-xl border-2 border-blue-200 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-200 transition-all duration-300 bg-white/70 backdrop-blur-sm text-base md:text-lg"
+          />
+        </div>
+      </div>
+      
+      <button 
+        id="calculateButton"
+        onclick="calculateMatch()" 
+        class="w-full bg-gradient-to-r from-blue-500 to-purple-600 text-white font-semibold py-4 px-8 rounded-xl hover:from-blue-600 hover:to-purple-700 transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl text-lg"
+      >
+        📊 Match 측정하기
+      </button>
+      
+      <div id="explanation" class="mt-8 text-center"></div>
+      
+      <div class="mt-6">
+        <div class="relative">
+          <div id="scoreLabel" class="text-center text-sm text-gray-600 mb-2">📊 매치 점수</div>
+          <div class="w-full bg-gradient-to-r from-gray-200 to-gray-300 rounded-full h-6 overflow-hidden shadow-inner border-2 border-gray-300">
+            <div id="bar" class="h-full bg-gradient-to-r from-green-400 via-yellow-400 to-red-400 transition-all duration-1000 ease-out w-0 rounded-full shadow-sm relative">
+              <div class="absolute inset-0 bg-gradient-to-r from-blue-400 to-purple-500 opacity-80"></div>
+            </div>
+          </div>
+          <div class="flex justify-between text-xs text-gray-500 mt-1">
+            <span>0%</span>
+            <span>50%</span>
+            <span>100%</span>
+          </div>
+        </div>
+      </div>
+      
+      <div id="result" class="mt-6 text-center text-lg font-bold text-gray-800"></div>
+      
+      <div id="strokeInfo" class="mt-4 text-center text-sm text-gray-500 hidden">
+        📝 <span id="strokeInfoText">English letters calculated by uppercase strokes</span>
+      </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

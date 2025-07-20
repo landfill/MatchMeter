@@ -1,0 +1,106 @@
+/* 기존 계산 과정 스타일 - 단순한 숫자 */
+.line {
+  display: block;
+}
+
+.line span {
+  display: inline-block;
+  padding: 0.3rem 0.6rem;
+  color: #374151;
+  font-weight: 600;
+  font-size: 1.1rem;
+  min-width: 1.5rem;
+  text-align: center;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 8px;
+  margin: 0 0.2rem;
+  border: 1px solid rgba(156, 163, 175, 0.3);
+  transition: all 0.2s ease;
+}
+
+.line span:hover {
+  background: rgba(255, 255, 255, 1);
+  transform: translateY(-1px);
+}
+
+/* 궁합 결과 메시지 3D 효과와 애니메이션 */
+.result-container {
+  perspective: 1000px;
+  transform-style: preserve-3d;
+  opacity: 0;
+  transform: translateY(20px) rotateX(30deg);
+  transition: all 0.8s ease;
+}
+
+.result-container.animate {
+  opacity: 1;
+  transform: translateY(0) rotateX(0deg);
+}
+
+.score-text {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 0.5rem;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.score-percentage {
+  font-size: 3rem;
+  font-weight: 800;
+  background: linear-gradient(45deg, #667eea, #764ba2, #f093fb);
+  background-size: 300% 300%;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: gradientShift 3s ease infinite;
+  text-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  margin: 1rem 0;
+  transform: translateZ(20px);
+}
+
+.message-positive {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #059669;
+  margin: 0.8rem 0 0.5rem 0;
+  padding: 0.8rem;
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(5, 150, 105, 0.05));
+  border-radius: 12px;
+  border-left: 4px solid #10b981;
+  transform: translateZ(10px);
+  animation: pulseGreen 2s ease infinite;
+}
+
+.message-negative {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #dc2626;
+  margin: 0.5rem 0;
+  padding: 0.6rem;
+  background: linear-gradient(135deg, rgba(220, 38, 38, 0.1), rgba(185, 28, 28, 0.05));
+  border-radius: 12px;
+  border-left: 4px solid #ef4444;
+  transform: translateZ(5px);
+  animation: shake 3s ease infinite;
+}
+
+@keyframes gradientShift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+@keyframes pulseGreen {
+  0%, 100% { transform: translateZ(10px) scale(1); }
+  50% { transform: translateZ(15px) scale(1.02); }
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateZ(5px) translateX(0); }
+  25% { transform: translateZ(5px) translateX(-2px); }
+  75% { transform: translateZ(5px) translateX(2px); }
+}
+
+#result {
+  margin-top: 1.5rem;
+}

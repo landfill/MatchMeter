@@ -1,0 +1,177 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* 레이블의 이모지 크기 조정 */
+label {
+  font-size: 1.4rem;
+  line-height: 1.6;
+}
+
+@media (min-width: 768px) {
+  label {
+    font-size: 1.6rem;
+    line-height: 1.7;
+  }
+}
+
+@media (min-width: 1024px) {
+  label {
+    font-size: 1.8rem;
+    line-height: 1.8;
+  }
+}
+
+/* 기존 계산 과정 스타일 - 단순한 숫자 */
+.line {
+  display: block;
+  position: relative;
+  z-index: 1;
+  clear: both;
+}
+
+.line span {
+  display: inline-block;
+  padding: 0.4rem 0.8rem;
+  color: #374151;
+  font-weight: 600;
+  font-size: 1rem;
+  min-width: 2rem;
+  text-align: center;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 10px;
+  border: 1px solid rgba(156, 163, 175, 0.2);
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  position: relative;
+  z-index: 2;
+}
+
+.line span:hover {
+  background: rgba(255, 255, 255, 1);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: 3;
+}
+
+@media (min-width: 768px) {
+  .line span {
+    font-size: 1.2rem;
+    padding: 0.5rem 1rem;
+  }
+}
+
+/* 궁합 결과 메시지 애니메이션 (3D 효과 제거) */
+.result-container {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.8s ease;
+  position: relative;
+  z-index: 10;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 16px;
+  padding: 1.5rem;
+  margin-top: 2rem;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.result-container.animate {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.result-container > * {
+  display: block;
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+.result-container > *:last-child {
+  margin-bottom: 0;
+}
+
+.score-text {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #374151;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  line-height: 1.5;
+}
+
+.score-percentage {
+  font-size: 2.5rem;
+  font-weight: 800;
+  background: linear-gradient(45deg, #667eea, #764ba2, #f093fb);
+  background-size: 300% 300%;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: gradientShift 3s ease infinite;
+  text-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  line-height: 1.2;
+}
+
+@media (min-width: 768px) {
+  .score-percentage {
+    font-size: 3.5rem;
+  }
+}
+
+.message-positive {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #059669;
+  padding: 1rem;
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(5, 150, 105, 0.05));
+  border-radius: 12px;
+  border-left: 4px solid #10b981;
+  animation: pulseGreen 2s ease infinite;
+  text-align: center;
+  line-height: 1.5;
+}
+
+.message-negative {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #dc2626;
+  padding: 0.8rem;
+  background: linear-gradient(135deg, rgba(220, 38, 38, 0.1), rgba(185, 28, 28, 0.05));
+  border-radius: 12px;
+  border-left: 4px solid #ef4444;
+  animation: shake 3s ease infinite;
+  text-align: center;
+  line-height: 1.5;
+}
+
+@keyframes gradientShift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+@keyframes pulseGreen {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.02); }
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-2px); }
+  75% { transform: translateX(2px); }
+}
+
+#result {
+  margin-top: 2rem;
+  position: relative;
+  z-index: 10;
+}
+
+#explanation {
+  position: relative;
+  z-index: 1;
+  margin-bottom: 1rem;
+}
