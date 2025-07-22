@@ -7,19 +7,12 @@
       content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes"
     />
     <title>Match Meter - 매치미터</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <link rel="stylesheet" href="./dist/output.css" />
   </head>
   <body
     class="bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 min-h-screen"
     role="document"
   >
-    <canvas
-      id="three-background"
-      class="fixed inset-0 z-0 pointer-events-none"
-      aria-hidden="true"
-      role="presentation"
-    ></canvas>
 
     <!-- Skip to main content link for screen readers -->
     <a
@@ -33,28 +26,29 @@
     <div class="relative z-10 min-h-screen flex flex-col">
       <main
         id="main-content"
-        class="flex-1 max-w-4xl mx-auto w-full bg-white/90 backdrop-blur-lg shadow-2xl border border-white/20 mobile-container"
+        class="flex-1 max-w-4xl mx-auto w-full bg-white/90 backdrop-blur-lg shadow-2xl border border-white/20 mobile-container relative"
         role="main"
       >
+        <!-- Language toggle in top-right corner -->
+        <button
+          id="languageToggle"
+          onclick="toggleLanguage()"
+          class="language-toggle-corner"
+          aria-label="언어 변경 (현재: 한국어)"
+          aria-describedby="language-description"
+        >
+          <span id="toggleText" aria-hidden="true">EN</span>
+        </button>
+        <div id="language-description" class="sr-only">
+          현재 언어는 한국어입니다. 클릭하면 영어로 변경됩니다.
+        </div>
         <!-- Header section with mobile-optimized spacing -->
         <header class="text-center mobile-header" role="banner">
-          <h1 class="mobile-title">📊 Match Meter 📊</h1>
-          <p id="subtitle" class="mobile-subtitle">
-            매치미터 - 이름으로 알아보는 궁합 지수
-          </p>
-
-          <!-- Language toggle with proper touch target -->
-          <button
-            id="languageToggle"
-            onclick="toggleLanguage()"
-            class="mobile-button mobile-button-secondary"
-            aria-label="언어 변경 (현재: 한국어)"
-            aria-describedby="language-description"
-          >
-            <span id="toggleText" aria-hidden="true">🌍 EN</span>
-          </button>
-          <div id="language-description" class="sr-only">
-            현재 언어는 한국어입니다. 클릭하면 영어로 변경됩니다.
+          <div class="mobile-title-container">
+            <h1 class="mobile-title">📊 Match Meter 📊</h1>
+            <p id="subtitle" class="mobile-subtitle">
+              매치미터 - 이름으로 알아보는 궁합 지수
+            </p>
           </div>
         </header>
 

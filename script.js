@@ -1,140 +1,127 @@
-// Mobile-optimized Three.js background animation
-function initThreeBackground() {
-  const canvas = document.getElementById('three-background');
-  const scene = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-  const renderer = new THREE.WebGLRenderer({ 
-    canvas: canvas, 
-    alpha: true,
-    antialias: false, // Disable for mobile performance
-    powerPreference: "low-power" // Optimize for battery life
-  });
-  
-  renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.setClearColor(0x000000, 0);
-  
-  // Mobile-optimized object count and complexity
-  const isMobile = window.innerWidth < 768;
-  const isLowEnd = navigator.hardwareConcurrency <= 4 || window.innerWidth < 480;
-  const isLandscape = window.innerWidth > window.innerHeight;
-  
-  const objects = [];
-  // Adjust object count based on orientation and device capability
-  const objectCount = isLowEnd ? 8 : (isMobile ? (isLandscape ? 10 : 12) : 20);
-  
-  // Optimize pixel ratio based on orientation and device capability
-  const optimalPixelRatio = isLowEnd ? 1 : (isMobile ? (isLandscape ? 1.25 : 1.5) : 2);
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, optimalPixelRatio));
-  
-  for (let i = 0; i < objectCount; i++) {
-    const geometries = [
-      new THREE.BoxGeometry(0.1, 0.1, 0.1),
-      new THREE.SphereGeometry(0.05, 8, 6),
-      new THREE.ConeGeometry(0.05, 0.15, 6)
-    ];
-    const geometry = geometries[Math.floor(Math.random() * geometries.length)];
-    const material = new THREE.MeshBasicMaterial({ 
-      color: new THREE.Color().setHSL(0.6 + Math.random() * 0.3, 0.5, 0.7),
-      transparent: true,
-      opacity: 0.3
-    });
-    const object = new THREE.Mesh(geometry, material);
-    
-    object.position.x = (Math.random() - 0.5) * 15;
-    object.position.y = (Math.random() - 0.5) * 15;
-    object.position.z = (Math.random() - 0.5) * 15;
-    
-    object.userData = {
-      velocity: new THREE.Vector3(
-        (Math.random() - 0.5) * 0.005,
-        (Math.random() - 0.5) * 0.005,
-        (Math.random() - 0.5) * 0.005
-      )
-    };
-    
-    objects.push(object);
-    scene.add(object);
-  }
-  
-  camera.position.z = 8;
-  
-  function animate() {
-    requestAnimationFrame(animate);
-    
-    objects.forEach(object => {
-      object.position.add(object.userData.velocity);
-      object.rotation.x += 0.005;
-      object.rotation.y += 0.005;
-      
-      // 경계에서 반사
-      if (object.position.x > 7 || object.position.x < -7) {
-        object.userData.velocity.x *= -1;
-      }
-      if (object.position.y > 7 || object.position.y < -7) {
-        object.userData.velocity.y *= -1;
-      }
-      if (object.position.z > 7 || object.position.z < -7) {
-        object.userData.velocity.z *= -1;
-      }
-    });
-    
-    renderer.render(scene, camera);
-  }
-  
-  animate();
-  
-  // Enhanced resize and orientation handling with debouncing
-  let resizeTimeout;
-  let orientationTimeout;
-  
-  function handleResize() {
-    clearTimeout(resizeTimeout);
-    resizeTimeout = setTimeout(() => {
-      camera.aspect = window.innerWidth / window.innerHeight;
-      camera.updateProjectionMatrix();
-      renderer.setSize(window.innerWidth, window.innerHeight);
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio, isMobile ? 1.5 : 2));
-    }, 150);
-  }
-  
-  function handleOrientationChange() {
-    clearTimeout(orientationTimeout);
-    orientationTimeout = setTimeout(() => {
-      const newWidth = window.innerWidth;
-      const newHeight = window.innerHeight;
-      
-      camera.aspect = newWidth / newHeight;
-      camera.updateProjectionMatrix();
-      renderer.setSize(newWidth, newHeight, false);
-      canvas.style.width = newWidth + 'px';
-      canvas.style.height = newHeight + 'px';
-      
-      const aspectRatio = newWidth / newHeight;
-      if (newHeight > newWidth) {
-        camera.position.z = 8.5 + (1 / aspectRatio) * 0.5;
-        camera.fov = 75 + (1 / aspectRatio) * 5;
-      } else {
-        camera.position.z = 8 - (aspectRatio - 1) * 0.3;
-        camera.fov = 75 - (aspectRatio - 1) * 3;
-      }
-      camera.updateProjectionMatrix();
-      
-      renderer.render(scene, camera);
-    }, 300);
-  }
-  
-  window.addEventListener('resize', handleResize);
-  window.addEventListener('orientationchange', handleOrientationChange);
-  
-  // Store references for cleanup if needed
-  window.threeJsCleanup = () => {
-    window.removeEventListener('resize', handleResize);
-    window.removeEventListener('orientationchange', handleOrientationChange);
-  };
-}
 
 // 언어 상태 관리
 let currentLanguage = 'ko';
+
+// 한글 자모 획수 정의
+const koreanStrokeMap = {
+  // 자음
+  'ㄱ': 2, 'ㄲ': 4, 'ㄴ': 1, 'ㄷ': 3, 'ㄸ': 6, 'ㄹ': 5, 'ㅁ': 3, 'ㅂ': 4, 'ㅃ': 8,
+  'ㅅ': 2, 'ㅆ': 4, 'ㅇ': 1, 'ㅈ': 3, 'ㅉ': 6, 'ㅊ': 4, 'ㅋ': 3, 'ㅌ': 4, 'ㅍ': 4, 'ㅎ': 3,
+  // 모음
+  'ㅏ': 2, 'ㅐ': 3, 'ㅑ': 3, 'ㅒ': 4, 'ㅓ': 2, 'ㅔ': 3, 'ㅕ': 3, 'ㅖ': 4,
+  'ㅗ': 2, 'ㅘ': 4, 'ㅙ': 5, 'ㅚ': 3, 'ㅛ': 3, 'ㅜ': 2, 'ㅝ': 4, 'ㅞ': 5, 'ㅟ': 3, 'ㅠ': 3,
+  'ㅡ': 1, 'ㅢ': 2, 'ㅣ': 1
+};
+
+// 한글을 자모로 분해하여 획수 계산
+function getKoreanStrokes(char) {
+  const code = char.charCodeAt(0) - 0xAC00;
+  if (code < 0 || code > 11171) return 0; // 한글이 아님
+  
+  const chosung = Math.floor(code / 588);
+  const jungsung = Math.floor((code % 588) / 28);
+  const jongsung = code % 28;
+  
+  const chosungList = ['ㄱ', 'ㄲ', 'ㄴ', 'ㄷ', 'ㄸ', 'ㄹ', 'ㅁ', 'ㅂ', 'ㅃ', 'ㅅ', 'ㅆ', 'ㅇ', 'ㅈ', 'ㅉ', 'ㅊ', 'ㅋ', 'ㅌ', 'ㅍ', 'ㅎ'];
+  const jungsungList = ['ㅏ', 'ㅐ', 'ㅑ', 'ㅒ', 'ㅓ', 'ㅔ', 'ㅕ', 'ㅖ', 'ㅗ', 'ㅘ', 'ㅙ', 'ㅚ', 'ㅛ', 'ㅜ', 'ㅝ', 'ㅞ', 'ㅟ', 'ㅠ', 'ㅡ', 'ㅢ', 'ㅣ'];
+  const jongsungList = ['', 'ㄱ', 'ㄲ', 'ㄳ', 'ㄴ', 'ㄵ', 'ㄶ', 'ㄷ', 'ㄹ', 'ㄺ', 'ㄻ', 'ㄼ', 'ㄽ', 'ㄾ', 'ㄿ', 'ㅀ', 'ㅁ', 'ㅂ', 'ㅄ', 'ㅅ', 'ㅆ', 'ㅇ', 'ㅈ', 'ㅊ', 'ㅋ', 'ㅌ', 'ㅍ', 'ㅎ'];
+  
+  let totalStrokes = 0;
+  
+  // 초성
+  totalStrokes += koreanStrokeMap[chosungList[chosung]] || 0;
+  
+  // 중성
+  totalStrokes += koreanStrokeMap[jungsungList[jungsung]] || 0;
+  
+  // 종성 (복합 자음 처리)
+  if (jongsung > 0) {
+    const jong = jongsungList[jongsung];
+    if (jong === 'ㄳ') totalStrokes += 4; // ㄱ + ㅅ
+    else if (jong === 'ㄵ') totalStrokes += 4; // ㄴ + ㅈ
+    else if (jong === 'ㄶ') totalStrokes += 4; // ㄴ + ㅎ
+    else if (jong === 'ㄺ') totalStrokes += 7; // ㄹ + ㄱ
+    else if (jong === 'ㄻ') totalStrokes += 8; // ㄹ + ㅁ
+    else if (jong === 'ㄼ') totalStrokes += 9; // ㄹ + ㅂ
+    else if (jong === 'ㄽ') totalStrokes += 7; // ㄹ + ㅅ
+    else if (jong === 'ㄾ') totalStrokes += 8; // ㄹ + ㅌ
+    else if (jong === 'ㄿ') totalStrokes += 9; // ㄹ + ㅍ
+    else if (jong === 'ㅀ') totalStrokes += 8; // ㄹ + ㅎ
+    else if (jong === 'ㅄ') totalStrokes += 6; // ㅂ + ㅅ
+    else totalStrokes += koreanStrokeMap[jong] || 0;
+  }
+  
+  return totalStrokes;
+}
+
+// 빠른 참조용 상용 한글 획수 맵 (자모 획수 기준)
+const strokeMap = {
+  // 성씨
+  "김": 6, "이": 2, "박": 8, "최": 7, "정": 6, "강": 6, "조": 5, "윤": 5, "장": 6, "임": 5,
+  "한": 5, "오": 3, "서": 4, "신": 4, "권": 9, "황": 9, "안": 5, "송": 8, "전": 5, "홍": 8,
+  "고": 4, "문": 7, "양": 6, "손": 8, "배": 6, "백": 7, "허": 5, "유": 3, "남": 8,
+  "심": 6, "노": 4, "하": 3, "곽": 11, "성": 6, "차": 6, "주": 3, "우": 3, "구": 4,
+  "원": 8, "천": 6, "방": 7, "공": 4, "현": 8, "함": 8, "변": 9, "염": 10,
+  "마": 5, "길": 6, "연": 7, "위": 5, "표": 8, "명": 8, "기": 5, "반": 7,
+  "왕": 6, "금": 5, "옥": 5, "육": 6, "인": 4, "맹": 8, "제": 9, "모": 5,
+  
+  // 이름
+  "민": 5, "수": 4, "영": 8, "진": 6, "현": 8, "준": 5, "우": 3, "지": 4, "성": 6, "호": 5,
+  "경": 6, "석": 5, "철": 10, "용": 8, "건": 5, "희": 7, "연": 7, "혜": 10, "은": 8, "선": 6,
+  "미": 6, "주": 3, "예": 4, "서": 4, "소": 6, "하": 3, "나": 5,
+  "다": 5, "라": 4, "혁": 13, "훈": 10, "범": 9, "빈": 10, "규": 8, "승": 10,
+  "종": 6, "환": 12, "웅": 11, "찬": 15, "완": 7, "광": 11, "섭": 10, "협": 12, "국": 7, "익": 10,
+  "동": 8, "열": 7, "태": 8, "형": 8, "춘": 8, "삼": 3, "학": 8, "복": 9,
+  "애": 10, "순": 6, "숙": 8, "화": 8, "자": 6, "분": 7, "향": 9, "란": 7
+};
+
+// 영문자 대문자 기준 실제 쓰기 획수 맵
+const englishStrokeMap = {
+  "a": 3, "b": 3, "c": 1, "d": 2, "e": 4, "f": 3, "g": 3, "h": 3, "i": 3, "j": 2,
+  "k": 3, "l": 2, "m": 4, "n": 3, "o": 1, "p": 2, "q": 2, "r": 3, "s": 1, "t": 2,
+  "u": 1, "v": 1, "w": 4, "x": 2, "y": 2, "z": 3
+};
+
+function getStroke(char) {
+  const lowerChar = char.toLowerCase();
+  
+  // 영문자인 경우 (대문자 기준 획수 적용)
+  if (englishStrokeMap[lowerChar]) {
+    return englishStrokeMap[lowerChar];
+  }
+  
+  // 한글인 경우 - 먼저 빠른 참조 맵 확인
+  if (strokeMap[char]) {
+    return strokeMap[char];
+  }
+  
+  // 빠른 참조 맵에 없는 한글은 자모 분해로 계산
+  if (/[가-힣]/.test(char)) {
+    return getKoreanStrokes(char);
+  }
+  
+  // 기본값 (공백이나 특수문자 제외)
+  if (char.trim() === '' || /[^a-zA-Z가-힣]/.test(char)) {
+    return 0;
+  }
+  
+  return 8; // 기본값
+}
+
+function reduceStrokes(arr, visualSteps) {
+  if (arr.length <= 2) return arr;
+  const next = [];
+  for (let i = 0; i < arr.length - 1; i++) {
+    const sum = arr[i] + arr[i + 1];
+    next.push(sum % 10);
+  }
+  visualSteps.push(next);
+  return reduceStrokes(next, visualSteps);
+}
+
+function sleep(ms) {
+  return new Promise(res => setTimeout(res, ms));
+}
 
 // 언어별 텍스트 정의
 const languageTexts = {
@@ -146,7 +133,7 @@ const languageTexts = {
     placeholder2: "예: 박지민",
     calculateButton: "📊 Match 측정하기",
     scoreLabel: "📊 매치 점수",
-    toggleText: "🌍 EN",
+    toggleText: "EN",
     inputBothNames: "두 이름을 모두 입력해주세요!",
     strokeInfo: "한글은 전통적 획수 계산 방식을 사용합니다",
     languageDescription: "현재 언어는 한국어입니다. 클릭하면 영어로 변경됩니다.",
@@ -161,7 +148,7 @@ const languageTexts = {
     placeholder2: "e.g: Jane Doe",
     calculateButton: "📊 Calculate Match",
     scoreLabel: "📊 Match Score",
-    toggleText: "🌍 KR",
+    toggleText: "KR",
     inputBothNames: "Please enter both names!",
     strokeInfo: "English letters calculated by uppercase strokes",
     languageDescription: "Current language is English. Click to change to Korean.",
@@ -425,7 +412,6 @@ function initMobileUX() {
 
 // Mobile-specific initializations
 document.addEventListener('DOMContentLoaded', () => {
-  initThreeBackground();
   updateLanguageTexts();
   setupKeyboardNavigation();
   initMobileUX();
@@ -557,105 +543,217 @@ const MobileUX = {
 };
 
 // Calculate match function with enhanced mobile UX
-function calculateMatch() {
-  const name1 = document.getElementById('name1').value.trim();
-  const name2 = document.getElementById('name2').value.trim();
-  const texts = languageTexts[currentLanguage];
-  
-  // 입력 유효성 검사
-  const name1Valid = validateInput(document.getElementById('name1'), 'name1-error');
-  const name2Valid = validateInput(document.getElementById('name2'), 'name2-error');
-  
-  if (!name1Valid || !name2Valid) {
-    announceToScreenReader(texts.inputBothNames);
-    MobileUX.provideFeedback('error');
-    
-    // 첫 번째 빈 입력 필드에 포커스
-    if (!name1Valid) {
-      document.getElementById('name1').focus();
-    } else if (!name2Valid) {
-      document.getElementById('name2').focus();
-    }
+async function calculateMatch() {
+  const name1 = document.getElementById("name1").value.trim();
+  const name2 = document.getElementById("name2").value.trim();
+  const resultDiv = document.getElementById("result");
+  const bar = document.getElementById("bar");
+  const explanation = document.getElementById("explanation");
+
+  // 계산 시작 전에 이전 결과 초기화
+  resultDiv.innerHTML = "";
+  bar.style.width = "0";
+  explanation.innerHTML = "";
+
+  if (!name1 || !name2) {
+    resultDiv.textContent = languageTexts[currentLanguage].inputBothNames;
     return;
   }
+
+  // 공백 제거 후 처리
+  const cleanName1 = name1.replace(/\s+/g, '');
+  const cleanName2 = name2.replace(/\s+/g, '');
   
-  // 계산 시작 알림 및 피드백
-  announceToScreenReader(currentLanguage === 'ko' ? '궁합 계산 중...' : 'Calculating compatibility...');
-  MobileUX.provideFeedback('light');
+  const name1Strokes = [...cleanName1].map(getStroke).filter(stroke => stroke > 0);
+  const name2Strokes = [...cleanName2].map(getStroke).filter(stroke => stroke > 0);
+  const all = [...name1Strokes, ...name2Strokes];
+  const visualSteps = [];
+  visualSteps.push(all);
+  const final = reduceStrokes(all, visualSteps);
+
+  explanation.innerHTML = "";
   
-  // 계산 버튼 비활성화 (중복 클릭 방지)
-  const calculateButton = document.getElementById('calculateButton');
-  calculateButton.disabled = true;
-  calculateButton.style.opacity = '0.7';
-  
-  // 모바일에 적합한 지연 시간으로 계산 시뮬레이션
-  const calculationDelay = MobileUX.isMobile() ? 800 : 1200;
-  
-  setTimeout(() => {
-    // 간단한 궁합 계산 로직 (예시)
-    const score = Math.floor(Math.random() * 100) + 1;
+  // 각 단계별로 순차적으로 표시
+  for (let i = 0; i < visualSteps.length; i++) {
+    await sleep(400);
     
-    // 결과 표시
-    updateProgressBar(score);
+    const line = document.createElement("div");
+    line.className = "line";
     
-    const resultDiv = document.getElementById('result');
-    let message = '';
+    const totalSteps = visualSteps.length - 1;
+    const isMobile = window.innerWidth < 768;
+    const maxWidth = isMobile ? 300 : 600;
+    const minWidth = isMobile ? 60 : 80;
+    const currentWidth = i === 0 ? maxWidth : maxWidth - ((i - 1) / totalSteps) * (maxWidth - minWidth);
     
-    if (score >= 80) {
-      message = currentLanguage === 'ko' ? 
-        `🎉 ${name1}님과 ${name2}님은 ${score}%의 환상적인 궁합입니다!` :
-        `🎉 ${name1} and ${name2} have a fantastic ${score}% compatibility!`;
-      MobileUX.provideFeedback('success');
-    } else if (score >= 60) {
-      message = currentLanguage === 'ko' ? 
-        `😊 ${name1}님과 ${name2}님은 ${score}%의 좋은 궁합입니다!` :
-        `😊 ${name1} and ${name2} have a good ${score}% compatibility!`;
-      MobileUX.provideFeedback('medium');
-    } else {
-      message = currentLanguage === 'ko' ? 
-        `🤔 ${name1}님과 ${name2}님은 ${score}%의 궁합입니다. 노력이 필요해요!` :
-        `🤔 ${name1} and ${name2} have ${score}% compatibility. Some work needed!`;
-      MobileUX.provideFeedback('light');
+    line.style.width = currentWidth + "px";
+    line.style.position = "relative";
+    line.style.height = "40px";
+    line.style.margin = "0.8rem auto";
+    line.style.zIndex = "1";
+    
+    const numbersCount = visualSteps[i].length;
+    const spacing = currentWidth / (numbersCount + 1);
+    
+    for (let j = 0; j < visualSteps[i].length; j++) {
+      const span = document.createElement("span");
+      span.textContent = visualSteps[i][j];
+      span.style.position = "absolute";
+      span.style.left = (spacing * (j + 1)) + "px";
+      span.style.transform = "translateX(-50%)";
+      line.appendChild(span);
     }
     
-    // 결과 컨테이너에 모바일 최적화 클래스 추가
-    const resultContainer = document.createElement('div');
-    resultContainer.className = 'result-container mobile-result-animation';
-    resultContainer.innerHTML = message;
-    resultContainer.setAttribute('tabindex', '-1');
-    resultContainer.setAttribute('role', 'status');
-    resultContainer.setAttribute('aria-live', 'polite');
-    
-    resultDiv.innerHTML = '';
-    resultDiv.appendChild(resultContainer);
-    
-    // 모바일 최적화된 애니메이션 적용
-    setTimeout(() => {
-      resultContainer.classList.add('animate');
-    }, 50);
-    
-    // 결과 발표 (스크린 리더용) - 모바일에서 더 빠른 피드백
-    const announceDelay = MobileUX.isMobile() ? 300 : 500;
-    setTimeout(() => {
-      announceToScreenReader(message.replace(/🎉|😊|🤔/g, ''));
-    }, announceDelay);
-    
-    // 향상된 자동 스크롤 및 포커스 관리
-    setTimeout(() => {
-      MobileUX.scrollToElement(resultDiv, {
-        block: MobileUX.isMobile() ? 'center' : 'nearest',
-        focusAfterScroll: true
-      });
-      
-      // 결과 컨테이너에 포커스 (키보드 사용자를 위해)
-      resultContainer.focus({ preventScroll: true });
-    }, MobileUX.getAnimationDuration(200));
-    
-    // 계산 버튼 재활성화
-    setTimeout(() => {
-      calculateButton.disabled = false;
-      calculateButton.style.opacity = '1';
-    }, MobileUX.getAnimationDuration(400));
-    
-  }, calculationDelay);
+    explanation.appendChild(line);
+  }
+
+  const score = final[0] * 10 + final[1];
+  const messages = getMessage(score);
+  
+  // Match Meter 결과 HTML 구조 생성
+  resultDiv.innerHTML = `
+    <div class="result-container">
+      <div class="score-text">📊 ${name1} ⚡ ${name2}</div>
+      <div class="score-percentage">${score}%</div>
+      <div class="message-positive">✅ ${messages.positive}</div>
+      <div class="message-negative">⚠️ ${messages.negative}</div>
+    </div>
+  `;
+  
+  // 애니메이션 효과 적용
+  setTimeout(() => {
+    resultDiv.querySelector('.result-container').classList.add('animate');
+  }, 100);
+  
+  bar.style.width = score + "%";
+}
+
+function getMessage(score) {
+  const positive = score;
+  const negative = 100 - score;
+  
+  // 언어별 메시지 정의
+  const messagesByLanguage = {
+    ko: [
+      {
+        condition: score >= 95,
+        positive: "우주가 인정한 운명의 상대! 🌟",
+        negative: `${negative}% 확률로 외계인이 방해할 수도... 👽`
+      },
+      {
+        condition: score >= 90,
+        positive: "천생연분이에요! 💍",
+        negative: `${negative}% 확률로 둘 다 짜장면을 좋아해서 싸울 수도... 🍜`
+      },
+      {
+        condition: score >= 80,
+        positive: "완벽한 궁합이에요! ✨",
+        negative: `${negative}% 확률로 리모컨 쟁탈전이 벌어질 수도... 📺`
+      },
+      {
+        condition: score >= 70,
+        positive: "잘 어울리는 커플이에요! 💘",
+        negative: `${negative}% 확률로 누가 설거지할지 가위바위보... ✂️`
+      },
+      {
+        condition: score >= 60,
+        positive: "좋은 인연이 될 수 있어요! 😊",
+        negative: `${negative}% 확률로 취향차이로 넷플릭스 선택 장애... 🎬`
+      },
+      {
+        condition: score >= 50,
+        positive: "노력하면 좋은 관계가 될 거예요! 💪",
+        negative: `${negative}% 확률로 화장실 변기시트 때문에 다툴 수도... 🚽`
+      },
+      {
+        condition: score >= 40,
+        positive: "친구부터 시작해보세요! 👫",
+        negative: `${negative}% 확률로 서로 연락처를 까먹을 수도... 📱`
+      },
+      {
+        condition: score >= 30,
+        positive: "좋은 친구가 될 수 있어요! 👋",
+        negative: `${negative}% 확률로 서로를 아는 척 안 할 수도... 😅`
+      },
+      {
+        condition: score >= 20,
+        positive: "인연이 있긴 있는 것 같아요... 🤔",
+        negative: `${negative}% 확률로 평행우주에서나 만날 인연... 🌌`
+      },
+      {
+        condition: score >= 10,
+        positive: "아직 희망은 있어요! 🙃",
+        negative: `${negative}% 확률로 둘이 만나면 지구가 멸망할 수도... 🌍💥`
+      },
+      {
+        condition: score >= 0,
+        positive: "...음... 긍정적으로 생각해봐요! 😰",
+        negative: `${negative}% 확률로 서로 다른 차원에서 살고 있을 가능성... 🌀`
+      }
+    ],
+    en: [
+      {
+        condition: score >= 95,
+        positive: "Destined soulmates approved by the universe! 🌟",
+        negative: `${negative}% chance aliens might interfere... 👽`
+      },
+      {
+        condition: score >= 90,
+        positive: "Perfect match made in heaven! 💍",
+        negative: `${negative}% chance you'll fight over pizza toppings... 🍕`
+      },
+      {
+        condition: score >= 80,
+        positive: "Amazing compatibility! ✨",
+        negative: `${negative}% chance of epic remote control battles... 📺`
+      },
+      {
+        condition: score >= 70,
+        positive: "Great couple potential! 💘",
+        negative: `${negative}% chance of rock-paper-scissors for dishes... ✂️`
+      },
+      {
+        condition: score >= 60,
+        positive: "Good relationship potential! 😊",
+        negative: `${negative}% chance of Netflix selection paralysis... 🎬`
+      },
+      {
+        condition: score >= 50,
+        positive: "Can work with some effort! 💪",
+        negative: `${negative}% chance of toilet seat arguments... 🚽`
+      },
+      {
+        condition: score >= 40,
+        positive: "Start as friends! 👫",
+        negative: `${negative}% chance you'll forget each other's numbers... 📱`
+      },
+      {
+        condition: score >= 30,
+        positive: "Good friendship potential! 👋",
+        negative: `${negative}% chance you'll pretend not to know each other... 😅`
+      },
+      {
+        condition: score >= 20,
+        positive: "There might be some connection... 🤔",
+        negative: `${negative}% chance you're meant for parallel universes... 🌌`
+      },
+      {
+        condition: score >= 10,
+        positive: "There's still hope! 🙃",
+        negative: `${negative}% chance the world ends if you two meet... 🌍💥`
+      },
+      {
+        condition: score >= 0,
+        positive: "...Well... think positive! 😰",
+        negative: `${negative}% chance you live in different dimensions... 🌀`
+      }
+    ]
+  };
+  
+  const messages = messagesByLanguage[currentLanguage];
+  const message = messages.find(m => m.condition);
+  return {
+    positive: message.positive,
+    negative: message.negative
+  };
 }
