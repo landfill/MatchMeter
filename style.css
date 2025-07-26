@@ -224,15 +224,17 @@
 
 /* Portrait mode optimizations - 모바일에서도 좌우 배치 유지 */
 @media screen and (orientation: portrait) {
-  .mobile-input-section {
-    display: flex;
-    gap: 1rem;
-    margin: 1rem 0;
+  main .mobile-input-section {
+    display: flex !important;
+    flex-direction: row !important;
+    gap: 1rem !important;
+    margin: 1rem 0 !important;
   }
   
-  .mobile-input-group {
-    flex: 1;
-    margin-bottom: 0;
+  main .mobile-input-section .mobile-input-group {
+    flex: 1 !important;
+    flex-direction: column !important;
+    margin-bottom: 0 !important;
   }
 }
 
@@ -379,71 +381,83 @@
   border-left: 3px solid #ef4444;
 }
 
-/* 모바일에서 입력 필드 좌우 배치 강제 적용 */
+/* 모바일에서 입력 필드 좌우 배치 강제 적용 - 최고 우선순위 */
 @media (max-width: 767px) {
-  .mobile-input-section {
+  main .mobile-input-section {
     display: flex !important;
-    gap: 0.75rem;
-    margin: 1rem 0;
+    flex-direction: row !important;
+    gap: 0.75rem !important;
+    margin: 1rem 0 !important;
+    width: 100% !important;
   }
   
-  .mobile-input-group {
-    flex: 1;
+  main .mobile-input-section .mobile-input-group {
+    flex: 1 !important;
+    flex-direction: column !important;
     margin-bottom: 0 !important;
+    width: auto !important;
   }
   
-  .mobile-input {
-    width: 100%;
-    min-height: 48px;
+  main .mobile-input-section .mobile-input {
+    width: 100% !important;
+    min-height: 48px !important;
   }
   
-  .mobile-label {
-    font-size: 0.875rem;
-    margin-bottom: 0.5rem;
-    display: block;
+  main .mobile-input-section .mobile-label {
+    font-size: 0.875rem !important;
+    margin-bottom: 0.5rem !important;
+    display: block !important;
   }
 }
 
 /* 매우 작은 화면에서도 좌우 배치 유지 */
 @media (max-width: 480px) {
-  .mobile-input-section {
+  main .mobile-input-section {
     display: flex !important;
-    gap: 0.5rem;
-    margin: 0.75rem 0;
+    flex-direction: row !important;
+    gap: 0.5rem !important;
+    margin: 0.75rem 0 !important;
   }
   
-  .mobile-input-group {
-    flex: 1;
+  main .mobile-input-section .mobile-input-group {
+    flex: 1 !important;
+    flex-direction: column !important;
     margin-bottom: 0 !important;
   }
   
-  .mobile-label {
-    font-size: 0.8rem;
-    margin-bottom: 0.4rem;
+  main .mobile-input-section .mobile-label {
+    font-size: 0.8rem !important;
+    margin-bottom: 0.4rem !important;
   }
   
-  .mobile-input {
-    font-size: 0.9rem;
-    min-height: 44px;
+  main .mobile-input-section .mobile-input {
+    font-size: 0.9rem !important;
+    min-height: 44px !important;
   }
 }
 
 /* 초소형 화면 (320px 이하)에서도 좌우 배치 */
 @media (max-width: 320px) {
-  .mobile-input-section {
+  main .mobile-input-section {
     display: flex !important;
-    gap: 0.4rem;
-    margin: 0.5rem 0;
+    flex-direction: row !important;
+    gap: 0.4rem !important;
+    margin: 0.5rem 0 !important;
   }
   
-  .mobile-label {
-    font-size: 0.75rem;
-    margin-bottom: 0.3rem;
+  main .mobile-input-section .mobile-input-group {
+    flex: 1 !important;
+    flex-direction: column !important;
   }
   
-  .mobile-input {
-    font-size: 0.85rem;
-    padding: 0.5rem;
+  main .mobile-input-section .mobile-label {
+    font-size: 0.75rem !important;
+    margin-bottom: 0.3rem !important;
+  }
+  
+  main .mobile-input-section .mobile-input {
+    font-size: 0.85rem !important;
+    padding: 0.5rem !important;
   }
 }
 
@@ -1418,5 +1432,61 @@ Mobile title and language toggle layout fixes */
   .mobile-lang-toggle span {
     display: inline-block;
     white-space: nowrap;
+  }
+}
+
+/* ========================================================================== 
+   최종 모바일 입력 필드 좌우 배치 강제 적용 - 절대 우선순위
+   ========================================================================== */
+
+/* 모든 모바일 화면에서 강제 좌우 배치 */
+@media screen and (max-width: 767px) {
+  body main#main-content section.mobile-input-section {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: flex-start !important;
+    gap: 0.75rem !important;
+    margin: 1rem 0 !important;
+    width: 100% !important;
+  }
+  
+  body main#main-content section.mobile-input-section div.mobile-input-group {
+    flex: 1 1 50% !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 0.5rem !important;
+    margin-bottom: 0 !important;
+    width: auto !important;
+    max-width: none !important;
+  }
+}
+
+/* 세로 모드에서도 강제 좌우 배치 */
+@media screen and (max-width: 767px) and (orientation: portrait) {
+  body main#main-content section.mobile-input-section {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: flex-start !important;
+    gap: 0.75rem !important;
+    margin: 1rem 0 !important;
+  }
+  
+  body main#main-content section.mobile-input-section div.mobile-input-group {
+    flex: 1 1 50% !important;
+    display: flex !important;
+    flex-direction: column !important;
+  }
+}
+
+/* 초소형 화면에서도 좌우 배치 */
+@media screen and (max-width: 480px) {
+  body main#main-content section.mobile-input-section {
+    gap: 0.5rem !important;
+  }
+}
+
+@media screen and (max-width: 320px) {
+  body main#main-content section.mobile-input-section {
+    gap: 0.4rem !important;
   }
 }
