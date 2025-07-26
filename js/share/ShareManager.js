@@ -262,25 +262,180 @@ class ShareManager {
     URL.revokeObjectURL(url);
   }
 
-  // 플랫폼별 공유 메서드들 (구현 예정)
+  // 플랫폼별 공유 메서드들
   async shareToFacebook(shareData, customMessage) {
-    console.log('Sharing to Facebook:', shareData);
+    const renderer = new ShareRenderer(this.resultData, this.language);
+    const shareText = customMessage || renderer.formatShareText('facebook', customMessage);
+    
+    const facebookUrl = this.generateFacebookShareUrl(shareData, shareText);
+    this.openShareWindow(facebookUrl, 'facebook');
   }
 
   async shareToTwitter(shareData, customMessage) {
-    console.log('Sharing to Twitter:', shareData);
+    const renderer = new ShareRenderer(this.resultData, this.language);
+    const shareText = customMessage || renderer.formatShareText('twitter', customMessage);
+    
+    const twitterUrl = this.generateTwitterShareUrl(shareData, shareText);
+    this.openShareWindow(twitterUrl, 'twitter');
   }
 
   async shareToKakao(shareData, customMessage) {
-    console.log('Sharing to Kakao:', shareData);
+    // 카카오 SDK가 로드되어 있는지 확인
+    if (typeof Kakao === 'undefined') {
+      throw new Error('Kakao SDK not loaded');
+    }
+
+    const renderer = new ShareRenderer(this.resultData, this.language);
+    const shareText = customMessage || renderer.formatShareText('kakao', customMessage);
+    
+    await this.shareToKakaoTalk(shareData, shareText);
   }
 
   async copyToClipboard(shareData, customMessage) {
-    console.log('Copying to clipboard:', shareData);
+    const renderer = new ShareRenderer(this.resultData, this.language);
+    const shareText = customMessage || renderer.formatShareText('copy', customMessage);
+    
+    const textToCopy = `${shareText}\n${shareData.url}`;
+    
+    if (this.supportedFeatures?.clipboard) {
+      await navigator.clipboard.writeText(textToCopy);
+    } else {
+      // 폴백: 임시 텍스트 영역 사용
+      this.fallbackCopyToClipboard(textToCopy);
+    }
   }
 
   async shareNatively(shareData, customMessage) {
-    console.log('Sharing natively:', shareData);
+    if (!this.supportedFeatures?.share) {
+      throw new Error('Native sharing not supported');
+    }
+
+    const renderer = new ShareRenderer(this.resultData, this.language);
+    const shareText = customMessage || renderer.formatShareText('native', customMessage);
+
+    await navigator.share({
+      title: shareData.title,
+      text: shareText,
+      url: shareData.url
+    });
+  }
+
+  /**
+   * 페이스북 공유 URL 생성
+   * @param {ShareData} shareData - 공유 데이터
+   * @param {string} shareText - 공유 텍스트
+   * @returns {string} 페이스북 공유 URL
+   */
+  generateFacebookShareUrl(shareData, shareText) {
+    const params = new URLSearchParams({
+      u: shareData.url,
+      quote: shareText
+    });
+    
+    return `https://www.facebook.com/sharer/sharer.php?${params.toString()}`;
+  }
+
+  /**
+   * 트위터 공유 URL 생성
+   * @param {ShareData} shareData - 공유 데이터
+   * @param {string} shareText - 공유 텍스트
+   * @returns {string} 트위터 공유 URL
+   */
+  generateTwitterShareUrl(shareData, shareText) {
+    const params = new URLSearchParams({
+      text: shareText,
+      url: shareData.url,
+      hashtags: shareData.hashtags.join(',')
+    });
+    
+    return `https://twitter.com/intent/tweet?${params.toString()}`;
+  }
+
+  /**
+   * 카카오톡 공유 실행
+   * @param {ShareData} shareData - 공유 데이터
+   * @param {string} shareText - 공유 텍스트
+   */
+  async shareToKakaoTalk(shareData, shareText) {
+    const templateObject = {
+      objectType: 'feed',
+      content: {
+        title: shareData.title,
+        description: shareText,
+        imageUrl: shareData.imageUrl || `${this.baseUrl}/images/default-share.png`,
+        link: {
+          mobileWebUrl: shareData.url,
+          webUrl: shareData.url
+        }
+      },
+      buttons: [
+        {
+          title: this.language === 'ko' ? '궁합 측정하기' : 'Try Match Test',
+          link: {
+            mobileWebUrl: shareData.url,
+            webUrl: shareData.url
+          }
+        }
+      ]
+    };
+
+    Kakao.Share.sendDefault(templateObject);
+  }
+
+  /**
+   * 공유 창 열기
+   * @param {string} url - 공유 URL
+   * @param {string} platform - 플랫폼 이름
+   */
+  openShareWindow(url, platform) {
+    const windowFeatures = {
+      width: 600,
+      height: 400,
+      scrollbars: 'yes',
+      resizable: 'yes',
+      toolbar: 'no',
+      menubar: 'no',
+      status: 'no',
+      directories: 'no',
+      location: 'no'
+    };
+
+    const featuresString = Object.entries(windowFeatures)
+      .map(([key, value]) => `${key}=${value}`)
+      .join(',');
+
+    const shareWindow = window.open(url, `share_${platform}`, featuresString);
+    
+    // 창이 차단되었는지 확인
+    if (!shareWindow || shareWindow.closed || typeof shareWindow.closed === 'undefined') {
+      // 팝업이 차단된 경우 새 탭에서 열기
+      window.open(url, '_blank');
+    }
+  }
+
+  /**
+   * 클립보드 복사 폴백 (구형 브라우저용)
+   * @param {string} text - 복사할 텍스트
+   */
+  fallbackCopyToClipboard(text) {
+    const textArea = document.createElement('textarea');
+    textArea.value = text;
+    textArea.style.position = 'fixed';
+    textArea.style.left = '-999999px';
+    textArea.style.top = '-999999px';
+    
+    document.body.appendChild(textArea);
+    textArea.focus();
+    textArea.select();
+    
+    try {
+      document.execCommand('copy');
+    } catch (err) {
+      console.error('Fallback copy failed:', err);
+      throw new Error('Copy to clipboard failed');
+    } finally {
+      document.body.removeChild(textArea);
+    }
   }
 }
 

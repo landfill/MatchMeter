@@ -75,25 +75,68 @@ class ShareRenderer {
    * @returns {string} 포맷된 텍스트
    */
   formatShareText(platform, customMessage) {
-    const { score, names } = this.resultData;
+    // ShareTemplates 클래스를 사용하여 메시지 생성
+    const message = ShareTemplates.generateShareMessage(
+      platform, 
+      this.resultData, 
+      this.language, 
+      customMessage
+    );
     
-    const templates = {
-      ko: {
-        facebook: customMessage || `${names.name1}과 ${names.name2}의 궁합은 ${score}%! Match Meter에서 당신도 테스트해보세요!`,
-        twitter: customMessage || `${names.name1}과 ${names.name2}의 궁합은 ${score}%! #매치미터 #궁합 #이름궁합`,
-        kakao: customMessage || `${names.name1}과 ${names.name2}의 궁합 점수는 ${score}%입니다!`,
-        default: customMessage || `${names.name1}과 ${names.name2}의 궁합은 ${score}%!`
-      },
-      en: {
-        facebook: customMessage || `${names.name1} & ${names.name2} compatibility: ${score}%! Try your test on Match Meter!`,
-        twitter: customMessage || `${names.name1} & ${names.name2}: ${score}% compatibility! #MatchMeter #Compatibility #Test`,
-        kakao: customMessage || `${names.name1} and ${names.name2} scored ${score}% compatibility!`,
-        default: customMessage || `${names.name1} & ${names.name2}: ${score}% compatibility!`
-      }
+    return this.validateAndTruncateText(message, platform);
+  }
+
+  /**
+   * 점수에 따른 이모지 반환
+   * @param {number} score - 궁합 점수
+   * @returns {string} 이모지
+   */
+  getScoreEmoji(score) {
+    if (score >= 90) return '🔥💕';
+    if (score >= 80) return '✨💖';
+    if (score >= 70) return '😊💝';
+    if (score >= 60) return '👍💛';
+    if (score >= 50) return '🤔💙';
+    if (score >= 40) return '😅💚';
+    if (score >= 30) return '🙃💜';
+    return '😰💔';
+  }
+
+  /**
+   * 해시태그 생성
+   * @param {string} platform - 플랫폼 이름
+   * @returns {string[]} 해시태그 배열
+   */
+  generateHashtags(platform) {
+    return ShareTemplates.generateHashtags(platform, this.resultData, this.language);
+  }
+
+  /**
+   * 텍스트 유효성 검사 및 자르기
+   * @param {string} text - 검사할 텍스트
+   * @param {string} platform - 플랫폼 이름
+   * @returns {string} 유효한 텍스트
+   */
+  validateAndTruncateText(text, platform) {
+    const limits = {
+      twitter: 280,
+      facebook: 63206,
+      kakao: 200,
+      instagram: 2200,
+      default: 500
     };
 
-    const langTemplates = templates[this.language] || templates.ko;
-    return langTemplates[platform] || langTemplates.default;
+    const limit = limits[platform] || limits.default;
+    
+    if (text.length <= limit) {
+      return text;
+    }
+
+    // 텍스트가 너무 긴 경우 자르기
+    const truncated = text.substring(0, limit - 3) + '...';
+    console.warn(`Text truncated for ${platform}: ${text.length} -> ${truncated.length}`);
+    
+    return truncated;
   }
 
   /**
