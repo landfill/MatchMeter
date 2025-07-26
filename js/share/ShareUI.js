@@ -467,8 +467,24 @@ class ShareUI {
       // 버튼 로딩 상태
       this.setOptionButtonLoading(button, true);
 
+      let customMessage = null;
+
+      // 텍스트 편집이 가능한 플랫폼인 경우 편집기 표시
+      if (this.isTextEditableplatform(platform)) {
+        const renderer = new ShareRenderer(this.shareManager.resultData, this.shareManager.language);
+        const defaultText = renderer.formatShareText(platform);
+        
+        const textEditor = new ShareTextEditor(this.shareManager, this.shareManager.language);
+        customMessage = await textEditor.showTextEditor(platform, defaultText);
+        
+        // 사용자가 취소한 경우
+        if (customMessage === null) {
+          return;
+        }
+      }
+
       // 공유 실행
-      await this.shareManager.shareToplatform(platform);
+      await this.shareManager.shareToplatform(platform, customMessage);
 
       // 성공 메시지
       const language = this.shareManager.language;
@@ -497,6 +513,16 @@ class ShareUI {
     } finally {
       this.setOptionButtonLoading(button, false);
     }
+  }
+
+  /**
+   * 텍스트 편집 가능한 플랫폼 여부 확인
+   * @param {string} platform - 플랫폼 이름
+   * @returns {boolean} 편집 가능 여부
+   */
+  isTextEditableplatform(platform) {
+    const editablePlatforms = ['twitter', 'facebook', 'kakao', 'copy'];
+    return editablePlatforms.includes(platform);
   }
 
   /**
