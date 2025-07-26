@@ -92,7 +92,7 @@ body {
   display: flex !important;
   flex-direction: row !important;
   gap: 1rem;
-  margin: 1.5rem 0;
+  margin: 0.75rem 0;
   width: 100%;
 }
 
@@ -107,7 +107,7 @@ body {
   font-size: 1rem;
   font-weight: 600;
   color: #374151;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.25rem;
 }
 
 .mobile-input {
@@ -177,7 +177,7 @@ body {
 }
 
 .mobile-header {
-  padding: 1rem 0;
+  padding: 0.5rem 0;
   text-align: center;
 }
 
@@ -185,8 +185,8 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.5rem;
-  margin-bottom: 1rem;
+  gap: 0.25rem;
+  margin-bottom: 0.5rem;
 }
 
 .mobile-title {
@@ -232,9 +232,12 @@ body {
   background: linear-gradient(135deg, #3b82f6, #8b5cf6);
   color: white;
   width: 100%;
-  max-width: 280px;
-  margin: 1rem auto;
+  max-width: 220px;
+  margin: 0.5rem auto;
   display: block;
+  min-height: 44px;
+  padding: 12px 20px;
+  font-size: 0.9rem;
 }
 
 .mobile-button-secondary {
@@ -254,9 +257,9 @@ body {
 .mobile-results-section {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 0.75rem;
   width: 100%;
-  margin-top: 1.5rem;
+  margin-top: 0.75rem;
 }
 
 .mobile-score-container {
@@ -301,7 +304,7 @@ body {
   font-size: 0.75rem;
   color: #9ca3af;
   font-weight: 500;
-  margin-top: 4px;
+  margin-top: 2px;
   position: relative;
 }
 
@@ -312,8 +315,8 @@ body {
   position: relative;
   background: rgba(255, 255, 255, 0.95);
   border-radius: 12px;
-  padding: 1.5rem;
-  margin-top: 1rem;
+  padding: 1rem;
+  margin-top: 0.5rem;
   backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.3);
   width: 100%;
@@ -331,7 +334,7 @@ body {
   color: #374151;
   line-height: 1.2;
   text-align: center;
-  margin-bottom: 8px;
+  margin-bottom: 4px;
 }
 
 .score-percentage {
@@ -345,32 +348,33 @@ body {
   animation: gradientShift 3s ease infinite;
   text-align: center;
   line-height: 1.1;
-  margin: 12px 0;
+  margin: 6px 0;
 }
 
 .message-positive {
   font-size: clamp(0.875rem, 3.5vw, 1.125rem);
   font-weight: 600;
   color: #059669;
-  padding: 12px 16px;
+  padding: 8px 12px;
   background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(5, 150, 105, 0.05));
   border-left: 4px solid #10b981;
   border-radius: 12px;
   text-align: center;
-  line-height: 1.5;
-  margin-bottom: 8px;
+  line-height: 1.4;
+  margin-bottom: 4px;
 }
 
 .message-negative {
   font-size: clamp(0.75rem, 3vw, 1rem);
   font-weight: 500;
   color: #dc2626;
-  padding: 10px 14px;
+  padding: 6px 10px;
   background: linear-gradient(135deg, rgba(220, 38, 38, 0.1), rgba(185, 28, 28, 0.05));
   border-left: 4px solid #ef4444;
   border-radius: 12px;
   text-align: center;
-  line-height: 1.5;
+  line-height: 1.4;
+  margin-bottom: 2px;
 }
 
 @keyframes gradientShift {
@@ -482,7 +486,7 @@ body {
 }
 
 #result {
-  margin-top: 1.5rem;
+  margin-top: 0.5rem;
 }
 
 /* Orientation change transition styles */
@@ -763,11 +767,20 @@ body {
 
 /* 모바일에서 입력 필드 좌우 배치 강제 적용 - 최고 우선순위 */
 @media (max-width: 767px) {
+  .mobile-header {
+    padding: 0.25rem 0 !important;
+  }
+  
+  .mobile-title-container {
+    margin-bottom: 0.25rem !important;
+    gap: 0.1rem !important;
+  }
+  
   main .mobile-input-section {
     display: flex !important;
     flex-direction: row !important;
     gap: 0.75rem !important;
-    margin: 1rem 0 !important;
+    margin: 0.5rem 0 !important;
     width: 100% !important;
   }
   
@@ -785,18 +798,48 @@ body {
   
   main .mobile-input-section .mobile-label {
     font-size: 0.875rem !important;
-    margin-bottom: 0.5rem !important;
+    margin-bottom: 0.25rem !important;
     display: block !important;
+  }
+  
+  .mobile-button-primary {
+    margin: 0.25rem auto !important;
+    max-width: 200px !important;
+    min-height: 40px !important;
+    padding: 10px 16px !important;
+    font-size: 0.875rem !important;
+  }
+  
+  .mobile-results-section {
+    margin-top: 0.5rem !important;
+    gap: 0.5rem !important;
+  }
+  
+  .mobile-score-container {
+    gap: 8px !important;
+  }
+  
+  .mobile-progress-labels {
+    margin-top: 1px !important;
+  }
+  
+  .result-container {
+    padding: 0.75rem !important;
+    margin-top: 0.25rem !important;
   }
 }
 
 /* 매우 작은 화면에서도 좌우 배치 유지 */
 @media (max-width: 480px) {
+  .mobile-header {
+    padding: 0.25rem 0 !important;
+  }
+  
   main .mobile-input-section {
     display: flex !important;
     flex-direction: row !important;
     gap: 0.5rem !important;
-    margin: 0.75rem 0 !important;
+    margin: 0.4rem 0 !important;
   }
   
   main .mobile-input-section .mobile-input-group {
@@ -807,12 +850,26 @@ body {
   
   main .mobile-input-section .mobile-label {
     font-size: 0.8rem !important;
-    margin-bottom: 0.4rem !important;
+    margin-bottom: 0.2rem !important;
   }
   
   main .mobile-input-section .mobile-input {
     font-size: 0.9rem !important;
-    min-height: 44px !important;
+    min-height: 40px !important;
+    padding: 10px 12px !important;
+  }
+  
+  .mobile-button-primary {
+    margin: 0.2rem auto !important;
+    max-width: 180px !important;
+    min-height: 38px !important;
+    padding: 8px 14px !important;
+    font-size: 0.8rem !important;
+  }
+  
+  .mobile-results-section {
+    margin-top: 0.4rem !important;
+    gap: 0.4rem !important;
   }
 }
 
@@ -821,8 +878,8 @@ body {
   main .mobile-input-section {
     display: flex !important;
     flex-direction: row !important;
-    gap: 0.4rem !important;
-    margin: 0.5rem 0 !important;
+    gap: 0.3rem !important;
+    margin: 0.3rem 0 !important;
   }
   
   main .mobile-input-section .mobile-input-group {
@@ -832,12 +889,21 @@ body {
   
   main .mobile-input-section .mobile-label {
     font-size: 0.75rem !important;
-    margin-bottom: 0.3rem !important;
+    margin-bottom: 0.15rem !important;
   }
   
   main .mobile-input-section .mobile-input {
     font-size: 0.85rem !important;
-    padding: 0.5rem !important;
+    padding: 8px 10px !important;
+    min-height: 36px !important;
+  }
+  
+  .mobile-button-primary {
+    margin: 0.15rem auto !important;
+    max-width: 160px !important;
+    min-height: 36px !important;
+    padding: 6px 12px !important;
+    font-size: 0.75rem !important;
   }
 }
 
