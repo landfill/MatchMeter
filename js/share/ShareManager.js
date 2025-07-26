@@ -313,11 +313,45 @@ class ShareManager {
     const renderer = new ShareRenderer(this.resultData, this.language);
     const shareText = customMessage || renderer.formatShareText('native', customMessage);
 
-    await navigator.share({
+    const nativeShareData = {
       title: shareData.title,
       text: shareText,
       url: shareData.url
-    });
+    };
+
+    // 플랫폼별 최적화
+    if (this.isIOSDevice()) {
+      // iOS에서는 텍스트와 URL을 합치는 것이 더 효과적
+      nativeShareData.text = `${shareText}\n\n${shareData.url}`;
+      delete nativeShareData.url;
+    }
+
+    try {
+      await navigator.share(nativeShareData);
+    } catch (error) {
+      if (error.name === 'AbortError') {
+        // 사용자가 공유를 취소함 - 정상적인 동작
+        return;
+      }
+      throw error;
+    }
+  }
+
+  /**
+   * iOS 기기 감지
+   * @returns {boolean} iOS 기기 여부
+   */
+  isIOSDevice() {
+    return /iPad|iPhone|iPod/.test(navigator.userAgent);
+  }
+
+  /**
+   * Android 기기 감지
+   * @returns {boolean} Android 기기 여부
+   */
+  isAndroidDevice() {
+    return /Android/.test(navigator.userAgent);
+  }
   }
 
   /**

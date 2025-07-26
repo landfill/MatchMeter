@@ -136,14 +136,7 @@ class ShareUI {
    * @param {string} type - 피드백 타입
    */
   provideFeedback(type = 'light') {
-    if ('vibrate' in navigator && this.isMobile()) {
-      const patterns = {
-        light: [10],
-        medium: [20],
-        heavy: [30]
-      };
-      navigator.vibrate(patterns[type] || patterns.light);
-    }
+    MobileShareOptimizer.provideHapticFeedback(type);
   }
 
   /**
@@ -604,9 +597,184 @@ class ShareUI {
   /**
    * 모바일 네이티브 공유 메뉴 표시
    */
-  showNativeShareMenu() {
-    // 구현 예정
-    console.log('Showing native share menu');
+  async showNativeShareMenu() {
+    try {
+      // Web Share API 지원 확인
+      if (!navigator.share) {
+        throw new Error('Native sharing not supported');
+      }
+
+      // 공유 데이터 준비
+      const shareData = this.shareManager.prepareShareData();
+      const renderer = new ShareRenderer(this.shareManager.resultData, this.shareManager.language);
+      const shareText = renderer.formatShareText('native');
+
+      // 네이티브 공유 실행
+      await this.shareManager.shareNatively(shareData, shareText);
+
+      // 성공 피드백
+      const language = this.shareManager.language;
+      const successMessage = language === 'ko' ? '공유되었습니다!' : 'Shared successfully!';
+      this.showSuccessMessage(successMessage);
+
+    } catch (error) {
+      console.error('Native share failed:', error);
+      
+      // 네이티브 공유 실패 시 일반 모달로 폴백
+      if (error.name === 'AbortError') {
+        // 사용자가 공유를 취소한 경우 - 아무것도 하지 않음
+        return;
+      }
+      
+      // 다른 오류의 경우 일반 모달 표시
+      this.showShareModal();
+    }
+  }
+
+  /**
+   * Web Share API 지원 여부 확인
+   * @returns {boolean} 지원 여부
+   */
+  isNativeShareSupported() {
+    return !!(navigator.share && this.isMobile());
+  }
+
+  /**
+   * 네이티브 공유 가능한 데이터 타입 확인
+   * @returns {Object} 지원되는 데이터 타입
+   */
+  getNativeShareCapabilities() {
+    const capabilities = {
+      text: true,
+      url: true,
+      title: true,
+      files: false
+    };
+
+    // 파일 공유 지원 확인 (최신 브라우저)
+    if (navigator.canShare) {
+      try {
+        // 테스트용 파일 객체로 확인
+        const testFile = new File(['test'], 'test.txt', { type: 'text/plain' });
+        capabilities.files = navigator.canShare({ files: [testFile] });
+      } catch (e) {
+        capabilities.files = false;
+      }
+    }
+
+    return capabilities;
+  }
+
+  /**
+   * 네이티브 공유용 데이터 준비
+   * @returns {Object} 네이티브 공유 데이터
+   */
+  prepareNativeShareData() {
+    const shareData = this.shareManager.prepareShareData();
+    const renderer = new ShareRenderer(this.shareManager.resultData, this.shareManager.language);
+    
+    return {
+      title: shareData.title,
+      text: renderer.formatShareText('native'),
+      url: shareData.url
+    };
+  }
+
+  /**
+   * 이미지 파일과 함께 네이티브 공유 (지원되는 경우)
+   * @param {Blob} imageBlob - 공유할 이미지
+   */
+  async shareImageNatively(imageBlob) {
+    try {
+      const capabilities = this.getNativeShareCapabilities();
+      
+      if (!capabilities.files) {
+        throw new Error('File sharing not supported');
+      }
+
+      const shareData = this.prepareNativeShareData();
+      const imageFile = new File([imageBlob], 'matchmeter-result.png', { type: 'image/png' });
+      
+      // 파일 공유 가능 여부 확인
+      if (navigator.canShare && !navigator.canShare({ files: [imageFile] })) {
+        throw new Error('Cannot share this file type');
+      }
+
+      await navigator.share({
+        ...shareData,
+        files: [imageFile]
+      });
+
+      const language = this.shareManager.language;
+      const successMessage = language === 'ko' ? '이미지가 공유되었습니다!' : 'Image shared successfully!';
+      this.showSuccessMessage(successMessage);
+
+    } catch (error) {
+      console.error('Native image share failed:', error);
+      
+      if (error.name === 'AbortError') {
+        return; // 사용자 취소
+      }
+      
+      // 폴백: 이미지 다운로드
+      this.shareManager.downloadImage(imageBlob);
+      
+      const language = this.shareManager.language;
+      const fallbackMessage = language === 'ko' ? '이미지가 다운로드되었습니다.' : 'Image downloaded.';
+      this.showSuccessMessage(fallbackMessage);
+    }
+  }
+
+  /**
+   * 모바일 환경 감지 개선
+   * @returns {boolean} 모바일 여부
+   */
+  isMobile() {
+    return MobileShareOptimizer.isMobileDevice();
+  }
+
+  /**
+   * 플랫폼별 네이티브 공유 최적화
+   * @param {string} platform - 플랫폼 이름 (선택적)
+   */
+  async optimizedNativeShare(platform = null) {
+    try {
+      const baseShareData = this.prepareNativeShareData();
+      const deviceInfo = MobileShareOptimizer.getDeviceInfo();
+      
+      // 플랫폼별 최적화 적용
+      const optimizedShareData = MobileShareOptimizer.optimizeShareData(baseShareData, deviceInfo);
+
+      await navigator.share(optimizedShareData);
+      
+      const language = this.shareManager.language;
+      const successMessage = language === 'ko' ? '공유되었습니다!' : 'Shared successfully!';
+      this.showSuccessMessage(successMessage);
+
+    } catch (error) {
+      if (error.name !== 'AbortError') {
+        console.error('Optimized native share failed:', error);
+        this.showShareModal(); // 폴백
+      }
+    }
+  }
+
+  /**
+   * iOS Safari 감지
+   * @returns {boolean} iOS Safari 여부
+   */
+  isIOSSafari() {
+    const userAgent = navigator.userAgent;
+    return /iPad|iPhone|iPod/.test(userAgent) && /Safari/.test(userAgent) && !/CriOS|FxiOS/.test(userAgent);
+  }
+
+  /**
+   * Android Chrome 감지
+   * @returns {boolean} Android Chrome 여부
+   */
+  isAndroidChrome() {
+    const userAgent = navigator.userAgent;
+    return /Android/.test(userAgent) && /Chrome/.test(userAgent) && !/Edge|OPR/.test(userAgent);
   }
 
   /**
