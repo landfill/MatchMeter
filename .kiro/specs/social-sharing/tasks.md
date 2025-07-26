@@ -9,7 +9,9 @@
   - _Requirements: 1.1, 1.2_
 
 - [ ] 2. ShareManager 클래스 구현
-  - [ ] 2.1 ShareManager 클래스 기본 구조 생성
+  - [x] 2.1 ShareManager 클래스 기본 구조 생성
+
+
     - 생성자와 기본 메서드 스켈레톤 구현
     - 공유 데이터 준비 로직 구현
     - 브라우저 호환성 검사 기능 추가
