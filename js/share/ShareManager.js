@@ -352,7 +352,6 @@ class ShareManager {
   isAndroidDevice() {
     return /Android/.test(navigator.userAgent);
   }
-  }
 
   /**
    * 페이스북 공유 URL 생성
