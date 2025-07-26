@@ -70,12 +70,47 @@
   animation: slideUp 0.3s ease forwards;
 }
 
-.share-modal h3 {
-  margin: 0 0 1.5rem 0;
+/* 모달 헤더 */
+.share-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.share-modal-header h3 {
+  margin: 0;
   font-size: 1.25rem;
   font-weight: 700;
-  text-align: center;
   color: #374151;
+}
+
+.share-modal-close {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: #6b7280;
+  cursor: pointer;
+  padding: 0.25rem;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.share-modal-close:hover {
+  background-color: #f3f4f6;
+  color: #374151;
+}
+
+.share-modal-close:focus {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
 }
 
 /* ==========================================================================
@@ -124,11 +159,35 @@
   line-height: 1;
 }
 
-.share-option span:last-child {
+.share-label {
   font-size: 0.875rem;
   font-weight: 600;
   color: #374151;
   text-align: center;
+}
+
+/* 옵션 버튼 로딩 상태 */
+.share-option.loading {
+  opacity: 0.6;
+  pointer-events: none;
+  position: relative;
+}
+
+.option-spinner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+}
+
+.option-spinner .spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(59, 130, 246, 0.3);
+  border-top-color: #3b82f6;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
 }
 
 /* 플랫폼별 색상 */
@@ -296,7 +355,7 @@
     font-size: 1.25rem;
   }
 
-  .share-option span:last-child {
+  .share-label {
     font-size: 0.8rem;
   }
 
@@ -345,7 +404,7 @@
     font-size: 1.5rem;
   }
 
-  .share-option span:last-child {
+  .share-label {
     font-size: 0.875rem;
   }
 }

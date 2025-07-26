@@ -124,7 +124,8 @@ class ShareUI {
       shareDescription: language === 'ko' ? '궁합 결과를 소셜 미디어에 공유합니다' : 'Share compatibility results on social media',
       shareModalTitle: language === 'ko' ? '결과 공유하기' : 'Share Results',
       shareModalOpened: language === 'ko' ? '공유 옵션 메뉴가 열렸습니다' : 'Share options menu opened',
-      shareModalClosed: language === 'ko' ? '공유 옵션 메뉴가 닫혔습니다' : 'Share options menu closed'
+      shareModalClosed: language === 'ko' ? '공유 옵션 메뉴가 닫혔습니다' : 'Share options menu closed',
+      closeModal: language === 'ko' ? '모달 닫기' : 'Close modal'
     };
 
     return texts[key] || key;
@@ -304,8 +305,300 @@ class ShareUI {
    * 모달 생성
    */
   createModal() {
-    // 구현 예정
-    console.log('Creating share modal');
+    // 기존 모달이 있다면 제거
+    const existingModal = document.querySelector('.share-modal');
+    if (existingModal) {
+      existingModal.remove();
+    }
+
+    // 모달 컨테이너 생성
+    this.modal = document.createElement('div');
+    this.modal.className = 'share-modal';
+    this.modal.setAttribute('role', 'dialog');
+    this.modal.setAttribute('aria-modal', 'true');
+    this.modal.setAttribute('aria-labelledby', 'share-modal-title');
+
+    // 모달 내용 생성
+    const modalContent = document.createElement('div');
+    modalContent.className = 'share-modal-content';
+
+    // 모달 헤더
+    const header = this.createModalHeader();
+    modalContent.appendChild(header);
+
+    // 공유 옵션들
+    const optionsContainer = this.createShareOptions();
+    modalContent.appendChild(optionsContainer);
+
+    this.modal.appendChild(modalContent);
+
+    // 이벤트 리스너 추가
+    this.addModalEventListeners();
+
+    // DOM에 추가
+    document.body.appendChild(this.modal);
+  }
+
+  /**
+   * 모달 헤더 생성
+   * @returns {HTMLElement} 헤더 요소
+   */
+  createModalHeader() {
+    const header = document.createElement('div');
+    header.className = 'share-modal-header';
+
+    const title = document.createElement('h3');
+    title.id = 'share-modal-title';
+    title.textContent = this.getLocalizedText('shareModalTitle');
+
+    const closeButton = document.createElement('button');
+    closeButton.className = 'share-modal-close';
+    closeButton.setAttribute('aria-label', this.getLocalizedText('closeModal'));
+    closeButton.innerHTML = '&times;';
+    closeButton.addEventListener('click', () => this.hideShareModal());
+
+    header.appendChild(title);
+    header.appendChild(closeButton);
+
+    return header;
+  }
+
+  /**
+   * 공유 옵션들 생성
+   * @returns {HTMLElement} 옵션 컨테이너
+   */
+  createShareOptions() {
+    const container = document.createElement('div');
+    container.className = 'share-options';
+
+    const options = this.getShareOptions();
+
+    options.forEach(option => {
+      const button = this.createShareOptionButton(option);
+      container.appendChild(button);
+    });
+
+    return container;
+  }
+
+  /**
+   * 공유 옵션 목록 반환
+   * @returns {Array} 공유 옵션 배열
+   */
+  getShareOptions() {
+    const language = this.shareManager.language;
+    
+    const options = [
+      {
+        platform: 'kakao',
+        icon: '💬',
+        label: language === 'ko' ? '카카오톡' : 'KakaoTalk',
+        description: language === 'ko' ? '카카오톡으로 공유' : 'Share via KakaoTalk'
+      },
+      {
+        platform: 'facebook',
+        icon: '📘',
+        label: language === 'ko' ? '페이스북' : 'Facebook',
+        description: language === 'ko' ? '페이스북에 공유' : 'Share on Facebook'
+      },
+      {
+        platform: 'twitter',
+        icon: '🐦',
+        label: language === 'ko' ? '트위터' : 'Twitter',
+        description: language === 'ko' ? '트위터에 공유' : 'Share on Twitter'
+      },
+      {
+        platform: 'instagram',
+        icon: '📷',
+        label: language === 'ko' ? '인스타그램' : 'Instagram',
+        description: language === 'ko' ? '인스타그램 스토리에 공유' : 'Share to Instagram Story'
+      },
+      {
+        platform: 'copy',
+        icon: '🔗',
+        label: language === 'ko' ? '링크 복사' : 'Copy Link',
+        description: language === 'ko' ? '링크를 클립보드에 복사' : 'Copy link to clipboard'
+      },
+      {
+        platform: 'image',
+        icon: '💾',
+        label: language === 'ko' ? '이미지 저장' : 'Save Image',
+        description: language === 'ko' ? '이미지로 저장' : 'Save as image'
+      }
+    ];
+
+    return options;
+  }
+
+  /**
+   * 공유 옵션 버튼 생성
+   * @param {Object} option - 옵션 정보
+   * @returns {HTMLElement} 버튼 요소
+   */
+  createShareOptionButton(option) {
+    const button = document.createElement('button');
+    button.className = 'share-option';
+    button.setAttribute('data-platform', option.platform);
+    button.setAttribute('aria-label', option.description);
+    button.setAttribute('title', option.description);
+
+    button.innerHTML = `
+      <span class="share-icon" aria-hidden="true">${option.icon}</span>
+      <span class="share-label">${option.label}</span>
+    `;
+
+    // 클릭 이벤트
+    button.addEventListener('click', async (e) => {
+      e.preventDefault();
+      await this.handleShareOptionClick(option.platform, button);
+    });
+
+    // 키보드 이벤트
+    button.addEventListener('keydown', async (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        await this.handleShareOptionClick(option.platform, button);
+      }
+    });
+
+    return button;
+  }
+
+  /**
+   * 공유 옵션 클릭 처리
+   * @param {string} platform - 플랫폼 이름
+   * @param {HTMLElement} button - 클릭된 버튼
+   */
+  async handleShareOptionClick(platform, button) {
+    try {
+      // 버튼 로딩 상태
+      this.setOptionButtonLoading(button, true);
+
+      // 공유 실행
+      await this.shareManager.shareToplatform(platform);
+
+      // 성공 메시지
+      const language = this.shareManager.language;
+      const successMessage = language === 'ko' ? 
+        `${this.getPlatformName(platform)}에 공유되었습니다!` : 
+        `Shared to ${this.getPlatformName(platform)}!`;
+      
+      this.showSuccessMessage(successMessage);
+
+      // 모달 닫기 (링크 복사나 이미지 저장의 경우)
+      if (platform === 'copy' || platform === 'image') {
+        setTimeout(() => this.hideShareModal(), 1000);
+      } else {
+        this.hideShareModal();
+      }
+
+    } catch (error) {
+      console.error(`Failed to share to ${platform}:`, error);
+      
+      const language = this.shareManager.language;
+      const errorMessage = language === 'ko' ? 
+        `${this.getPlatformName(platform)} 공유에 실패했습니다.` : 
+        `Failed to share to ${this.getPlatformName(platform)}.`;
+      
+      this.showErrorMessage(errorMessage);
+    } finally {
+      this.setOptionButtonLoading(button, false);
+    }
+  }
+
+  /**
+   * 플랫폼 이름 반환
+   * @param {string} platform - 플랫폼 코드
+   * @returns {string} 플랫폼 이름
+   */
+  getPlatformName(platform) {
+    const names = {
+      kakao: '카카오톡',
+      facebook: '페이스북',
+      twitter: '트위터',
+      instagram: '인스타그램',
+      copy: '클립보드',
+      image: '이미지'
+    };
+    return names[platform] || platform;
+  }
+
+  /**
+   * 옵션 버튼 로딩 상태 설정
+   * @param {HTMLElement} button - 버튼 요소
+   * @param {boolean} loading - 로딩 상태
+   */
+  setOptionButtonLoading(button, loading) {
+    if (loading) {
+      button.classList.add('loading');
+      button.disabled = true;
+      
+      // 로딩 스피너 추가
+      const spinner = document.createElement('div');
+      spinner.className = 'option-spinner';
+      spinner.innerHTML = '<div class="spinner"></div>';
+      button.appendChild(spinner);
+    } else {
+      button.classList.remove('loading');
+      button.disabled = false;
+      
+      // 스피너 제거
+      const spinner = button.querySelector('.option-spinner');
+      if (spinner) {
+        spinner.remove();
+      }
+    }
+  }
+
+  /**
+   * 모달 이벤트 리스너 추가
+   */
+  addModalEventListeners() {
+    // 배경 클릭으로 모달 닫기
+    this.modal.addEventListener('click', (e) => {
+      if (e.target === this.modal) {
+        this.hideShareModal();
+      }
+    });
+
+    // 키보드 네비게이션
+    this.modal.addEventListener('keydown', (e) => {
+      this.handleModalKeydown(e);
+    });
+  }
+
+  /**
+   * 모달 키보드 이벤트 처리
+   * @param {KeyboardEvent} e - 키보드 이벤트
+   */
+  handleModalKeydown(e) {
+    const focusableElements = this.modal.querySelectorAll(
+      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+    );
+    const firstElement = focusableElements[0];
+    const lastElement = focusableElements[focusableElements.length - 1];
+
+    switch (e.key) {
+      case 'Escape':
+        e.preventDefault();
+        this.hideShareModal();
+        break;
+        
+      case 'Tab':
+        // Tab 순환 처리
+        if (e.shiftKey) {
+          if (document.activeElement === firstElement) {
+            e.preventDefault();
+            lastElement.focus();
+          }
+        } else {
+          if (document.activeElement === lastElement) {
+            e.preventDefault();
+            firstElement.focus();
+          }
+        }
+        break;
+    }
   }
 
   /**
