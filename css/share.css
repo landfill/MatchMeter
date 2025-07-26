@@ -1,0 +1,459 @@
+/**
+ * 소셜 공유 기능 스타일시트
+ * Match Meter - Social Sharing Styles
+ */
+
+/* ==========================================================================
+   공유 버튼 스타일
+   ========================================================================== */
+
+.share-button {
+  margin-top: 1.5rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.2s ease;
+}
+
+.share-button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.share-button:active {
+  transform: translateY(0);
+}
+
+.share-button-text {
+  font-weight: 600;
+}
+
+/* 모바일 최적화 */
+@media (max-width: 767px) {
+  .share-button {
+    width: 100%;
+    justify-content: center;
+    min-height: 48px;
+    font-size: 1rem;
+  }
+}
+
+/* ==========================================================================
+   공유 모달 스타일
+   ========================================================================== */
+
+.share-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  opacity: 0;
+  animation: fadeIn 0.2s ease forwards;
+}
+
+.share-modal-content {
+  background: white;
+  border-radius: 16px;
+  padding: 2rem;
+  max-width: 400px;
+  width: 90%;
+  max-height: 80vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  transform: translateY(20px);
+  animation: slideUp 0.3s ease forwards;
+}
+
+.share-modal h3 {
+  margin: 0 0 1.5rem 0;
+  font-size: 1.25rem;
+  font-weight: 700;
+  text-align: center;
+  color: #374151;
+}
+
+/* ==========================================================================
+   공유 옵션 버튼들
+   ========================================================================== */
+
+.share-options {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+
+.share-option {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1rem;
+  border: 2px solid #e5e7eb;
+  border-radius: 12px;
+  background: white;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-height: 80px;
+}
+
+.share-option:hover {
+  border-color: #3b82f6;
+  background-color: #f8fafc;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15);
+}
+
+.share-option:focus {
+  outline: 3px solid #3b82f6;
+  outline-offset: 2px;
+  border-color: #3b82f6;
+}
+
+.share-option:active {
+  transform: translateY(0);
+}
+
+.share-icon {
+  font-size: 1.5rem;
+  line-height: 1;
+}
+
+.share-option span:last-child {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #374151;
+  text-align: center;
+}
+
+/* 플랫폼별 색상 */
+.share-option[data-platform="kakao"]:hover {
+  border-color: #fee500;
+  background-color: #fffbeb;
+}
+
+.share-option[data-platform="facebook"]:hover {
+  border-color: #1877f2;
+  background-color: #eff6ff;
+}
+
+.share-option[data-platform="twitter"]:hover {
+  border-color: #1da1f2;
+  background-color: #eff6ff;
+}
+
+.share-option[data-platform="instagram"]:hover {
+  border-color: #e4405f;
+  background-color: #fef2f2;
+}
+
+.share-option[data-platform="copy"]:hover {
+  border-color: #10b981;
+  background-color: #f0fdf4;
+}
+
+.share-option[data-platform="image"]:hover {
+  border-color: #8b5cf6;
+  background-color: #faf5ff;
+}
+
+/* ==========================================================================
+   공유용 결과 컨테이너
+   ========================================================================== */
+
+.share-result-container {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 2rem;
+  border-radius: 16px;
+  text-align: center;
+  max-width: 600px;
+  margin: 0 auto;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+}
+
+.share-header {
+  margin-bottom: 1.5rem;
+}
+
+.app-branding {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.app-logo {
+  font-size: 1.5rem;
+}
+
+.share-content {
+  margin-bottom: 1.5rem;
+}
+
+.share-names {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.heart {
+  font-size: 2rem;
+  animation: heartbeat 2s ease-in-out infinite;
+}
+
+.share-score {
+  margin-bottom: 1.5rem;
+}
+
+.score-circle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  border: 3px solid rgba(255, 255, 255, 0.3);
+}
+
+.score-number {
+  font-size: 2.5rem;
+  font-weight: 800;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.share-message {
+  font-size: 1.1rem;
+  line-height: 1.5;
+  opacity: 0.9;
+}
+
+.share-footer {
+  font-size: 0.875rem;
+  opacity: 0.8;
+  font-weight: 500;
+}
+
+/* ==========================================================================
+   애니메이션
+   ========================================================================== */
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes heartbeat {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+}
+
+/* ==========================================================================
+   모바일 최적화
+   ========================================================================== */
+
+@media (max-width: 767px) {
+  .share-modal-content {
+    padding: 1.5rem;
+    border-radius: 12px;
+  }
+
+  .share-options {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+  }
+
+  .share-option {
+    padding: 0.75rem;
+    min-height: 70px;
+  }
+
+  .share-icon {
+    font-size: 1.25rem;
+  }
+
+  .share-option span:last-child {
+    font-size: 0.8rem;
+  }
+
+  .share-result-container {
+    padding: 1.5rem;
+    border-radius: 12px;
+  }
+
+  .share-names {
+    font-size: 1.25rem;
+    gap: 0.75rem;
+  }
+
+  .heart {
+    font-size: 1.5rem;
+  }
+
+  .score-circle {
+    width: 100px;
+    height: 100px;
+  }
+
+  .score-number {
+    font-size: 2rem;
+  }
+
+  .share-message {
+    font-size: 1rem;
+  }
+}
+
+/* 매우 작은 화면 */
+@media (max-width: 480px) {
+  .share-options {
+    grid-template-columns: 1fr;
+  }
+
+  .share-option {
+    flex-direction: row;
+    justify-content: flex-start;
+    text-align: left;
+    min-height: 60px;
+  }
+
+  .share-icon {
+    font-size: 1.5rem;
+  }
+
+  .share-option span:last-child {
+    font-size: 0.875rem;
+  }
+}
+
+/* ==========================================================================
+   접근성 개선
+   ========================================================================== */
+
+/* 고대비 모드 지원 */
+@media (prefers-contrast: high) {
+  .share-option {
+    border-width: 3px;
+  }
+
+  .share-option:focus {
+    outline-width: 4px;
+  }
+}
+
+/* 애니메이션 감소 모드 지원 */
+@media (prefers-reduced-motion: reduce) {
+  .share-modal,
+  .share-modal-content,
+  .share-option,
+  .share-button,
+  .heart {
+    animation: none;
+    transition: none;
+  }
+
+  .share-option:hover,
+  .share-button:hover {
+    transform: none;
+  }
+}
+
+/* 터치 디바이스 최적화 */
+@media (hover: none) and (pointer: coarse) {
+  .share-option:hover {
+    transform: none;
+    box-shadow: none;
+  }
+
+  .share-option:active {
+    transform: scale(0.98);
+    transition: transform 0.1s ease;
+  }
+}
+
+/* ==========================================================================
+   로딩 및 피드백 상태
+   ========================================================================== */
+
+.share-loading {
+  opacity: 0.6;
+  pointer-events: none;
+  position: relative;
+}
+
+.share-loading::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 20px;
+  height: 20px;
+  margin: -10px 0 0 -10px;
+  border: 2px solid #3b82f6;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* 성공/오류 피드백 */
+.share-feedback {
+  position: fixed;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 1rem 1.5rem;
+  border-radius: 8px;
+  color: white;
+  font-weight: 600;
+  z-index: 1001;
+  animation: slideUpFade 0.3s ease;
+}
+
+.share-feedback.success {
+  background-color: #10b981;
+}
+
+.share-feedback.error {
+  background-color: #ef4444;
+}
+
+@keyframes slideUpFade {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
