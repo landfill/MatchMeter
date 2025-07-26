@@ -162,6 +162,9 @@ function toggleLanguage() {
   currentLanguage = currentLanguage === 'ko' ? 'en' : 'ko';
   updateLanguageTexts();
   
+  // 공유 기능 언어 업데이트
+  updateShareLanguage();
+  
   // 언어 변경 알림 (스크린 리더용)
   announceToScreenReader(
     currentLanguage === 'ko' ? '언어가 한국어로 변경되었습니다' : 'Language changed to English'
@@ -478,6 +481,68 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 });
 
+// 공유 기능 초기화
+function initializeShareFeature(name1, name2, score, messages) {
+  // 결과 데이터 준비
+  const resultData = {
+    score: score,
+    names: {
+      name1: name1,
+      name2: name2
+    },
+    messages: {
+      positive: messages.positive,
+      negative: messages.negative
+    },
+    language: currentLanguage,
+    timestamp: new Date()
+  };
+
+  // ShareManager 인스턴스 생성
+  const shareManager = new ShareManager(resultData, currentLanguage);
+  
+  // 공유 버튼이 표시될 컨테이너 찾기
+  const resultContainer = document.getElementById('result');
+  
+  // ShareUI 인스턴스 생성 및 공유 버튼 렌더링
+  const shareUI = new ShareUI(resultContainer, shareManager);
+  shareUI.renderShareButton();
+  
+  // 전역 참조 저장 (언어 변경 시 업데이트용)
+  window.currentShareManager = shareManager;
+  window.currentShareUI = shareUI;
+}
+
+// 언어 변경 시 공유 텍스트 업데이트
+function updateShareLanguage() {
+  if (window.currentShareManager && window.currentShareUI) {
+    // ShareManager 언어 업데이트
+    window.currentShareManager.language = currentLanguage;
+    
+    // 공유 버튼 텍스트 업데이트
+    const shareButton = document.querySelector('.share-button-text');
+    if (shareButton) {
+      shareButton.textContent = currentLanguage === 'ko' ? '결과 공유하기' : 'Share Results';
+    }
+    
+    // 공유 버튼 라벨 업데이트
+    const shareButtonElement = document.querySelector('.share-button');
+    if (shareButtonElement) {
+      shareButtonElement.setAttribute('aria-label', 
+        currentLanguage === 'ko' ? '결과 공유하기' : 'Share Results'
+      );
+    }
+    
+    // 설명 텍스트 업데이트
+    const shareDescription = document.getElementById('share-description');
+    if (shareDescription) {
+      shareDescription.textContent = currentLanguage === 'ko' ? 
+        '궁합 결과를 소셜 미디어에 공유합니다' : 
+        'Share compatibility results on social media';
+    }
+  }
+}
+
 // Mobile UX utilities for enhanced user experience
 const MobileUX = {
   // Check if device is mobile
@@ -626,6 +691,9 @@ async function calculateMatch() {
   }, 100);
   
   bar.style.width = score + "%";
+  
+  // 공유 기능 통합
+  initializeShareFeature(name1, name2, score, messages);
 }
 
 function getMessage(score) {
