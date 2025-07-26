@@ -8,14 +8,14 @@
    ========================================================================== */
 
 .share-button {
-  margin: 1.5rem auto 0 auto;
+  margin: 0.5rem auto 0 auto;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
   transition: all 0.2s ease;
   width: 100%;
-  max-width: 300px;
+  max-width: 200px;
 }
 
 .share-button:hover {
@@ -36,8 +36,10 @@
   .share-button {
     width: 100%;
     justify-content: center;
-    min-height: 48px;
-    font-size: 1rem;
+    min-height: 40px;
+    font-size: 0.875rem;
+    max-width: 180px;
+    margin: 0.25rem auto 0 auto;
   }
   
   /* 모바일에서 이름을 좌우로 배치 */

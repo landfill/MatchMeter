@@ -385,19 +385,21 @@ body {
 /* 기존 계산 과정 스타일 - 단순한 숫자 */
 .line {
   display: block;
+  margin: 0.1rem 0;
+  line-height: 1.2;
 }
 
 .line span {
   display: inline-block;
-  padding: 0.3rem 0.6rem;
+  padding: 0.2rem 0.4rem;
   color: #374151;
   font-weight: 600;
-  font-size: 1.1rem;
-  min-width: 1.5rem;
+  font-size: 1rem;
+  min-width: 1.2rem;
   text-align: center;
   background: rgba(255, 255, 255, 0.9);
-  border-radius: 8px;
-  margin: 0 0.2rem;
+  border-radius: 6px;
+  margin: 0 0.15rem;
   border: 1px solid rgba(156, 163, 175, 0.3);
   transition: all 0.2s ease;
 }
@@ -784,6 +786,18 @@ body {
     width: 100% !important;
   }
   
+  .line {
+    margin: 0.05rem 0 !important;
+    line-height: 1.1 !important;
+  }
+  
+  .line span {
+    padding: 0.15rem 0.3rem !important;
+    font-size: 0.9rem !important;
+    margin: 0 0.1rem !important;
+    min-width: 1rem !important;
+  }
+  
   main .mobile-input-section .mobile-input-group {
     flex: 1 !important;
     flex-direction: column !important;
@@ -840,6 +854,16 @@ body {
     flex-direction: row !important;
     gap: 0.5rem !important;
     margin: 0.4rem 0 !important;
+  }
+  
+  .line {
+    margin: 0.03rem 0 !important;
+  }
+  
+  .line span {
+    padding: 0.1rem 0.25rem !important;
+    font-size: 0.85rem !important;
+    margin: 0 0.08rem !important;
   }
   
   main .mobile-input-section .mobile-input-group {
