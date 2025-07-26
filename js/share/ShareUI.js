@@ -169,12 +169,9 @@ class ShareUI {
     try {
       this.setShareButtonLoading(true);
       
-      // 모바일에서 네이티브 공유 API 사용 가능한 경우
-      if (this.isMobile() && navigator.share) {
-        await this.showNativeShareMenu();
-      } else {
-        this.showShareModal();
-      }
+      // 항상 공유 모달 표시 (3가지 옵션 제공)
+      this.showShareModal();
+      
     } catch (error) {
       console.error('Share button click error:', error);
       this.showErrorMessage(error.message);
@@ -383,34 +380,16 @@ class ShareUI {
     
     const options = [
       {
+        platform: 'native',
+        icon: '📤',
+        label: language === 'ko' ? '공유하기' : 'Share',
+        description: language === 'ko' ? '휴대폰 공유 기능 사용' : 'Use phone share feature'
+      },
+      {
         platform: 'kakao',
         icon: '💬',
         label: language === 'ko' ? '카카오톡' : 'KakaoTalk',
         description: language === 'ko' ? '카카오톡으로 공유' : 'Share via KakaoTalk'
-      },
-      {
-        platform: 'facebook',
-        icon: '📘',
-        label: language === 'ko' ? '페이스북' : 'Facebook',
-        description: language === 'ko' ? '페이스북에 공유' : 'Share on Facebook'
-      },
-      {
-        platform: 'twitter',
-        icon: '🐦',
-        label: language === 'ko' ? '트위터' : 'Twitter',
-        description: language === 'ko' ? '트위터에 공유' : 'Share on Twitter'
-      },
-      {
-        platform: 'instagram',
-        icon: '📷',
-        label: language === 'ko' ? '인스타그램' : 'Instagram',
-        description: language === 'ko' ? '인스타그램 스토리에 공유' : 'Share to Instagram Story'
-      },
-      {
-        platform: 'copy',
-        icon: '🔗',
-        label: language === 'ko' ? '링크 복사' : 'Copy Link',
-        description: language === 'ko' ? '링크를 클립보드에 복사' : 'Copy link to clipboard'
       },
       {
         platform: 'image',
@@ -470,7 +449,7 @@ class ShareUI {
       let customMessage = null;
 
       // 텍스트 편집이 가능한 플랫폼인 경우 편집기 표시
-      if (this.isTextEditableplatform(platform)) {
+      if (this.isTextEditablePlatform(platform)) {
         const renderer = new ShareRenderer(this.shareManager.resultData, this.shareManager.language);
         const defaultText = renderer.formatShareText(platform);
         
@@ -484,7 +463,7 @@ class ShareUI {
       }
 
       // 공유 실행
-      await this.shareManager.shareToplatform(platform, customMessage);
+      await this.shareManager.shareToPlatform(platform, customMessage);
 
       // 성공 메시지
       const language = this.shareManager.language;
@@ -520,8 +499,8 @@ class ShareUI {
    * @param {string} platform - 플랫폼 이름
    * @returns {boolean} 편집 가능 여부
    */
-  isTextEditableplatform(platform) {
-    const editablePlatforms = ['twitter', 'facebook', 'kakao', 'copy'];
+  isTextEditablePlatform(platform) {
+    const editablePlatforms = ['kakao'];
     return editablePlatforms.includes(platform);
   }
 

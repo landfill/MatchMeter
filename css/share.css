@@ -8,11 +8,14 @@
    ========================================================================== */
 
 .share-button {
-  margin-top: 1.5rem;
-  display: inline-flex;
+  margin: 1.5rem auto 0 auto;
+  display: flex;
   align-items: center;
+  justify-content: center;
   gap: 0.5rem;
   transition: all 0.2s ease;
+  width: 100%;
+  max-width: 300px;
 }
 
 .share-button:hover {
@@ -35,6 +38,30 @@
     justify-content: center;
     min-height: 48px;
     font-size: 1rem;
+  }
+  
+  /* 모바일에서 이름을 좌우로 배치 */
+  .share-names {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+    font-size: 1.25rem;
+    font-weight: 600;
+  }
+  
+  .name-container {
+    flex: 1;
+    text-align: center;
+  }
+  
+  .name1 {
+    text-align: left;
+  }
+  
+  .name2 {
+    text-align: right;
   }
 }
 
@@ -119,7 +146,7 @@
 
 .share-options {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 1rem;
 }
 
@@ -951,7 +978,7 @@
   }
 
   .share-options {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     gap: 0.75rem;
   }
 
@@ -999,22 +1026,24 @@
 /* 매우 작은 화면 */
 @media (max-width: 480px) {
   .share-options {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.5rem;
   }
 
   .share-option {
-    flex-direction: row;
-    justify-content: flex-start;
-    text-align: left;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
     min-height: 60px;
+    padding: 0.5rem;
   }
 
   .share-icon {
-    font-size: 1.5rem;
+    font-size: 1.25rem;
   }
 
   .share-label {
-    font-size: 0.875rem;
+    font-size: 0.75rem;
   }
 }
 

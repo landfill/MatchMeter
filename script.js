@@ -129,8 +129,8 @@ const languageTexts = {
     subtitle: "매치미터 - 이름으로 알아보는 궁합 지수",
     label1: "📝 첫 번째 이름",
     label2: "📝 두 번째 이름",
-    placeholder1: "예: 김민수",
-    placeholder2: "예: 박지민",
+    placeholder1: "예: 안병수",
+    placeholder2: "예: 김두섭",
     calculateButton: "📊 Match 측정하기",
     scoreLabel: "📊 매치 점수",
     toggleText: "EN",
@@ -753,14 +753,24 @@ function getMessage(score) {
         negative: `${negative}% 확률로 평행우주에서나 만날 인연... 🌌`
       },
       {
-        condition: score >= 10,
+        condition: score > 10,
         positive: "아직 희망은 있어요! 🙃",
         negative: `${negative}% 확률로 둘이 만나면 지구가 멸망할 수도... 🌍💥`
       },
       {
-        condition: score >= 0,
-        positive: "...음... 긍정적으로 생각해봐요! 😰",
+        condition: score >= 5,
+        positive: "극한의 상황이지만... 기적은 일어난다고 해요! 🌟",
+        negative: `${negative}% 확률로 서로를 보면 시간이 멈출 수도... ⏰`
+      },
+      {
+        condition: score > 0,
+        positive: "...음... 최소한 0%는 아니네요! 😰",
         negative: `${negative}% 확률로 서로 다른 차원에서 살고 있을 가능성... 🌀`
+      },
+      {
+        condition: score === 0,
+        positive: "놀라워요! 완벽한 0%! 🎉",
+        negative: "축하합니다! 여러분은 수학적으로 완벽한 반대 조합을 발견했습니다! 이건 정말 레어한 케이스예요! 🏆✨"
       }
     ],
     en: [
@@ -810,14 +820,24 @@ function getMessage(score) {
         negative: `${negative}% chance you're meant for parallel universes... 🌌`
       },
       {
-        condition: score >= 10,
+        condition: score > 10,
         positive: "There's still hope! 🙃",
         negative: `${negative}% chance the world ends if you two meet... 🌍💥`
       },
       {
-        condition: score >= 0,
-        positive: "...Well... think positive! 😰",
+        condition: score >= 5,
+        positive: "Extreme situation but... miracles do happen! 🌟",
+        negative: `${negative}% chance time stops when you look at each other... ⏰`
+      },
+      {
+        condition: score > 0,
+        positive: "...Well... at least it's not 0%! 😰",
         negative: `${negative}% chance you live in different dimensions... 🌀`
+      },
+      {
+        condition: score === 0,
+        positive: "Amazing! Perfect 0%! 🎉",
+        negative: "Congratulations! You've discovered the mathematically perfect opposite combination! This is truly a rare case! 🏆✨"
       }
     ]
   };

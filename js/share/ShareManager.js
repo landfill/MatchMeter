@@ -165,7 +165,7 @@ class ShareManager {
    * @param {string} [customMessage] - 사용자 커스텀 메시지
    * @returns {Promise<void>}
    */
-  async shareToplatform(platform, customMessage) {
+  async shareToPlatform(platform, customMessage) {
     try {
       const shareData = this.prepareShareData();
       
