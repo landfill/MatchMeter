@@ -7,27 +7,24 @@
       content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes"
     />
     <title>Match Meter - 매치미터</title>
-    <link rel="stylesheet" href="./dist/output.css" />
+    <link rel="stylesheet" href="style.css" />
     <link rel="stylesheet" href="./css/share.css" />
   </head>
-  <body
-    class="bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 min-h-screen"
-    role="document"
-  >
+  <body class="main-body" role="document">
 
     <!-- Skip to main content link for screen readers -->
     <a
       href="#main-content"
-      class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-blue-600 focus:text-white focus:rounded focus:outline-none"
+      class="skip-link"
     >
       메인 콘텐츠로 건너뛰기
     </a>
 
     <!-- Mobile-first container with proper padding and safe area handling -->
-    <div class="relative z-10 min-h-screen flex flex-col">
+    <div class="main-wrapper">
       <main
         id="main-content"
-        class="flex-1 max-w-4xl mx-auto w-full bg-white/90 backdrop-blur-lg shadow-2xl border border-white/20 mobile-container relative"
+        class="mobile-container"
         role="main"
       >
         <!-- Language toggle in top-right corner -->
