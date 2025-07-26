@@ -300,12 +300,403 @@ class ShareRenderer {
 
   /**
    * Canvas를 이용한 이미지 생성
+   * @param {Object} options - 이미지 생성 옵션
    * @returns {Promise<Blob>} 생성된 이미지 Blob
    */
-  async generateShareImage() {
-    // 구현 예정
-    console.log('Generating share image for:', this.resultData);
-    return null;
+  async generateShareImage(options = {}) {
+    const {
+      width = 1200,
+      height = 630,
+      format = 'png',
+      quality = 0.9,
+      theme = 'default'
+    } = options;
+
+    try {
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d');
+      
+      // 고해상도 지원
+      const devicePixelRatio = window.devicePixelRatio || 1;
+      canvas.width = width * devicePixelRatio;
+      canvas.height = height * devicePixelRatio;
+      canvas.style.width = width + 'px';
+      canvas.style.height = height + 'px';
+      
+      ctx.scale(devicePixelRatio, devicePixelRatio);
+
+      // 이미지 렌더링
+      await this.renderImageContent(ctx, width, height, theme);
+
+      // Blob 생성
+      return new Promise((resolve) => {
+        canvas.toBlob(resolve, `image/${format}`, quality);
+      });
+
+    } catch (error) {
+      console.error('Failed to generate share image:', error);
+      throw error;
+    }
+  }
+
+  /**
+   * Canvas에 이미지 콘텐츠 렌더링
+   * @param {CanvasRenderingContext2D} ctx - Canvas 컨텍스트
+   * @param {number} width - 캔버스 너비
+   * @param {number} height - 캔버스 높이
+   * @param {string} theme - 테마
+   */
+  async renderImageContent(ctx, width, height, theme) {
+    const { score, names, messages } = this.resultData;
+    
+    // 배경 렌더링
+    this.renderBackground(ctx, width, height, theme, score);
+    
+    // 헤더 렌더링
+    await this.renderHeader(ctx, width, 60);
+    
+    // 메인 콘텐츠 렌더링
+    await this.renderMainContent(ctx, width, height, names, score, messages);
+    
+    // 푸터 렌더링
+    this.renderFooter(ctx, width, height);
+  }
+
+  /**
+   * 배경 렌더링
+   * @param {CanvasRenderingContext2D} ctx - Canvas 컨텍스트
+   * @param {number} width - 너비
+   * @param {number} height - 높이
+   * @param {string} theme - 테마
+   * @param {number} score - 점수
+   */
+  renderBackground(ctx, width, height, theme, score) {
+    // 점수에 따른 그라디언트 색상
+    const gradientColors = this.getGradientColors(score, theme);
+    
+    const gradient = ctx.createLinearGradient(0, 0, width, height);
+    gradient.addColorStop(0, gradientColors.start);
+    gradient.addColorStop(0.5, gradientColors.middle);
+    gradient.addColorStop(1, gradientColors.end);
+    
+    ctx.fillStyle = gradient;
+    ctx.fillRect(0, 0, width, height);
+    
+    // 장식적 요소 추가
+    this.renderBackgroundDecorations(ctx, width, height, score);
+  }
+
+  /**
+   * 점수에 따른 그라디언트 색상 반환
+   * @param {number} score - 점수
+   * @param {string} theme - 테마
+   * @returns {Object} 그라디언트 색상
+   */
+  getGradientColors(score, theme) {
+    if (theme === 'dark') {
+      return {
+        start: '#1f2937',
+        middle: '#374151',
+        end: '#4b5563'
+      };
+    }
+
+    // 점수에 따른 색상
+    if (score >= 80) {
+      return {
+        start: '#10b981',
+        middle: '#059669',
+        end: '#047857'
+      };
+    } else if (score >= 60) {
+      return {
+        start: '#3b82f6',
+        middle: '#2563eb',
+        end: '#1d4ed8'
+      };
+    } else if (score >= 40) {
+      return {
+        start: '#f59e0b',
+        middle: '#d97706',
+        end: '#b45309'
+      };
+    } else {
+      return {
+        start: '#ef4444',
+        middle: '#dc2626',
+        end: '#b91c1c'
+      };
+    }
+  }
+
+  /**
+   * 배경 장식 요소 렌더링
+   * @param {CanvasRenderingContext2D} ctx - Canvas 컨텍스트
+   * @param {number} width - 너비
+   * @param {number} height - 높이
+   * @param {number} score - 점수
+   */
+  renderBackgroundDecorations(ctx, width, height, score) {
+    ctx.save();
+    
+    // 반투명 원형 장식
+    const circles = [
+      { x: width * 0.1, y: height * 0.2, radius: 80, opacity: 0.1 },
+      { x: width * 0.9, y: height * 0.8, radius: 120, opacity: 0.08 },
+      { x: width * 0.8, y: height * 0.3, radius: 60, opacity: 0.12 }
+    ];
+
+    circles.forEach(circle => {
+      ctx.beginPath();
+      ctx.arc(circle.x, circle.y, circle.radius, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(255, 255, 255, ${circle.opacity})`;
+      ctx.fill();
+    });
+
+    ctx.restore();
+  }
+
+  /**
+   * 헤더 렌더링
+   * @param {CanvasRenderingContext2D} ctx - Canvas 컨텍스트
+   * @param {number} width - 너비
+   * @param {number} y - Y 위치
+   */
+  async renderHeader(ctx, width, y) {
+    ctx.save();
+    
+    // 앱 로고 (이모지)
+    ctx.font = '32px Arial';
+    ctx.textAlign = 'center';
+    ctx.fillStyle = 'white';
+    ctx.fillText('📊', width / 2 - 60, y);
+    
+    // 앱 이름
+    ctx.font = 'bold 28px Arial';
+    ctx.fillText('Match Meter', width / 2 + 20, y);
+    
+    // 부제목
+    ctx.font = '16px Arial';
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+    const subtitle = this.language === 'ko' ? '매치미터 - 이름 궁합 테스트' : 'Name Compatibility Test';
+    ctx.fillText(subtitle, width / 2, y + 25);
+    
+    ctx.restore();
+  }
+
+  /**
+   * 메인 콘텐츠 렌더링
+   * @param {CanvasRenderingContext2D} ctx - Canvas 컨텍스트
+   * @param {number} width - 너비
+   * @param {number} height - 높이
+   * @param {Object} names - 이름 정보
+   * @param {number} score - 점수
+   * @param {Object} messages - 메시지 정보
+   */
+  async renderMainContent(ctx, width, height, names, score, messages) {
+    const centerY = height / 2;
+    
+    // 이름들 렌더링
+    await this.renderNames(ctx, width, centerY - 80, names, score);
+    
+    // 점수 렌더링
+    this.renderScore(ctx, width, centerY, score);
+    
+    // 메시지 렌더링
+    this.renderMessage(ctx, width, centerY + 80, messages.positive);
+  }
+
+  /**
+   * 이름들 렌더링
+   * @param {CanvasRenderingContext2D} ctx - Canvas 컨텍스트
+   * @param {number} width - 너비
+   * @param {number} y - Y 위치
+   * @param {Object} names - 이름 정보
+   * @param {number} score - 점수
+   */
+  async renderNames(ctx, width, y, names, score) {
+    ctx.save();
+    
+    const nameY = y;
+    const fontSize = 36;
+    ctx.font = `bold ${fontSize}px Arial`;
+    ctx.fillStyle = 'white';
+    ctx.textAlign = 'center';
+    
+    // 첫 번째 이름
+    ctx.fillText(names.name1, width / 2 - 120, nameY);
+    
+    // 하트 이모지
+    ctx.font = `${fontSize + 8}px Arial`;
+    ctx.fillText('💕', width / 2, nameY);
+    
+    // 두 번째 이름
+    ctx.font = `bold ${fontSize}px Arial`;
+    ctx.fillText(names.name2, width / 2 + 120, nameY);
+    
+    // 점수 이모지
+    const scoreEmoji = this.getScoreEmoji(score);
+    ctx.font = `${fontSize - 4}px Arial`;
+    ctx.fillText(scoreEmoji, width / 2, nameY + 40);
+    
+    ctx.restore();
+  }
+
+  /**
+   * 점수 렌더링
+   * @param {CanvasRenderingContext2D} ctx - Canvas 컨텍스트
+   * @param {number} width - 너비
+   * @param {number} y - Y 위치
+   * @param {number} score - 점수
+   */
+  renderScore(ctx, width, y, score) {
+    ctx.save();
+    
+    const centerX = width / 2;
+    const circleRadius = 80;
+    
+    // 점수 원 배경
+    ctx.beginPath();
+    ctx.arc(centerX, y, circleRadius, 0, Math.PI * 2);
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.2)';
+    ctx.fill();
+    
+    // 점수 원 테두리
+    ctx.beginPath();
+    ctx.arc(centerX, y, circleRadius, 0, Math.PI * 2);
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.4)';
+    ctx.lineWidth = 3;
+    ctx.stroke();
+    
+    // 점수 텍스트
+    ctx.font = 'bold 48px Arial';
+    ctx.fillStyle = 'white';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(`${score}%`, centerX, y);
+    
+    // 점수 라벨
+    ctx.font = '18px Arial';
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
+    const label = this.language === 'ko' ? '궁합 점수' : 'Compatibility Score';
+    ctx.fillText(label, centerX, y + circleRadius + 25);
+    
+    ctx.restore();
+  }
+
+  /**
+   * 메시지 렌더링
+   * @param {CanvasRenderingContext2D} ctx - Canvas 컨텍스트
+   * @param {number} width - 너비
+   * @param {number} y - Y 위치
+   * @param {string} message - 메시지
+   */
+  renderMessage(ctx, width, y, message) {
+    ctx.save();
+    
+    ctx.font = '20px Arial';
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
+    ctx.textAlign = 'center';
+    
+    // 긴 메시지 줄바꿈 처리
+    const maxWidth = width - 100;
+    const lines = this.wrapText(ctx, message, maxWidth);
+    
+    lines.forEach((line, index) => {
+      ctx.fillText(line, width / 2, y + (index * 30));
+    });
+    
+    ctx.restore();
+  }
+
+  /**
+   * 푸터 렌더링
+   * @param {CanvasRenderingContext2D} ctx - Canvas 컨텍스트
+   * @param {number} width - 너비
+   * @param {number} height - 높이
+   */
+  renderFooter(ctx, width, height) {
+    ctx.save();
+    
+    const footerY = height - 40;
+    
+    ctx.font = '16px Arial';
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
+    ctx.textAlign = 'center';
+    
+    // URL
+    ctx.fillText('matchmeter.app', width / 2, footerY);
+    
+    // 날짜
+    const date = new Date().toLocaleDateString(this.language === 'ko' ? 'ko-KR' : 'en-US');
+    ctx.font = '14px Arial';
+    ctx.fillText(date, width / 2, footerY + 20);
+    
+    ctx.restore();
+  }
+
+  /**
+   * 텍스트 줄바꿈 처리
+   * @param {CanvasRenderingContext2D} ctx - Canvas 컨텍스트
+   * @param {string} text - 텍스트
+   * @param {number} maxWidth - 최대 너비
+   * @returns {string[]} 줄바꿈된 텍스트 배열
+   */
+  wrapText(ctx, text, maxWidth) {
+    const words = text.split(' ');
+    const lines = [];
+    let currentLine = words[0];
+
+    for (let i = 1; i < words.length; i++) {
+      const word = words[i];
+      const width = ctx.measureText(currentLine + ' ' + word).width;
+      
+      if (width < maxWidth) {
+        currentLine += ' ' + word;
+      } else {
+        lines.push(currentLine);
+        currentLine = word;
+      }
+    }
+    
+    lines.push(currentLine);
+    return lines;
+  }
+
+  /**
+   * 인스타그램 스토리용 이미지 생성
+   * @returns {Promise<Blob>} 생성된 이미지 Blob
+   */
+  async generateInstagramStoryImage() {
+    return this.generateShareImage({
+      width: 1080,
+      height: 1920,
+      theme: 'story'
+    });
+  }
+
+  /**
+   * 트위터 카드용 이미지 생성
+   * @returns {Promise<Blob>} 생성된 이미지 Blob
+   */
+  async generateTwitterCardImage() {
+    return this.generateShareImage({
+      width: 1200,
+      height: 600,
+      theme: 'twitter'
+    });
+  }
+
+  /**
+   * 페이스북 공유용 이미지 생성
+   * @returns {Promise<Blob>} 생성된 이미지 Blob
+   */
+  async generateFacebookShareImage() {
+    return this.generateShareImage({
+      width: 1200,
+      height: 630,
+      theme: 'facebook'
+    });
   }
 
   /**
