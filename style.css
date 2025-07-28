@@ -390,10 +390,16 @@ body {
 }
 
 /* 기존 계산 과정 스타일 - 단순한 숫자 */
+#explanation {
+  text-align: center;
+  width: 100%;
+}
+
 .line {
   display: block;
-  margin: 0.1rem 0;
+  margin: 0.1rem auto;
   line-height: 1.2;
+  text-align: center;
 }
 
 .line span {
@@ -811,8 +817,9 @@ body {
   }
   
   .line {
-    margin: 0.05rem 0 !important;
+    margin: 0.05rem auto !important;
     line-height: 1.1 !important;
+    text-align: center !important;
   }
   
   .line span {
@@ -881,7 +888,8 @@ body {
   }
   
   .line {
-    margin: 0.03rem 0 !important;
+    margin: 0.03rem auto !important;
+    text-align: center !important;
   }
   
   .line span {
