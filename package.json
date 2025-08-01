@@ -4,11 +4,9 @@
   "description": "Korean name compatibility calculator",
   "main": "index.html",
   "scripts": {
-    "build-css": "tailwindcss -i ./src/input.css -o ./dist/output.css --watch",
-    "build": "tailwindcss -i ./src/input.css -o ./dist/output.css --minify"
-  },
-  "devDependencies": {
-    "tailwindcss": "^3.4.0"
+    "test": "playwright test",
+    "test:headed": "playwright test --headed",
+    "test:report": "playwright show-report"
   },
   "dependencies": {
     "@playwright/test": "^1.54.2"

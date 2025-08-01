@@ -10,7 +10,6 @@ playwright-report/
 coverage/
 
 # Build outputs
-dist/
 build/
 
 # Environment variables
