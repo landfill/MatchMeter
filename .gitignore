@@ -46,8 +46,9 @@ pids
 *.seed
 *.pid.lock
 
-# Claude AI files
+# AI and development tool files
 .claude/
+.kiro/
 
 # Temporary files
 *.tmp
