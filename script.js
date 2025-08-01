@@ -211,6 +211,10 @@ function updateLanguageTexts() {
   document.getElementById('language-description').textContent = texts.languageDescription;
   document.getElementById('calculate-description').textContent = texts.calculateDescription;
   
+  // 계산 버튼 aria-label 업데이트
+  const calculateButton = document.getElementById('calculateButton');
+  calculateButton.setAttribute('aria-label', texts.calculateDescription);
+  
   // 양쪽 언어 모두에서 획수 정보 표시
   const strokeInfo = document.getElementById('strokeInfo');
   strokeInfo.classList.remove('hidden');
