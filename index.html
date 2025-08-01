@@ -7,8 +7,12 @@
       content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
     />
     <title>Match Meter - 매치미터</title>
+    <link rel="stylesheet" href="./css/design-system.css" />
+    <link rel="stylesheet" href="./css/header.css" />
     <link rel="stylesheet" href="style.css" />
     <link rel="stylesheet" href="./css/share.css" />
+    <link rel="stylesheet" href="./css/quick-share.css" />
+    <link rel="stylesheet" href="./css/share-preview.css" />
   </head>
   <body class="main-body" role="document">
 
@@ -27,26 +31,35 @@
         class="mobile-container"
         role="main"
       >
-        <!-- Language toggle in top-right corner -->
-        <button
-          id="languageToggle"
-          onclick="toggleLanguage()"
-          class="language-toggle-corner"
-          aria-label="언어 변경 (현재: 한국어)"
-          aria-describedby="language-description"
-        >
-          <span id="toggleText" aria-hidden="true">EN</span>
-        </button>
-        <div id="language-description" class="sr-only">
-          현재 언어는 한국어입니다. 클릭하면 영어로 변경됩니다.
-        </div>
-        <!-- Header section with mobile-optimized spacing -->
-        <header class="text-center mobile-header" role="banner">
-          <div class="mobile-title-container">
-            <h1 class="mobile-title">📊 Match Meter 📊</h1>
-            <p id="subtitle" class="mobile-subtitle">
-              매치미터 - 이름으로 알아보는 궁합 지수
-            </p>
+        <!-- Enhanced Header with improved mobile layout -->
+        <header class="app-header" role="banner">
+          <div class="header-content">
+            <div class="title-section">
+              <h1 class="app-title">
+                <span class="title-emoji" aria-hidden="true">📊</span>
+                <span class="title-text">Match Meter</span>
+                <span class="title-emoji" aria-hidden="true">📊</span>
+              </h1>
+              <p id="subtitle" class="app-subtitle">
+                매치미터 - 이름으로 알아보는 궁합 지수
+              </p>
+            </div>
+            
+            <!-- Improved Language Toggle -->
+            <button
+              id="languageToggle"
+              onclick="toggleLanguage()"
+              class="lang-toggle btn btn-secondary"
+              aria-label="언어 변경 (현재: 한국어)"
+              aria-describedby="language-description"
+            >
+              <span class="lang-icon" aria-hidden="true">🌍</span>
+              <span id="toggleText" class="lang-text">EN</span>
+            </button>
+            
+            <div id="language-description" class="sr-only">
+              현재 언어는 한국어입니다. 클릭하면 영어로 변경됩니다.
+            </div>
           </div>
         </header>
 
@@ -190,6 +203,8 @@
     <script src="js/share/ShareManager.js"></script>
     <script src="js/share/ShareUI.js"></script>
     <script src="js/share/ShareRenderer.js"></script>
+    <script src="js/share/SharePreview.js"></script>
+    <script src="js/share/QuickShare.js"></script>
     <script src="script.js"></script>
   </body>
 </html>

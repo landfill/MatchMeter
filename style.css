@@ -1,24 +1,17 @@
 /* ==========================================================================
-   기본 스타일 및 리셋
+   MatchMeter - 개선된 메인 스타일시트
+   Design System 기반으로 깔끔하게 정리된 스타일
    ========================================================================== */
 
-/* 전체 기본 스타일 */
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
+/* Design System Import */
+@import url('./css/design-system.css');
 
-body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  line-height: 1.6;
-  color: #333;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
+/* ==========================================================================
+   메인 레이아웃
+   ========================================================================== */
 
 .main-body {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: var(--gradient-primary);
   min-height: 100vh;
   margin: 0;
   padding: 0;
@@ -39,20 +32,20 @@ body {
   width: 100%;
   background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(16px);
-  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
+  box-shadow: var(--shadow-2xl);
   border: 1px solid rgba(255, 255, 255, 0.2);
   position: relative;
-  padding: 1rem;
+  padding: var(--space-4);
   border-radius: 0;
   min-height: 100vh;
 }
 
 @media (min-width: 768px) {
   .mobile-container {
-    border-radius: 20px;
-    margin: 2rem auto;
-    min-height: calc(100vh - 4rem);
-    padding: 2rem;
+    border-radius: var(--radius-2xl);
+    margin: var(--space-8) auto;
+    min-height: calc(100vh - var(--space-16));
+    padding: var(--space-8);
   }
 }
 

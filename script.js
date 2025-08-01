@@ -507,24 +507,38 @@ function initializeShareFeature(name1, name2, score, messages) {
   const shareManager = new ShareManager(resultData, currentLanguage);
   
   // 공유 버튼이 표시될 컨테이너 찾기
-  const resultContainer = document.getElementById('result');
+  const resultsSection = document.querySelector('.mobile-results-section');
   
-  // ShareUI 인스턴스 생성 및 공유 버튼 렌더링
-  const shareUI = new ShareUI(resultContainer, shareManager);
-  shareUI.renderShareButton();
+  // SharePreview 인스턴스 생성
+  const sharePreview = new SharePreview(shareManager);
+  
+  // QuickShare 인스턴스 생성 및 빠른 공유 버튼 렌더링
+  const quickShare = new QuickShare(resultsSection, shareManager);
+  quickShare.renderQuickShareButtons();
+  
+  // 기존 ShareUI도 유지 (더보기 옵션용)
+  const shareUI = new ShareUI(resultsSection, shareManager);
   
   // 전역 참조 저장 (언어 변경 시 업데이트용)
   window.currentShareManager = shareManager;
   window.currentShareUI = shareUI;
+  window.currentQuickShare = quickShare;
+  window.currentSharePreview = sharePreview;
 }
 
 // 언어 변경 시 공유 텍스트 업데이트
 function updateShareLanguage() {
-  if (window.currentShareManager && window.currentShareUI) {
+  if (window.currentShareManager) {
     // ShareManager 언어 업데이트
     window.currentShareManager.language = currentLanguage;
     
-    // 공유 버튼 텍스트 업데이트
+    // QuickShare 인스턴스가 있으면 업데이트
+    if (window.currentQuickShare) {
+      // 빠른 공유 버튼 다시 렌더링
+      window.currentQuickShare.renderQuickShareButtons();
+    }
+    
+    // 기존 공유 버튼 텍스트 업데이트
     const shareButton = document.querySelector('.share-button-text');
     if (shareButton) {
       shareButton.textContent = currentLanguage === 'ko' ? '결과 공유하기' : 'Share Results';
