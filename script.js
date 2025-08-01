@@ -487,7 +487,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // 공유 기능 초기화
 function initializeShareFeature(name1, name2, score, messages) {
-  console.log('🚀 공유 기능 초기화 시작:', { name1, name2, score });
   
   // 결과 데이터 준비
   const resultData = {
@@ -512,9 +511,7 @@ function initializeShareFeature(name1, name2, score, messages) {
   
   // ShareUI 인스턴스 생성 및 공유 버튼 렌더링
   const shareUI = new ShareUI(resultContainer, shareManager);
-  console.log('📤 공유 버튼 렌더링 시작');
   shareUI.renderShareButton();
-  console.log('✅ 공유 버튼 렌더링 완료');
   
   // 전역 참조 저장 (언어 변경 시 업데이트용)
   window.currentShareManager = shareManager;

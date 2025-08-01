@@ -765,7 +765,6 @@ class ShareRenderer {
 
     // 텍스트가 너무 긴 경우 자르기
     const truncated = text.substring(0, limit - 3) + '...';
-    console.warn(`Text truncated for ${platform}: ${text.length} -> ${truncated.length}`);
     
     return truncated;
   }
