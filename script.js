@@ -2,6 +2,25 @@
 // 언어 상태 관리
 let currentLanguage = 'ko';
 
+// 애니메이션 컨트롤러 초기화
+let animationController;
+
+// 계산 중복 실행 방지
+let isCalculating = false;
+
+document.addEventListener('DOMContentLoaded', () => {
+  try {
+    // 애니메이션 컨트롤러 초기화
+    if (typeof AnimationController !== 'undefined') {
+      animationController = new AnimationController();
+      window.currentAnimationController = animationController;
+    }
+    
+  } catch (error) {
+    console.error('Initialization error:', error);
+  }
+});
+
 // 한글 자모 획수 정의
 const koreanStrokeMap = {
   // 자음
@@ -162,8 +181,12 @@ function toggleLanguage() {
   currentLanguage = currentLanguage === 'ko' ? 'en' : 'ko';
   updateLanguageTexts();
   
-  // 공유 기능 언어 업데이트
-  updateShareLanguage();
+  // 공유 기능 언어 업데이트 (비동기로 처리하여 빠른 반응)
+  setTimeout(() => {
+    if (typeof updateShareLanguage === 'function') {
+      updateShareLanguage();
+    }
+  }, 10);
   
   // 언어 변경 알림 (스크린 리더용)
   announceToScreenReader(
@@ -512,6 +535,15 @@ function initializeShareFeature(name1, name2, score, messages) {
   // SharePreview 인스턴스 생성
   const sharePreview = new SharePreview(shareManager);
   
+  // Instagram Stories Optimizer 인스턴스 생성
+  const instagramOptimizer = new InstagramStoriesOptimizer(shareManager);
+  
+  // Twitter Card Optimizer 인스턴스 생성
+  const twitterOptimizer = new TwitterCardOptimizer(shareManager);
+  
+  // Facebook Preview Optimizer 인스턴스 생성
+  const facebookOptimizer = new FacebookPreviewOptimizer(shareManager);
+  
   // QuickShare 인스턴스 생성 및 빠른 공유 버튼 렌더링
   const quickShare = new QuickShare(resultsSection, shareManager);
   quickShare.renderQuickShareButtons();
@@ -524,6 +556,9 @@ function initializeShareFeature(name1, name2, score, messages) {
   window.currentShareUI = shareUI;
   window.currentQuickShare = quickShare;
   window.currentSharePreview = sharePreview;
+  window.currentInstagramOptimizer = instagramOptimizer;
+  window.currentTwitterOptimizer = twitterOptimizer;
+  window.currentFacebookOptimizer = facebookOptimizer;
 }
 
 // 언어 변경 시 공유 텍스트 업데이트
@@ -628,20 +663,43 @@ const MobileUX = {
 
 // Calculate match function with enhanced mobile UX
 async function calculateMatch() {
-  const name1 = document.getElementById("name1").value.trim();
-  const name2 = document.getElementById("name2").value.trim();
-  const resultDiv = document.getElementById("result");
-  const bar = document.getElementById("bar");
-  const explanation = document.getElementById("explanation");
-
-  // 계산 시작 전에 이전 결과 초기화
-  resultDiv.innerHTML = "";
-  bar.style.width = "0";
-  explanation.innerHTML = "";
-
-  if (!name1 || !name2) {
-    resultDiv.textContent = languageTexts[currentLanguage].inputBothNames;
+  // 중복 실행 방지
+  if (isCalculating) {
     return;
+  }
+  
+  isCalculating = true;
+
+  try {
+    const name1 = document.getElementById("name1").value.trim();
+    const name2 = document.getElementById("name2").value.trim();
+    const resultDiv = document.getElementById("result");
+    const bar = document.getElementById("bar");
+    const explanation = document.getElementById("explanation");
+    const calculateButton = document.getElementById("calculateButton");
+
+    // 계산 시작 전에 이전 결과 초기화
+    resultDiv.innerHTML = "";
+    resultDiv.style.display = 'none';  // 결과 영역 완전히 숨기기
+    bar.style.width = "0";
+    explanation.innerHTML = "";
+
+    if (!name1 || !name2) {
+      resultDiv.textContent = languageTexts[currentLanguage].inputBothNames;
+      resultDiv.style.display = 'block';  // 에러 메시지는 표시
+      
+      // 에러 애니메이션
+      if (window.currentAnimationController) {
+        const emptyInput = !name1 ? document.getElementById("name1") : document.getElementById("name2");
+        window.currentAnimationController.showErrorFeedback(emptyInput);
+      }
+      
+      return;
+    }
+  
+  // 계산 시작 피드백
+  if (calculateButton && window.currentAnimationController) {
+    window.currentAnimationController.showSuccessFeedback(calculateButton);
   }
 
   // 공백 제거 후 처리
@@ -657,62 +715,83 @@ async function calculateMatch() {
 
   explanation.innerHTML = "";
   
-  // 각 단계별로 순차적으로 표시
-  for (let i = 0; i < visualSteps.length; i++) {
-    await sleep(400);
-    
-    const line = document.createElement("div");
-    line.className = "line";
-    
-    const totalSteps = visualSteps.length - 1;
-    const isMobile = window.innerWidth < 768;
-    const maxWidth = isMobile ? 300 : 600;
-    const minWidth = isMobile ? 60 : 80;
-    const currentWidth = i === 0 ? maxWidth : maxWidth - ((i - 1) / totalSteps) * (maxWidth - minWidth);
-    
-    line.style.width = currentWidth + "px";
-    line.style.position = "relative";
-    line.style.height = "40px";
-    line.style.margin = "0.8rem auto";
-    line.style.zIndex = "1";
-    
-    const numbersCount = visualSteps[i].length;
-    const spacing = currentWidth / (numbersCount + 1);
-    
-    for (let j = 0; j < visualSteps[i].length; j++) {
-      const span = document.createElement("span");
-      span.textContent = visualSteps[i][j];
-      span.style.position = "absolute";
-      span.style.left = (spacing * (j + 1)) + "px";
-      span.style.transform = "translateX(-50%)";
-      line.appendChild(span);
+  // AnimationController가 활성화된 경우 단계 애니메이션 완전히 건너뛰기
+  if (!window.currentAnimationController) {
+    // 각 단계별로 순차적으로 표시 (fallback)
+    for (let i = 0; i < visualSteps.length; i++) {
+      await sleep(400);
+      
+      const line = document.createElement("div");
+      line.className = "line";
+      
+      const totalSteps = visualSteps.length - 1;
+      const isMobile = window.innerWidth < 768;
+      const maxWidth = isMobile ? 300 : 600;
+      const minWidth = isMobile ? 60 : 80;
+      const currentWidth = i === 0 ? maxWidth : maxWidth - ((i - 1) / totalSteps) * (maxWidth - minWidth);
+      
+      line.style.width = currentWidth + "px";
+      line.style.position = "relative";
+      line.style.height = "40px";
+      line.style.margin = "0.8rem auto";
+      line.style.zIndex = "1";
+      
+      const numbersCount = visualSteps[i].length;
+      const spacing = currentWidth / (numbersCount + 1);
+      
+      for (let j = 0; j < visualSteps[i].length; j++) {
+        const span = document.createElement("span");
+        span.textContent = visualSteps[i][j];
+        span.style.position = "absolute";
+        span.style.left = (spacing * (j + 1)) + "px";
+        span.style.transform = "translateX(-50%)";
+        line.appendChild(span);
+      }
+      
+      explanation.appendChild(line);
     }
-    
-    explanation.appendChild(line);
   }
+  // AnimationController가 있으면 explanation 섹션을 완전히 비워둠 (AnimationController가 처리)
 
   const score = final[0] * 10 + final[1];
   const messages = getMessage(score);
   
-  // Match Meter 결과 HTML 구조 생성
-  resultDiv.innerHTML = `
-    <div class="result-container">
-      <div class="score-text">📊 ${name1} ⚡ ${name2}</div>
-      <div class="score-percentage">${score}%</div>
-      <div class="message-positive">✅ ${messages.positive}</div>
-      <div class="message-negative">⚠️ ${messages.negative}</div>
-    </div>
-  `;
+  // 결과 데이터 준비 (HTML 생성 전에)
+  const resultData = {
+    score: score,
+    names: {
+      name1: name1,
+      name2: name2
+    },
+    messages: messages,
+    steps: visualSteps,
+    language: currentLanguage,
+    timestamp: new Date(),
+    resultDiv: resultDiv  // 결과 div 참조 전달
+  };
   
-  // 애니메이션 효과 적용
-  setTimeout(() => {
-    resultDiv.querySelector('.result-container').classList.add('animate');
-  }, 100);
+  // 커스텀 이벤트 발생 (애니메이션 컨트롤러에서 감지)
+  // AnimationController가 획수 애니메이션 후 결과 HTML을 생성할 것임
+  document.dispatchEvent(new CustomEvent('matchCalculated', {
+    detail: resultData
+  }));
   
-  bar.style.width = score + "%";
+  // 기존 애니메이션 효과는 AnimationController에서 처리됨
+  // setTimeout(() => {
+  //   resultDiv.querySelector('.result-container').classList.add('animate');
+  // }, 100);
+  
+  // 진행바는 AnimationController에서 애니메이션 처리
+  // bar.style.width = score + "%";
   
   // 공유 기능 통합
   initializeShareFeature(name1, name2, score, messages);
+  
+  } catch (error) {
+    console.error('Calculation error:', error);
+  } finally {
+    isCalculating = false;
+  }
 }
 
 function getMessage(score) {

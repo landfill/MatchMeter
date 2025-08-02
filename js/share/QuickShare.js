@@ -54,13 +54,6 @@ class QuickShare {
     this.quickShareContainer = document.createElement('div');
     this.quickShareContainer.className = 'quick-share-container';
     this.quickShareContainer.innerHTML = `
-      <div class="quick-share-header">
-        <h3 class="quick-share-title">
-          <span aria-hidden="true">📤</span>
-          <span>${this.getLocalizedText('quickShareTitle')}</span>
-        </h3>
-        <p class="quick-share-subtitle">${this.getLocalizedText('quickShareSubtitle')}</p>
-      </div>
       <div class="quick-share-buttons" role="group" aria-label="${this.getLocalizedText('quickShareTitle')}">
         <!-- 버튼들이 여기에 동적으로 추가됩니다 -->
       </div>
@@ -113,6 +106,15 @@ class QuickShare {
     
     const options = [];
 
+    // Instagram Stories (우선순위 최상위)
+    options.push({
+      platform: 'instagram-stories',
+      icon: '📷',
+      label: language === 'ko' ? '스토리' : 'Stories',
+      description: language === 'ko' ? 'Instagram Stories로 공유' : 'Share to Instagram Stories',
+      primary: true
+    });
+
     // 네이티브 공유 (모바일에서 우선)
     if (isMobile && navigator.share) {
       options.push({
@@ -135,21 +137,30 @@ class QuickShare {
       });
     }
 
+    // Twitter/X 공유
+    options.push({
+      platform: 'twitter',
+      icon: '🐦',
+      label: language === 'ko' ? 'X' : 'X',
+      description: language === 'ko' ? 'X(구 트위터)로 공유' : 'Share to X (Twitter)',
+      primary: true
+    });
+
+    // Facebook 공유
+    options.push({
+      platform: 'facebook',
+      icon: '📘',
+      label: 'Facebook',
+      description: language === 'ko' ? 'Facebook으로 공유' : 'Share to Facebook',
+      primary: true
+    });
+
     // 링크 복사 (항상 포함)
     options.push({
       platform: 'copy',
       icon: '🔗',
       label: language === 'ko' ? '링크' : 'Copy',
       description: language === 'ko' ? '링크 복사' : 'Copy link',
-      primary: true
-    });
-
-    // 이미지 저장 (항상 포함)
-    options.push({
-      platform: 'image',
-      icon: '💾',
-      label: language === 'ko' ? '저장' : 'Save',
-      description: language === 'ko' ? '이미지 저장' : 'Save image',
       primary: false
     });
 
@@ -189,6 +200,9 @@ class QuickShare {
         await this.handleQuickShareClick(option.platform, button);
       }
     });
+    
+    // 마이크로 인터랙션 이벤트
+    this.addMicroInteractions(button);
 
     return button;
   }
@@ -240,6 +254,51 @@ class QuickShare {
           return; // 사용자가 취소함
         }
         customMessage = quickMessage;
+      } else if (platform === 'instagram-stories') {
+        // Instagram Stories의 경우 템플릿 선택
+        const storyOptimizer = window.currentInstagramOptimizer || new InstagramStoriesOptimizer(this.shareManager);
+        const templateId = await storyOptimizer.showTemplateSelector();
+        if (templateId === null) {
+          return; // 사용자가 취소함
+        }
+        
+        // 스토리 이미지 생성
+        const storyImageUrl = await storyOptimizer.generateStoryImage(templateId);
+        
+        // Instagram Stories로 공유 (Web Share API 또는 URL scheme 사용)
+        if (navigator.share && navigator.canShare && navigator.canShare({ files: [] })) {
+          // Base64를 Blob으로 변환
+          const response = await fetch(storyImageUrl);
+          const blob = await response.blob();
+          const file = new File([blob], 'match-meter-story.png', { type: 'image/png' });
+          
+          await navigator.share({
+            files: [file],
+            title: this.shareManager.language === 'ko' ? 'Match Meter 궁합 결과' : 'Match Meter Compatibility',
+            text: this.getSimpleShareMessage()
+          });
+        } else {
+          // 대체 방법: 이미지 다운로드 + Instagram 앱 열기
+          this.downloadImageAndOpenInstagram(storyImageUrl);
+        }
+        
+        this.showQuickFeedback('success', platform);
+        this.provideFeedback('success');
+        return;
+      } else if (platform === 'twitter') {
+        // Twitter/X 공유
+        const twitterOptimizer = window.currentTwitterOptimizer || new TwitterCardOptimizer(this.shareManager);
+        await twitterOptimizer.shareToTwitter();
+        this.showQuickFeedback('success', platform);
+        this.provideFeedback('success');
+        return;
+      } else if (platform === 'facebook') {
+        // Facebook 공유
+        const facebookOptimizer = window.currentFacebookOptimizer || new FacebookPreviewOptimizer(this.shareManager);
+        await facebookOptimizer.shareToFacebook();
+        this.showQuickFeedback('success', platform);
+        this.provideFeedback('success');
+        return;
       }
 
       // 공유 실행
@@ -248,6 +307,11 @@ class QuickShare {
       // 성공 피드백
       this.showQuickFeedback('success', platform);
       this.provideFeedback('success');
+      
+      // 성공 애니메이션
+      if (window.currentAnimationController) {
+        window.currentAnimationController.showSuccessFeedback(button);
+      }
 
     } catch (error) {
       console.error(`Quick share failed for ${platform}:`, error);
@@ -255,6 +319,11 @@ class QuickShare {
       // 에러 피드백
       this.showQuickFeedback('error', platform);
       this.provideFeedback('error');
+      
+      // 에러 애니메이션
+      if (window.currentAnimationController) {
+        window.currentAnimationController.showErrorFeedback(button);
+      }
     } finally {
       this.setButtonLoading(button, false);
     }
@@ -463,6 +532,45 @@ class QuickShare {
   }
 
   /**
+   * 마이크로 인터랙션 추가
+   * @param {HTMLElement} button - 버튼 요소
+   */
+  addMicroInteractions(button) {
+    // 호버 효과 (데스크톱)
+    if (!this.isMobile()) {
+      button.addEventListener('mouseenter', () => {
+        const icon = button.querySelector('.btn-icon');
+        if (icon && window.currentAnimationController) {
+          icon.style.transform = 'scale(1.2) rotate(5deg)';
+        }
+      });
+      
+      button.addEventListener('mouseleave', () => {
+        const icon = button.querySelector('.btn-icon');
+        if (icon) {
+          icon.style.transform = 'scale(1) rotate(0deg)';
+        }
+      });
+    }
+    
+    // 클릭 애니메이션
+    button.addEventListener('mousedown', () => {
+      if (window.currentAnimationController) {
+        window.currentAnimationController.showSuccessFeedback(button);
+      }
+    });
+    
+    // 포커스 애니메이션
+    button.addEventListener('focus', () => {
+      button.classList.add('glow-effect');
+    });
+    
+    button.addEventListener('blur', () => {
+      button.classList.remove('glow-effect');
+    });
+  }
+
+  /**
    * 유틸리티 메서드들
    */
   isMobile() {
@@ -484,12 +592,46 @@ class QuickShare {
     return texts[key] || key;
   }
 
+  /**
+   * 이미지 다운로드 후 Instagram 앱 열기
+   * @param {string} imageUrl - 이미지 데이터 URL
+   */
+  downloadImageAndOpenInstagram(imageUrl) {
+    // 이미지 다운로드
+    const link = document.createElement('a');
+    link.download = 'match-meter-story.png';
+    link.href = imageUrl;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    
+    // Instagram 앱 열기 시도
+    setTimeout(() => {
+      const instagramUrl = 'instagram://story-camera';
+      const fallbackUrl = 'https://instagram.com';
+      
+      const iframe = document.createElement('iframe');
+      iframe.style.display = 'none';
+      iframe.src = instagramUrl;
+      document.body.appendChild(iframe);
+      
+      setTimeout(() => {
+        document.body.removeChild(iframe);
+        // Instagram 앱이 없을 경우 웹사이트로 이동
+        window.open(fallbackUrl, '_blank');
+      }, 1000);
+    }, 500);
+  }
+
   getPlatformName(platform) {
     const names = {
       native: this.shareManager.language === 'ko' ? '공유' : 'Share',
       kakao: '카카오톡',
       copy: this.shareManager.language === 'ko' ? '링크' : 'Link',
-      image: this.shareManager.language === 'ko' ? '이미지' : 'Image'
+      image: this.shareManager.language === 'ko' ? '이미지' : 'Image',
+      'instagram-stories': 'Instagram Stories',
+      twitter: 'X (Twitter)',
+      facebook: 'Facebook'
     };
     return names[platform] || platform;
   }

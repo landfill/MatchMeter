@@ -8,11 +8,15 @@
     />
     <title>Match Meter - 매치미터</title>
     <link rel="stylesheet" href="./css/design-system.css" />
+    <link rel="stylesheet" href="./css/theme-system.css" />
+    <link rel="stylesheet" href="./css/seasonal-themes.css" />
+    <link rel="stylesheet" href="./css/animations.css" />
     <link rel="stylesheet" href="./css/header.css" />
     <link rel="stylesheet" href="style.css" />
     <link rel="stylesheet" href="./css/share.css" />
     <link rel="stylesheet" href="./css/quick-share.css" />
     <link rel="stylesheet" href="./css/share-preview.css" />
+    <link rel="stylesheet" href="./css/story-templates.css" />
   </head>
   <body class="main-body" role="document">
 
@@ -45,17 +49,20 @@
               </p>
             </div>
             
-            <!-- Improved Language Toggle -->
-            <button
-              id="languageToggle"
-              onclick="toggleLanguage()"
-              class="lang-toggle btn btn-secondary"
-              aria-label="언어 변경 (현재: 한국어)"
-              aria-describedby="language-description"
-            >
-              <span class="lang-icon" aria-hidden="true">🌍</span>
-              <span id="toggleText" class="lang-text">EN</span>
-            </button>
+            <!-- Header Controls -->
+            <div class="header-controls">
+              <!-- Language Toggle -->
+              <button
+                id="languageToggle"
+                onclick="toggleLanguage()"
+                class="lang-toggle"
+                aria-label="언어 변경 (현재: 한국어)"
+                aria-describedby="language-description"
+              >
+                <span class="lang-icon" aria-hidden="true">🌍</span>
+                <span id="toggleText" class="lang-text">EN</span>
+              </button>
+            </div>
             
             <div id="language-description" class="sr-only">
               현재 언어는 한국어입니다. 클릭하면 영어로 변경됩니다.
@@ -197,6 +204,7 @@
       </main>
     </div>
 
+    <script src="js/animations/AnimationController.js"></script>
     <script src="js/share/ShareTemplates.js"></script>
     <script src="js/share/MobileShareOptimizer.js"></script>
     <script src="js/share/ShareTextEditor.js"></script>
@@ -204,6 +212,9 @@
     <script src="js/share/ShareUI.js"></script>
     <script src="js/share/ShareRenderer.js"></script>
     <script src="js/share/SharePreview.js"></script>
+    <script src="js/share/InstagramStoriesOptimizer.js"></script>
+    <script src="js/share/TwitterCardOptimizer.js"></script>
+    <script src="js/share/FacebookPreviewOptimizer.js"></script>
     <script src="js/share/QuickShare.js"></script>
     <script src="script.js"></script>
   </body>

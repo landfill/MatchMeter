@@ -1,0 +1,444 @@
+/**
+ * Theme System - 다크/라이트 모드 지원
+ * 테마별 색상 변수 및 전환 시스템
+ */
+
+/* ==========================================================================
+   Theme Variables - Light Mode (기본)
+   ========================================================================== */
+
+:root {
+  /* Light Theme Colors */
+  --theme-bg-primary: var(--color-white);
+  --theme-bg-secondary: var(--color-gray-50);
+  --theme-bg-tertiary: var(--color-gray-100);
+  --theme-bg-elevated: var(--color-white);
+  
+  --theme-text-primary: var(--color-gray-900);
+  --theme-text-secondary: var(--color-gray-700);
+  --theme-text-tertiary: var(--color-gray-600);
+  --theme-text-disabled: var(--color-gray-400);
+  
+  --theme-border-primary: var(--color-gray-200);
+  --theme-border-secondary: var(--color-gray-300);
+  --theme-border-focus: var(--color-primary-500);
+  
+  --theme-shadow-sm: var(--shadow-sm);
+  --theme-shadow-md: var(--shadow-md);
+  --theme-shadow-lg: var(--shadow-lg);
+  --theme-shadow-xl: var(--shadow-xl);
+  --theme-shadow-2xl: var(--shadow-2xl);
+  
+  /* Interactive Elements */
+  --theme-interactive-hover: var(--color-gray-100);
+  --theme-interactive-active: var(--color-gray-200);
+  --theme-interactive-disabled: var(--color-gray-100);
+  
+  /* Glassmorphism Effects */
+  --theme-glass-bg: rgba(255, 255, 255, 0.9);
+  --theme-glass-border: rgba(255, 255, 255, 0.3);
+  --theme-glass-shadow: rgba(0, 0, 0, 0.1);
+  
+  /* Theme Toggle */
+  --theme-toggle-bg: var(--color-gray-100);
+  --theme-toggle-color: var(--color-gray-700);
+  --theme-toggle-icon: '🌙';
+  
+  /* Backdrop Blur */
+  --theme-backdrop-blur: blur(12px);
+}
+
+/* ==========================================================================
+   Dark Theme Variables
+   ========================================================================== */
+
+[data-theme="dark"] {
+  /* Dark Theme Colors */
+  --theme-bg-primary: #0f0f23;
+  --theme-bg-secondary: #1a1a2e;
+  --theme-bg-tertiary: #16213e;
+  --theme-bg-elevated: #1a1a2e;
+  
+  --theme-text-primary: #ffffff;
+  --theme-text-secondary: #e2e8f0;
+  --theme-text-tertiary: #cbd5e1;
+  --theme-text-disabled: #64748b;
+  
+  --theme-border-primary: #334155;
+  --theme-border-secondary: #475569;
+  --theme-border-focus: var(--color-primary-400);
+  
+  /* Dark Mode Shadows */
+  --theme-shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+  --theme-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
+  --theme-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.4), 0 4px 6px -2px rgba(0, 0, 0, 0.3);
+  --theme-shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.4), 0 10px 10px -5px rgba(0, 0, 0, 0.3);
+  --theme-shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  
+  /* Dark Interactive Elements */
+  --theme-interactive-hover: rgba(255, 255, 255, 0.05);
+  --theme-interactive-active: rgba(255, 255, 255, 0.1);
+  --theme-interactive-disabled: rgba(255, 255, 255, 0.05);
+  
+  /* Dark Glassmorphism Effects */
+  --theme-glass-bg: rgba(26, 26, 46, 0.8);
+  --theme-glass-border: rgba(255, 255, 255, 0.1);
+  --theme-glass-shadow: rgba(0, 0, 0, 0.3);
+  
+  /* Dark Theme Toggle */
+  --theme-toggle-bg: rgba(255, 255, 255, 0.1);
+  --theme-toggle-color: var(--color-yellow-400);
+  --theme-toggle-icon: '☀️';
+  
+  /* Enhanced Backdrop Blur for Dark Mode */
+  --theme-backdrop-blur: blur(16px);
+}
+
+/* ==========================================================================
+   System Theme Detection
+   ========================================================================== */
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    /* Auto Dark Theme Colors */
+    --theme-bg-primary: #0f0f23;
+    --theme-bg-secondary: #1a1a2e;
+    --theme-bg-tertiary: #16213e;
+    --theme-bg-elevated: #1a1a2e;
+    
+    --theme-text-primary: #ffffff;
+    --theme-text-secondary: #e2e8f0;
+    --theme-text-tertiary: #cbd5e1;
+    --theme-text-disabled: #64748b;
+    
+    --theme-border-primary: #334155;
+    --theme-border-secondary: #475569;
+    --theme-border-focus: var(--color-primary-400);
+    
+    --theme-shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+    --theme-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
+    --theme-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.4), 0 4px 6px -2px rgba(0, 0, 0, 0.3);
+    --theme-shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.4), 0 10px 10px -5px rgba(0, 0, 0, 0.3);
+    --theme-shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    
+    --theme-interactive-hover: rgba(255, 255, 255, 0.05);
+    --theme-interactive-active: rgba(255, 255, 255, 0.1);
+    --theme-interactive-disabled: rgba(255, 255, 255, 0.05);
+    
+    --theme-glass-bg: rgba(26, 26, 46, 0.8);
+    --theme-glass-border: rgba(255, 255, 255, 0.1);
+    --theme-glass-shadow: rgba(0, 0, 0, 0.3);
+    
+    --theme-toggle-bg: rgba(255, 255, 255, 0.1);
+    --theme-toggle-color: var(--color-yellow-400);
+    --theme-toggle-icon: '☀️';
+    
+    --theme-backdrop-blur: blur(16px);
+  }
+}
+
+/* ==========================================================================
+   Theme Application
+   ========================================================================== */
+
+/* Body and Main Containers */
+.main-body {
+  background: var(--theme-bg-primary);
+  color: var(--theme-text-primary);
+  transition: background-color var(--transition-base), color var(--transition-base);
+}
+
+.main-wrapper {
+  background: var(--theme-bg-primary);
+}
+
+.mobile-container {
+  background: var(--theme-bg-primary);
+}
+
+/* Header Theming */
+.app-header {
+  background: transparent;
+}
+
+.app-title {
+  color: var(--theme-text-primary);
+  /* Dark mode에서 그라데이션 조정 */
+}
+
+[data-theme="dark"] .app-title {
+  background: linear-gradient(135deg, var(--color-primary-400), var(--color-secondary-400));
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.app-subtitle {
+  color: var(--theme-text-secondary);
+}
+
+/* Input Elements */
+.mobile-input {
+  background: var(--theme-bg-elevated);
+  border-color: var(--theme-border-primary);
+  color: var(--theme-text-primary);
+  
+  &::placeholder {
+    color: var(--theme-text-disabled);
+  }
+  
+  &:focus {
+    border-color: var(--theme-border-focus);
+    background: var(--theme-bg-elevated);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  }
+}
+
+[data-theme="dark"] .mobile-input:focus {
+  box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.2);
+}
+
+.mobile-label {
+  color: var(--theme-text-secondary);
+}
+
+/* Buttons */
+.mobile-button-primary {
+  background: linear-gradient(135deg, var(--color-primary-500), var(--color-primary-600));
+  border-color: var(--color-primary-600);
+  color: var(--color-white);
+  box-shadow: var(--theme-shadow-md);
+  
+  &:hover:not(:disabled) {
+    background: linear-gradient(135deg, var(--color-primary-600), var(--color-primary-700));
+    box-shadow: var(--theme-shadow-lg);
+  }
+}
+
+.lang-toggle {
+  background: var(--theme-glass-bg);
+  backdrop-filter: var(--theme-backdrop-blur);
+  border-color: var(--theme-glass-border);
+  color: var(--theme-text-secondary);
+  box-shadow: var(--theme-shadow-sm);
+  
+  &:hover:not(:disabled) {
+    background: var(--theme-interactive-hover);
+    border-color: var(--theme-border-secondary);
+  }
+}
+
+/* Results Section */
+.mobile-results-section {
+  background: transparent;
+}
+
+.mobile-explanation {
+  background: var(--theme-bg-secondary);
+  border-color: var(--theme-border-primary);
+  color: var(--theme-text-primary);
+}
+
+.mobile-score-container {
+  background: var(--theme-bg-elevated);
+  border-color: var(--theme-border-primary);
+  box-shadow: var(--theme-shadow-sm);
+}
+
+.mobile-score-label {
+  color: var(--theme-text-primary);
+}
+
+.mobile-progress-bar {
+  background: var(--theme-bg-tertiary);
+}
+
+.mobile-result {
+  color: var(--theme-text-primary);
+}
+
+/* Quick Share Components */
+.quick-share-container {
+  background: var(--theme-glass-bg);
+  backdrop-filter: var(--theme-backdrop-blur);
+  border-color: var(--theme-glass-border);
+  box-shadow: var(--theme-shadow-lg);
+}
+
+.quick-share-title {
+  color: var(--theme-text-primary);
+}
+
+.quick-share-subtitle {
+  color: var(--theme-text-secondary);
+}
+
+.quick-share-btn {
+  background: var(--theme-bg-elevated);
+  border-color: var(--theme-border-primary);
+  color: var(--theme-text-secondary);
+  box-shadow: var(--theme-shadow-sm);
+  
+  &:hover:not(:disabled) {
+    background: var(--theme-interactive-hover);
+    box-shadow: var(--theme-shadow-md);
+  }
+}
+
+.quick-share-btn.primary {
+  background: linear-gradient(135deg, var(--color-primary-50), var(--theme-bg-elevated));
+  border-color: var(--color-primary-200);
+  color: var(--color-primary-700);
+}
+
+[data-theme="dark"] .quick-share-btn.primary {
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), var(--theme-bg-elevated));
+  border-color: rgba(59, 130, 246, 0.3);
+  color: var(--color-primary-400);
+}
+
+/* Share Preview Modal */
+.share-preview-modal {
+  background: var(--theme-glass-shadow);
+  backdrop-filter: var(--theme-backdrop-blur);
+}
+
+.preview-modal-content {
+  background: var(--theme-bg-elevated);
+  box-shadow: var(--theme-shadow-2xl);
+}
+
+.preview-header {
+  background: var(--theme-bg-secondary);
+  border-color: var(--theme-border-primary);
+}
+
+.preview-header h3 {
+  color: var(--theme-text-primary);
+}
+
+.preview-close-btn {
+  color: var(--theme-text-tertiary);
+  
+  &:hover {
+    background: var(--theme-interactive-hover);
+    color: var(--theme-text-secondary);
+  }
+}
+
+.preview-image-container {
+  background: var(--theme-bg-secondary);
+}
+
+.preview-actions {
+  background: var(--theme-bg-elevated);
+  border-color: var(--theme-border-primary);
+}
+
+/* ==========================================================================
+   Theme Toggle Button
+   ========================================================================== */
+
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  min-height: 36px;
+  font-size: var(--text-sm);
+  font-weight: var(--font-semibold);
+  border-radius: var(--radius-full);
+  background: var(--theme-toggle-bg);
+  backdrop-filter: var(--theme-backdrop-blur);
+  border: 1px solid var(--theme-border-primary);
+  color: var(--theme-toggle-color);
+  box-shadow: var(--theme-shadow-sm);
+  transition: all var(--transition-base);
+  cursor: pointer;
+  
+  &:hover:not(:disabled) {
+    background: var(--theme-interactive-hover);
+    transform: translateY(-1px);
+    box-shadow: var(--theme-shadow-md);
+  }
+  
+  &:active {
+    transform: translateY(0);
+  }
+  
+  &:focus-visible {
+    outline: 3px solid var(--theme-border-focus);
+    outline-offset: 2px;
+  }
+}
+
+.theme-toggle-icon {
+  font-size: var(--text-base);
+  line-height: 1;
+}
+
+.theme-toggle-icon::before {
+  content: var(--theme-toggle-icon);
+}
+
+/* ==========================================================================
+   Smooth Transitions
+   ========================================================================== */
+
+* {
+  transition-property: background-color, border-color, color, box-shadow;
+  transition-duration: var(--transition-base);
+  transition-timing-function: ease;
+}
+
+/* Disable transitions during theme switch to prevent flash */
+.theme-switching * {
+  transition: none !important;
+}
+
+/* ==========================================================================
+   Print Styles
+   ========================================================================== */
+
+@media print {
+  [data-theme="dark"] {
+    --theme-bg-primary: white;
+    --theme-bg-secondary: white;
+    --theme-bg-tertiary: white;
+    --theme-bg-elevated: white;
+    --theme-text-primary: black;
+    --theme-text-secondary: black;
+    --theme-text-tertiary: black;
+  }
+}
+
+/* ==========================================================================
+   Accessibility Enhancements
+   ========================================================================== */
+
+/* High Contrast Support */
+@media (prefers-contrast: high) {
+  :root {
+    --theme-border-primary: var(--color-gray-400);
+    --theme-border-secondary: var(--color-gray-500);
+  }
+  
+  [data-theme="dark"] {
+    --theme-border-primary: var(--color-gray-500);
+    --theme-border-secondary: var(--color-gray-400);
+    --theme-text-secondary: #f1f5f9;
+    --theme-text-tertiary: #e2e8f0;
+  }
+}
+
+/* Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+    animation: none !important;
+  }
+  
+  .theme-toggle:hover {
+    transform: none;
+  }
+}

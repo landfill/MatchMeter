@@ -388,7 +388,6 @@ class SharePreview {
         modal.remove();
       } else if (e.target.matches('.preview-edit-btn')) {
         // 편집 기능 (추후 구현)
-        console.log('편집 기능은 추후 구현 예정입니다.');
       }
     });
     

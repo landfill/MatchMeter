@@ -1,0 +1,454 @@
+/**
+ * Instagram Stories Template Selector Styles
+ * 스토리 템플릿 선택 모달 스타일
+ */
+
+/* ==========================================================================
+   Template Modal
+   ========================================================================== */
+
+.story-template-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(4px);
+  z-index: var(--z-modal);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-4);
+  
+  /* Animation */
+  opacity: 0;
+  transition: opacity var(--transition-base);
+}
+
+.story-template-modal.show {
+  opacity: 1;
+}
+
+/* ==========================================================================
+   Modal Content
+   ========================================================================== */
+
+.template-modal-content {
+  background: var(--theme-bg-elevated);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--theme-shadow-2xl);
+  max-width: 600px;
+  width: 100%;
+  max-height: 80vh;
+  overflow: hidden;
+  
+  /* Animation */
+  transform: scale(0.9) translateY(20px);
+  transition: transform var(--transition-base);
+}
+
+.story-template-modal.show .template-modal-content {
+  transform: scale(1) translateY(0);
+}
+
+/* ==========================================================================
+   Template Header
+   ========================================================================== */
+
+.template-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-4) var(--space-6);
+  border-bottom: 1px solid var(--theme-border-primary);
+  background: var(--theme-bg-secondary);
+}
+
+.template-header h3 {
+  font-size: var(--text-lg);
+  font-weight: var(--font-semibold);
+  color: var(--theme-text-primary);
+  margin: 0;
+}
+
+.template-close-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: none;
+  border-radius: var(--radius-full);
+  background: transparent;
+  color: var(--theme-text-tertiary);
+  font-size: var(--text-xl);
+  font-weight: var(--font-bold);
+  cursor: pointer;
+  transition: all var(--transition-base);
+  
+  &:hover {
+    background: var(--theme-interactive-hover);
+    color: var(--theme-text-secondary);
+  }
+  
+  &:active {
+    transform: scale(0.95);
+  }
+}
+
+/* ==========================================================================
+   Template Grid
+   ========================================================================== */
+
+.template-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: var(--space-4);
+  padding: var(--space-6);
+  max-height: 60vh;
+  overflow-y: auto;
+}
+
+.template-option {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  border: 2px solid transparent;
+  border-radius: var(--radius-lg);
+  background: var(--theme-bg-primary);
+  cursor: pointer;
+  transition: all var(--transition-base);
+  
+  &:hover {
+    border-color: var(--color-primary-300);
+    background: var(--theme-interactive-hover);
+    transform: translateY(-2px);
+    box-shadow: var(--theme-shadow-md);
+  }
+  
+  &:active {
+    transform: translateY(0);
+  }
+  
+  &:focus-visible {
+    outline: 3px solid var(--color-primary-500);
+    outline-offset: 2px;
+  }
+}
+
+/* ==========================================================================
+   Template Preview
+   ========================================================================== */
+
+.template-preview {
+  width: 80px;
+  height: 140px; /* 9:16 비율 미니어처 */
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  box-shadow: var(--theme-shadow-sm);
+  
+  /* 기본 배경 (템플릿별로 인라인 스타일로 오버라이드) */
+  background: linear-gradient(135deg, #667eea, #764ba2);
+}
+
+.template-elements {
+  font-size: var(--text-sm);
+  color: rgba(255, 255, 255, 0.8);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  transform: rotate(-5deg);
+}
+
+.template-name {
+  font-size: var(--text-sm);
+  font-weight: var(--font-medium);
+  color: var(--theme-text-primary);
+  text-align: center;
+  line-height: var(--leading-tight);
+}
+
+/* ==========================================================================
+   Special Template Styles
+   ========================================================================== */
+
+/* Modern Minimal Template */
+.template-option[data-template="modern-minimal"] .template-preview {
+  background: linear-gradient(135deg, #ffffff, #f8f8f8);
+  border: 1px solid var(--color-gray-200);
+}
+
+.template-option[data-template="modern-minimal"] .template-elements {
+  color: var(--color-gray-600);
+  font-size: var(--text-lg);
+  font-weight: var(--font-light);
+}
+
+/* Dark Elegance Template */
+.template-option[data-template="dark-elegance"] .template-preview {
+  background: linear-gradient(135deg, #000000, #1a1a1a, #2d2d2d);
+}
+
+.template-option[data-template="dark-elegance"] .template-elements {
+  color: rgba(255, 255, 255, 0.9);
+  font-size: var(--text-base);
+}
+
+/* Cosmic Love Template */
+.template-option[data-template="cosmic-love"] .template-preview {
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  position: relative;
+}
+
+.template-option[data-template="cosmic-love"] .template-preview::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 30% 20%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+              radial-gradient(circle at 70% 80%, rgba(255, 255, 255, 0.05) 0%, transparent 50%);
+}
+
+/* Vintage Romance Template */
+.template-option[data-template="vintage-romance"] .template-preview {
+  background: linear-gradient(135deg, #f093fb, #f5576c, #4facfe);
+  position: relative;
+}
+
+.template-option[data-template="vintage-romance"] .template-preview::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at center, transparent 30%, rgba(0, 0, 0, 0.1) 100%);
+}
+
+/* ==========================================================================
+   Responsive Design
+   ========================================================================== */
+
+/* Mobile Layout */
+@media (max-width: 767px) {
+  .story-template-modal {
+    padding: var(--space-2);
+  }
+  
+  .template-modal-content {
+    max-width: none;
+    margin: 0;
+    border-radius: var(--radius-lg);
+    max-height: 85vh;
+  }
+  
+  .template-header {
+    padding: var(--space-3) var(--space-4);
+  }
+  
+  .template-header h3 {
+    font-size: var(--text-base);
+  }
+  
+  .template-close-btn {
+    width: 28px;
+    height: 28px;
+    font-size: var(--text-lg);
+  }
+  
+  .template-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-3);
+    padding: var(--space-4);
+    max-height: 65vh;
+  }
+  
+  .template-option {
+    padding: var(--space-3);
+    gap: var(--space-2);
+  }
+  
+  .template-preview {
+    width: 60px;
+    height: 105px; /* 9:16 비율 유지 */
+  }
+  
+  .template-elements {
+    font-size: var(--text-xs);
+  }
+  
+  .template-name {
+    font-size: var(--text-xs);
+  }
+}
+
+/* Very Small Screens */
+@media (max-width: 360px) {
+  .template-grid {
+    padding: var(--space-3);
+    gap: var(--space-2);
+  }
+  
+  .template-preview {
+    width: 50px;
+    height: 88px;
+  }
+  
+  .template-name {
+    font-size: 10px;
+  }
+}
+
+/* Tablet and Desktop */
+@media (min-width: 768px) {
+  .template-modal-content {
+    max-width: 700px;
+  }
+  
+  .template-grid {
+    grid-template-columns: repeat(3, 1fr);
+    padding: var(--space-8);
+  }
+  
+  .template-preview {
+    width: 100px;
+    height: 175px;
+  }
+  
+  .template-elements {
+    font-size: var(--text-base);
+  }
+}
+
+/* Large Desktop */
+@media (min-width: 1024px) {
+  .template-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* ==========================================================================
+   Theme Support
+   ========================================================================== */
+
+/* Dark Theme Adjustments */
+[data-theme="dark"] .template-option[data-template="modern-minimal"] .template-preview {
+  background: linear-gradient(135deg, #2d2d2d, #1a1a1a);
+  border-color: var(--color-gray-600);
+}
+
+[data-theme="dark"] .template-option[data-template="modern-minimal"] .template-elements {
+  color: var(--color-gray-300);
+}
+
+/* ==========================================================================
+   Loading and Animation States
+   ========================================================================== */
+
+.template-grid.loading {
+  position: relative;
+  pointer-events: none;
+}
+
+.template-grid.loading::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 40px;
+  height: 40px;
+  margin: -20px 0 0 -20px;
+  border: 3px solid var(--theme-border-primary);
+  border-top-color: var(--color-primary-500);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  z-index: 1;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Stagger animation for template options */
+.template-option {
+  animation: fadeInUp 0.3s ease forwards;
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.template-option:nth-child(1) { animation-delay: 0.1s; }
+.template-option:nth-child(2) { animation-delay: 0.2s; }
+.template-option:nth-child(3) { animation-delay: 0.3s; }
+.template-option:nth-child(4) { animation-delay: 0.4s; }
+.template-option:nth-child(5) { animation-delay: 0.5s; }
+
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ==========================================================================
+   Accessibility Enhancements
+   ========================================================================== */
+
+/* High Contrast Support */
+@media (prefers-contrast: high) {
+  .template-option {
+    border-width: 3px;
+  }
+  
+  .template-option:hover {
+    border-width: 4px;
+  }
+  
+  .template-preview {
+    border: 2px solid var(--theme-border-primary);
+  }
+}
+
+/* Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+  .story-template-modal,
+  .template-modal-content,
+  .template-option,
+  .template-close-btn {
+    transition: none;
+    animation: none;
+  }
+  
+  .template-option:hover {
+    transform: none;
+  }
+  
+  .template-grid.loading::before {
+    animation: none;
+  }
+}
+
+/* ==========================================================================
+   Touch Device Optimizations
+   ========================================================================== */
+
+@media (hover: none) and (pointer: coarse) {
+  .template-option:hover {
+    transform: none;
+    box-shadow: var(--theme-shadow-sm);
+  }
+  
+  .template-option:active {
+    transform: scale(0.98);
+    transition: transform var(--transition-fast);
+  }
+  
+  .template-close-btn:hover {
+    background: transparent;
+  }
+  
+  .template-close-btn:active {
+    transform: scale(0.95);
+    transition: transform var(--transition-fast);
+  }
+}

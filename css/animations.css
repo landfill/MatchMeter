@@ -1,0 +1,634 @@
+/**
+ * Enhanced Animations System
+ * 결과 표시, 마이크로 인터랙션, 전환 효과 애니메이션
+ */
+
+/* ==========================================================================
+   Animation Variables
+   ========================================================================== */
+
+:root {
+  /* Animation Durations */
+  --anim-fast: 0.15s;
+  --anim-base: 0.3s;
+  --anim-slow: 0.6s;
+  --anim-slower: 1.2s;
+  
+  /* Easing Functions */
+  --ease-spring: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  --ease-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.35);
+  --ease-smooth: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --ease-sharp: cubic-bezier(0.4, 0, 0.2, 1);
+  
+  /* Animation States */
+  --scale-hover: 1.02;
+  --scale-active: 0.98;
+  --lift-hover: -2px;
+  --lift-active: 0px;
+}
+
+/* ==========================================================================
+   Loading and Entry Animations
+   ========================================================================== */
+
+/* Page Load Animation */
+.main-body {
+  animation: fadeInUp var(--anim-slow) var(--ease-smooth) forwards;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Staggered Content Animation */
+.mobile-input-section {
+  animation: slideInLeft var(--anim-base) var(--ease-smooth) 0.2s both;
+}
+
+.mobile-button-primary {
+  animation: slideInUp var(--anim-base) var(--ease-spring) 0.4s both;
+}
+
+.mobile-results-section {
+  animation: slideInUp var(--anim-base) var(--ease-smooth) 0.6s both;
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ==========================================================================
+   Input Field Animations
+   ========================================================================== */
+
+.mobile-input {
+  transition: all var(--anim-base) var(--ease-smooth);
+  position: relative;
+}
+
+.mobile-input:focus {
+  transform: translateY(-1px);
+  box-shadow: 
+    0 0 0 3px rgba(59, 130, 246, 0.1),
+    0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.mobile-input:focus + .mobile-label {
+  transform: translateY(-2px);
+  color: var(--color-primary-600);
+}
+
+/* Input Label Float Animation */
+.mobile-label {
+  transition: all var(--anim-base) var(--ease-smooth);
+}
+
+/* Typing Animation for Placeholder */
+.mobile-input::placeholder {
+  transition: opacity var(--anim-base) var(--ease-smooth);
+}
+
+.mobile-input:focus::placeholder {
+  opacity: 0.5;
+  transform: translateX(4px);
+}
+
+/* ==========================================================================
+   Button Animations
+   ========================================================================== */
+
+.mobile-button-primary {
+  transition: all var(--anim-base) var(--ease-spring);
+  position: relative;
+  overflow: hidden;
+}
+
+.mobile-button-primary:hover:not(:disabled) {
+  transform: translateY(var(--lift-hover)) scale(var(--scale-hover));
+  box-shadow: 
+    0 8px 25px rgba(59, 130, 246, 0.3),
+    0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.mobile-button-primary:active {
+  transform: translateY(var(--lift-active)) scale(var(--scale-active));
+  transition-duration: var(--anim-fast);
+}
+
+/* Button Ripple Effect */
+.mobile-button-primary::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.5);
+  transform: translate(-50%, -50%);
+  transition: width var(--anim-base), height var(--anim-base);
+}
+
+.mobile-button-primary:active::before {
+  width: 300px;
+  height: 300px;
+}
+
+/* Language Toggle Animation */
+.lang-toggle {
+  transition: all var(--anim-base) var(--ease-spring);
+}
+
+.lang-toggle:hover:not(:disabled) {
+  transform: translateY(-1px) scale(1.05);
+}
+
+.lang-toggle:active {
+  transform: scale(0.95);
+  transition-duration: var(--anim-fast);
+}
+
+/* Theme Toggle Animation */
+.theme-toggle {
+  transition: all var(--anim-base) var(--ease-spring);
+}
+
+.theme-toggle:hover:not(:disabled) {
+  transform: translateY(-1px) scale(1.05);
+}
+
+.theme-toggle-icon {
+  transition: transform var(--anim-base) var(--ease-spring);
+}
+
+.theme-toggle:hover .theme-toggle-icon {
+  transform: rotate(180deg) scale(1.1);
+}
+
+/* ==========================================================================
+   Results Display Animations
+   ========================================================================== */
+
+/* Results Container Entry */
+.mobile-results-section.show {
+  animation: resultsReveal var(--anim-slower) var(--ease-spring) forwards;
+}
+
+@keyframes resultsReveal {
+  0% {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  60% {
+    opacity: 0.8;
+    transform: translateY(-5px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Score Counter Animation */
+.mobile-result.counting {
+  animation: scoreReveal var(--anim-slower) var(--ease-bounce) forwards;
+}
+
+@keyframes scoreReveal {
+  0% {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.1);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Progress Bar Fill Animation */
+.mobile-progress-fill {
+  transition: width var(--anim-slower) var(--ease-smooth);
+  position: relative;
+  overflow: hidden;
+}
+
+.mobile-progress-fill::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.4),
+    transparent
+  );
+  transform: translateX(-100%);
+  animation: shimmer 2s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* Explanation Text Animation */
+.mobile-explanation {
+  animation: explanationSlide var(--anim-base) var(--ease-smooth) 0.8s both;
+}
+
+@keyframes explanationSlide {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* ==========================================================================
+   Share Component Animations
+   ========================================================================== */
+
+/* Quick Share Buttons Stagger */
+.quick-share-btn {
+  transition: all var(--anim-base) var(--ease-spring);
+}
+
+
+/* Button Hover Animations */
+.quick-share-btn:hover:not(:disabled) {
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 
+    0 8px 20px rgba(0, 0, 0, 0.15),
+    0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.quick-share-btn:active {
+  transform: translateY(-1px) scale(0.98);
+  transition-duration: var(--anim-fast);
+}
+
+/* Icon Animations */
+.btn-icon {
+  transition: transform var(--anim-base) var(--ease-spring);
+}
+
+.quick-share-btn:hover .btn-icon {
+  transform: scale(1.2) rotate(5deg);
+}
+
+.quick-share-btn.primary:hover .btn-icon {
+  transform: scale(1.3) rotate(-5deg);
+}
+
+/* Loading Animation */
+.quick-share-btn.loading .btn-icon,
+.quick-share-btn.loading .btn-label {
+  animation: pulse var(--anim-slower) ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 0.4;
+  }
+  50% {
+    opacity: 0.8;
+  }
+}
+
+/* ==========================================================================
+   Modal Animations
+   ========================================================================== */
+
+/* Preview Modal Animation */
+.share-preview-modal {
+  animation: modalFadeIn var(--anim-base) var(--ease-smooth) forwards;
+}
+
+.share-preview-modal .preview-modal-content {
+  animation: modalSlideUp var(--anim-base) var(--ease-spring) forwards;
+}
+
+@keyframes modalFadeIn {
+  from {
+    opacity: 0;
+    backdrop-filter: blur(0px);
+  }
+  to {
+    opacity: 1;
+    backdrop-filter: blur(4px);
+  }
+}
+
+@keyframes modalSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Template Modal Animation */
+.story-template-modal {
+  animation: modalFadeIn var(--anim-base) var(--ease-smooth) forwards;
+}
+
+.template-modal-content {
+  animation: modalBounceIn var(--anim-slow) var(--ease-bounce) forwards;
+}
+
+@keyframes modalBounceIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.3);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.05);
+  }
+  70% {
+    transform: scale(0.9);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* ==========================================================================
+   Special Effects
+   ========================================================================== */
+
+/* Floating Animation for Decorative Elements */
+.floating {
+  animation: float 3s ease-in-out infinite;
+}
+
+.floating:nth-child(even) {
+  animation-delay: -1.5s;
+  animation-direction: reverse;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+/* Glow Effect */
+.glow-effect {
+  position: relative;
+}
+
+.glow-effect::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  background: linear-gradient(45deg, var(--color-primary-500), var(--color-secondary-500));
+  border-radius: inherit;
+  opacity: 0;
+  transition: opacity var(--anim-base);
+  z-index: -1;
+  filter: blur(8px);
+}
+
+.glow-effect:hover::before {
+  opacity: 0.3;
+}
+
+/* Sparkle Animation */
+.sparkle {
+  position: relative;
+  overflow: hidden;
+}
+
+.sparkle::after {
+  content: '✨';
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  font-size: 14px;
+  opacity: 0;
+  animation: sparkleFloat 2s ease-in-out infinite;
+}
+
+@keyframes sparkleFloat {
+  0%, 100% {
+    opacity: 0;
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    opacity: 1;
+    transform: translateY(-15px) rotate(180deg);
+  }
+}
+
+/* ==========================================================================
+   Theme Transition Animations
+   ========================================================================== */
+
+/* Theme Switch Animation */
+.theme-switching * {
+  transition: all var(--anim-fast) ease !important;
+}
+
+/* Smooth color transitions */
+.theme-transition {
+  transition: 
+    background-color var(--anim-base) var(--ease-smooth),
+    color var(--anim-base) var(--ease-smooth),
+    border-color var(--anim-base) var(--ease-smooth),
+    box-shadow var(--anim-base) var(--ease-smooth);
+}
+
+/* ==========================================================================
+   Micro-Interactions
+   ========================================================================== */
+
+/* Success Feedback Animation */
+.success-feedback {
+  animation: successPop var(--anim-base) var(--ease-spring) forwards;
+}
+
+@keyframes successPop {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* Error Shake Animation */
+.error-shake {
+  animation: shake var(--anim-base) ease-in-out forwards;
+}
+
+@keyframes shake {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  10%, 30%, 50%, 70%, 90% {
+    transform: translateX(-5px);
+  }
+  20%, 40%, 60%, 80% {
+    transform: translateX(5px);
+  }
+}
+
+/* Attention Seeking Animation */
+.attention-pulse {
+  animation: attentionPulse 2s ease-in-out infinite;
+}
+
+@keyframes attentionPulse {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.4);
+  }
+  50% {
+    transform: scale(1.02);
+    box-shadow: 0 0 0 10px rgba(59, 130, 246, 0);
+  }
+}
+
+/* ==========================================================================
+   Responsive Animation Adjustments
+   ========================================================================== */
+
+/* Mobile Animation Adjustments */
+@media (max-width: 767px) {
+  :root {
+    --anim-base: 0.25s;
+    --anim-slow: 0.5s;
+    --anim-slower: 1s;
+    --scale-hover: 1.01;
+    --lift-hover: -1px;
+  }
+  
+  .mobile-button-primary:hover:not(:disabled) {
+    transform: scale(var(--scale-hover));
+  }
+}
+
+/* ==========================================================================
+   Accessibility and Performance
+   ========================================================================== */
+
+/* Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    transition-delay: 0ms !important;
+  }
+  
+  .floating,
+  .sparkle::after,
+  .mobile-progress-fill::after {
+    animation: none !important;
+  }
+}
+
+/* High Performance Mode */
+@media (prefers-reduced-data: reduce) {
+  .mobile-progress-fill::after,
+  .glow-effect::before,
+  .sparkle::after {
+    display: none;
+  }
+}
+
+/* ==========================================================================
+   Animation Utilities
+   ========================================================================== */
+
+/* Animation Control Classes */
+.anim-paused {
+  animation-play-state: paused !important;
+}
+
+.anim-running {
+  animation-play-state: running !important;
+}
+
+.no-transition {
+  transition: none !important;
+}
+
+.fast-transition {
+  transition-duration: var(--anim-fast) !important;
+}
+
+.slow-transition {
+  transition-duration: var(--anim-slower) !important;
+}
+
+/* Visibility Animation Classes */
+.fade-in {
+  animation: fadeIn var(--anim-base) var(--ease-smooth) forwards;
+}
+
+.fade-out {
+  animation: fadeOut var(--anim-base) var(--ease-smooth) forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fadeOut {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
