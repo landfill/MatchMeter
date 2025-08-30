@@ -97,15 +97,15 @@ test.describe('Match Meter E2E Tests', () => {
 
     test('should update placeholders when language is toggled', async ({ page }) => {
       // Check Korean placeholders
-      await expect(page.locator('#name1')).toHaveAttribute('placeholder', '예: 안병수');
-      await expect(page.locator('#name2')).toHaveAttribute('placeholder', '예: 김두섭');
+      await expect(page.locator('#name1')).toHaveAttribute('placeholder', '예: 김하늘');
+      await expect(page.locator('#name2')).toHaveAttribute('placeholder', '예: 박바다');
       
       // Switch to English
       await page.click('#languageToggle');
       
       // Check English placeholders
-      await expect(page.locator('#name1')).toHaveAttribute('placeholder', 'e.g: John Smith');
-      await expect(page.locator('#name2')).toHaveAttribute('placeholder', 'e.g: Jane Doe');
+      await expect(page.locator('#name1')).toHaveAttribute('placeholder', 'e.g: Donald Trump');
+      await expect(page.locator('#name2')).toHaveAttribute('placeholder', 'e.g: Elon Musk');
     });
 
     test('should update accessibility attributes when language is toggled', async ({ page }) => {

@@ -96,16 +96,16 @@ test.describe('MatchMeter Comprehensive E2E Tests', () => {
 
     test('should update placeholders and accessibility attributes when language is toggled', async ({ page }) => {
       // Check Korean placeholders and attributes
-      await expect(page.locator('#name1')).toHaveAttribute('placeholder', '예: 안병수');
-      await expect(page.locator('#name2')).toHaveAttribute('placeholder', '예: 김두섭');
+      await expect(page.locator('#name1')).toHaveAttribute('placeholder', '예: 김하늘');
+      await expect(page.locator('#name2')).toHaveAttribute('placeholder', '예: 박바다');
       await expect(page.locator('#languageToggle')).toHaveAttribute('aria-label', '언어 변경 (현재: 한국어)');
       
       // Switch to English
       await page.click('#languageToggle');
       
       // Check English placeholders and attributes
-      await expect(page.locator('#name1')).toHaveAttribute('placeholder', 'e.g: John Smith');
-      await expect(page.locator('#name2')).toHaveAttribute('placeholder', 'e.g: Jane Doe');
+      await expect(page.locator('#name1')).toHaveAttribute('placeholder', 'e.g: Donald Trump');
+      await expect(page.locator('#name2')).toHaveAttribute('placeholder', 'e.g: Elon Musk');
       await expect(page.locator('#languageToggle')).toHaveAttribute('aria-label', 'Change language (Current: English)');
       await expect(page.locator('#calculateButton')).toHaveAttribute('aria-label', 'Calculate compatibility score for the entered names');
     });
