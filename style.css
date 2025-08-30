@@ -274,34 +274,41 @@
   flex-direction: column;
   gap: 12px;
   width: 100%;
+  background: var(--card);
+  padding: var(--space-4);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+  margin: var(--space-4) 0;
 }
 
 .mobile-score-label {
   font-size: 0.875rem;
   font-weight: 600;
-  color: #374151;
+  color: var(--card-foreground);
   text-align: center;
 }
 
 .mobile-progress-bar {
   width: 100%;
   height: 36px;
-  background: linear-gradient(135deg, #f3f4f6, #e5e7eb);
-  border-radius: 18px;
+  background: var(--muted);
+  border-radius: var(--radius-full);
   overflow: hidden;
-  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
-  border: 2px solid #d1d5db;
+  box-shadow: var(--shadow-sm);
+  border: 2px solid var(--border);
   position: relative;
 }
 
 .mobile-progress-fill {
   height: 100%;
   width: 0;
-  background: linear-gradient(135deg, #10b981, #3b82f6, #8b5cf6);
-  border-radius: 14px;
+  background: var(--gradient-button);
+  border-radius: var(--radius-full);
   transition: width 1s ease-out;
   position: relative;
   overflow: hidden;
+  box-shadow: var(--shadow-xs);
 }
 
 .mobile-progress-labels {
@@ -309,7 +316,7 @@
   justify-content: space-between;
   align-items: center;
   font-size: 0.75rem;
-  color: #9ca3af;
+  color: var(--muted-foreground);
   font-weight: 500;
   margin-top: 2px;
   position: relative;
@@ -320,14 +327,14 @@
   transform: translateY(20px);
   transition: all 0.8s ease;
   position: relative;
-  background: rgba(255, 255, 255, 0.95);
-  border-radius: 12px;
-  padding: 1rem;
-  margin-top: 0.5rem;
+  background: var(--card);
+  border-radius: var(--radius-xl);
+  padding: var(--space-6);
+  margin-top: var(--space-4);
   backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  border: 1px solid var(--border);
   width: 100%;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow-lg);
 }
 
 .result-container.animate {
@@ -338,7 +345,7 @@
 .score-text {
   font-size: 1.2rem;
   font-weight: 600;
-  color: #374151;
+  color: var(--card-foreground);
   line-height: 1.2;
   text-align: center;
   margin-bottom: 4px;
@@ -361,27 +368,31 @@
 .message-positive {
   font-size: clamp(0.875rem, 3.5vw, 1.125rem);
   font-weight: 600;
-  color: #059669;
-  padding: 8px 12px;
-  background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(5, 150, 105, 0.05));
-  border-left: 4px solid #10b981;
-  border-radius: 12px;
+  color: var(--chart-3);
+  padding: var(--space-3);
+  background: var(--accent);
+  border-left: 4px solid var(--chart-3);
+  border-radius: var(--radius-lg);
   text-align: center;
   line-height: 1.4;
   margin-bottom: 4px;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border);
 }
 
 .message-negative {
   font-size: clamp(0.75rem, 3vw, 1rem);
   font-weight: 500;
-  color: #dc2626;
-  padding: 6px 10px;
-  background: linear-gradient(135deg, rgba(220, 38, 38, 0.1), rgba(185, 28, 28, 0.05));
-  border-left: 4px solid #ef4444;
-  border-radius: 12px;
+  color: var(--destructive);
+  padding: var(--space-3);
+  background: var(--muted);
+  border-left: 4px solid var(--destructive);
+  border-radius: var(--radius-lg);
   text-align: center;
   line-height: 1.4;
   margin-bottom: 2px;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border);
 }
 
 @keyframes gradientShift {
@@ -389,10 +400,16 @@
   50% { background-position: 100% 50%; }
 }
 
-/* 기존 계산 과정 스타일 - 단순한 숫자 */
+/* 기존 계산 과정 스타일 - 버블검 테마 적용 */
 #explanation {
   text-align: center;
   width: 100%;
+  background: var(--card);
+  padding: var(--space-4);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
+  margin: var(--space-4) 0;
 }
 
 .line {
@@ -405,21 +422,24 @@
 .line span {
   display: inline-block;
   padding: 0.2rem 0.4rem;
-  color: #374151;
+  color: var(--card-foreground);
   font-weight: 600;
   font-size: 1rem;
   min-width: 1.2rem;
   text-align: center;
-  background: rgba(255, 255, 255, 0.9);
-  border-radius: 6px;
+  background: var(--accent);
+  border-radius: var(--radius-sm);
   margin: 0 0.15rem;
-  border: 1px solid rgba(156, 163, 175, 0.3);
+  border: 1px solid var(--border);
   transition: all 0.2s ease;
+  box-shadow: var(--shadow-xs);
 }
 
 .line span:hover {
-  background: rgba(255, 255, 255, 1);
+  background: var(--primary);
+  color: var(--primary-foreground);
   transform: translateY(-1px);
+  box-shadow: var(--shadow-sm);
 }
 
 /* 궁합 결과 메시지 3D 효과와 애니메이션 */
@@ -436,53 +456,7 @@
   transform: translateY(0) rotateX(0deg);
 }
 
-.score-text {
-  font-size: 1.2rem;
-  font-weight: 600;
-  color: #374151;
-  margin-bottom: 0.5rem;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.score-percentage {
-  font-size: 3rem;
-  font-weight: 800;
-  background: linear-gradient(45deg, #667eea, #764ba2, #f093fb);
-  background-size: 300% 300%;
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  animation: gradientShift 3s ease infinite;
-  text-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  margin: 1rem 0;
-  transform: translateZ(20px);
-}
-
-.message-positive {
-  font-size: 1.1rem;
-  font-weight: 600;
-  color: #059669;
-  margin: 0.8rem 0 0.5rem 0;
-  padding: 0.8rem;
-  background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(5, 150, 105, 0.05));
-  border-radius: 12px;
-  border-left: 4px solid #10b981;
-  transform: translateZ(10px);
-  animation: pulseGreen 2s ease infinite;
-}
-
-.message-negative {
-  font-size: 0.9rem;
-  font-weight: 500;
-  color: #dc2626;
-  margin: 0.5rem 0;
-  padding: 0.6rem;
-  background: linear-gradient(135deg, rgba(220, 38, 38, 0.1), rgba(185, 28, 28, 0.05));
-  border-radius: 12px;
-  border-left: 4px solid #ef4444;
-  transform: translateZ(5px);
-  animation: shake 3s ease infinite;
-}
+/* 중복된 스타일들은 이미 위에서 정의되었으므로 제거 */
 
 @keyframes gradientShift {
   0%, 100% { background-position: 0% 50%; }
@@ -1055,16 +1029,16 @@
 
 /* Enhanced focus management for mobile results */
 .result-container:focus {
-  outline: 3px solid #3b82f6;
+  outline: 3px solid var(--ring);
   outline-offset: 4px;
-  border-radius: 8px;
+  border-radius: var(--radius-lg);
 }
 
 .result-container:focus-visible {
-  outline: 3px solid #3b82f6;
+  outline: 3px solid var(--ring);
   outline-offset: 4px;
-  border-radius: 8px;
-  box-shadow: 0 0 0 6px rgba(59, 130, 246, 0.2);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 0 0 6px var(--ring);
 }
 
 /* Mobile scroll behavior optimization */
@@ -1195,9 +1169,9 @@
 
 /* Improved focus management for mobile results */
 .result-container[tabindex="-1"]:focus {
-  outline: 2px solid #3b82f6;
+  outline: 2px solid var(--ring);
   outline-offset: 4px;
-  border-radius: 8px;
+  border-radius: var(--radius-lg);
 }
 
 /* Reduced motion support */
@@ -1356,23 +1330,24 @@
   }
   
   .result-container {
-    padding: 1.5rem;
-    margin: 1rem 0;
-    border-radius: 16px;
-    background: rgba(255, 255, 255, 0.95);
+    padding: var(--space-6);
+    margin: var(--space-4) 0;
+    border-radius: var(--radius-xl);
+    background: var(--card);
     backdrop-filter: blur(10px);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--shadow-lg);
+    border: 1px solid var(--border);
   }
 }
 
 /* Accessibility improvements for mobile focus management */
 @media (max-width: 767px) {
   .result-container:focus-visible {
-    outline: 3px solid #3b82f6;
+    outline: 3px solid var(--ring);
     outline-offset: 2px;
     box-shadow: 
-      0 0 0 6px rgba(59, 130, 246, 0.2),
-      0 8px 32px rgba(0, 0, 0, 0.15);
+      0 0 0 6px var(--ring),
+      var(--shadow-xl);
   }
 }
 
