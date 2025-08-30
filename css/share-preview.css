@@ -35,7 +35,8 @@
    ========================================================================== */
 
 .preview-modal-content {
-  background: var(--color-white);
+  background: var(--card);
+  border: 1px solid var(--border);
   border-radius: var(--radius-xl);
   box-shadow: var(--shadow-2xl);
   max-width: 600px;
@@ -61,14 +62,15 @@
   align-items: center;
   justify-content: space-between;
   padding: var(--space-4) var(--space-6);
-  border-bottom: 1px solid var(--color-gray-200);
-  background: var(--color-gray-50);
+  border-bottom: 1px solid var(--border);
+  background: var(--muted);
 }
 
 .preview-header h3 {
   font-size: var(--text-lg);
   font-weight: var(--font-semibold);
-  color: var(--color-gray-800);
+  font-family: var(--font-sans);
+  color: var(--card-foreground);
   margin: 0;
 }
 
@@ -81,20 +83,20 @@
   border: none;
   border-radius: var(--radius-full);
   background: transparent;
-  color: var(--color-gray-500);
+  color: var(--muted-foreground);
   font-size: var(--text-xl);
   font-weight: var(--font-bold);
   cursor: pointer;
   transition: all var(--transition-base);
-  
-  &:hover {
-    background: var(--color-gray-200);
-    color: var(--color-gray-700);
-  }
-  
-  &:active {
-    transform: scale(0.95);
-  }
+}
+
+.preview-close-btn:hover {
+  background: var(--accent);
+  color: var(--accent-foreground);
+}
+
+.preview-close-btn:active {
+  transform: scale(0.95);
 }
 
 /* ==========================================================================
@@ -104,7 +106,7 @@
 .preview-image-container {
   padding: var(--space-6);
   text-align: center;
-  background: var(--color-gray-50);
+  background: var(--muted);
   min-height: 300px;
   display: flex;
   align-items: center;
@@ -116,7 +118,8 @@
   max-height: 400px;
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-lg);
-  background: var(--color-white);
+  background: var(--card);
+  border: 1px solid var(--border);
   
   /* Loading state */
   opacity: 0;
@@ -142,8 +145,8 @@
   display: flex;
   gap: var(--space-3);
   padding: var(--space-4) var(--space-6);
-  border-top: 1px solid var(--color-gray-200);
-  background: var(--color-white);
+  border-top: 1px solid var(--border);
+  background: var(--card);
 }
 
 .preview-actions .btn-secondary,
@@ -167,28 +170,34 @@
 }
 
 .preview-edit-btn {
-  background: var(--color-gray-100);
-  border: 1px solid var(--color-gray-300);
-  color: var(--color-gray-700);
-  
-  &:hover:not(:disabled) {
-    background: var(--color-gray-200);
-    border-color: var(--color-gray-400);
-    transform: translateY(-1px);
-  }
+  background: var(--secondary);
+  border: 1px solid var(--border);
+  color: var(--secondary-foreground);
+  font-family: var(--font-sans);
+  box-shadow: var(--shadow-sm);
+}
+
+.preview-edit-btn:hover:not(:disabled) {
+  background: var(--accent);
+  color: var(--accent-foreground);
+  border-color: var(--ring);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow);
 }
 
 .preview-share-btn {
-  background: linear-gradient(135deg, var(--color-primary-500), var(--color-primary-600));
-  border: 1px solid var(--color-primary-600);
-  color: var(--color-white);
-  
-  &:hover:not(:disabled) {
-    background: linear-gradient(135deg, var(--color-primary-600), var(--color-primary-700));
-    border-color: var(--color-primary-700);
-    transform: translateY(-1px);
-    box-shadow: var(--shadow-md);
-  }
+  background: var(--gradient-button);
+  border: 1px solid var(--border);
+  color: var(--primary-foreground);
+  font-family: var(--font-sans);
+  box-shadow: var(--shadow-sm);
+}
+
+.preview-share-btn:hover:not(:disabled) {
+  background: var(--primary);
+  border-color: var(--ring);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
 }
 
 /* ==========================================================================
@@ -309,8 +318,8 @@
   width: 40px;
   height: 40px;
   margin: -20px 0 0 -20px;
-  border: 3px solid var(--color-gray-300);
-  border-top-color: var(--color-primary-500);
+  border: 3px solid var(--muted);
+  border-top-color: var(--primary);
   border-radius: 50%;
   animation: spin 1s linear infinite;
 }
@@ -322,7 +331,8 @@
   left: 50%;
   transform: translateX(-50%);
   font-size: var(--text-sm);
-  color: var(--color-gray-600);
+  font-family: var(--font-sans);
+  color: var(--muted-foreground);
   margin-top: var(--space-4);
 }
 
@@ -338,7 +348,7 @@
 .preview-close-btn:focus-visible,
 .preview-edit-btn:focus-visible,
 .preview-share-btn:focus-visible {
-  outline: 3px solid var(--color-primary-500);
+  outline: 3px solid var(--ring);
   outline-offset: 2px;
 }
 
