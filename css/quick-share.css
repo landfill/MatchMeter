@@ -11,10 +11,10 @@
   width: 100%;
   margin-top: var(--space-6);
   padding: var(--space-4);
-  background: rgba(255, 255, 255, 0.9);
+  background: var(--card);
   backdrop-filter: blur(8px);
   border-radius: var(--radius-xl);
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  border: 1px solid var(--border);
   box-shadow: var(--shadow-lg);
   
   /* Animation */
@@ -44,13 +44,13 @@
   gap: var(--space-2);
   font-size: var(--text-lg);
   font-weight: var(--font-semibold);
-  color: var(--color-gray-800);
+  color: var(--card-foreground);
   margin-bottom: var(--space-1);
 }
 
 .quick-share-subtitle {
   font-size: var(--text-sm);
-  color: var(--color-gray-600);
+  color: var(--muted-foreground);
   margin: 0;
 }
 
@@ -102,10 +102,10 @@
   gap: var(--space-1);
   padding: var(--space-3);
   min-height: 80px;
-  border: 2px solid transparent;
+  border: 2px solid var(--border);
   border-radius: var(--radius-lg);
-  background: var(--color-white);
-  color: var(--color-gray-700);
+  background: var(--card);
+  color: var(--card-foreground);
   font-family: var(--font-family-base);
   font-size: var(--text-sm);
   font-weight: var(--font-medium);
@@ -115,7 +115,7 @@
   overflow: hidden;
   
   /* Shadow and elevation */
-  box-shadow: var(--shadow-sm);
+  box-shadow: var(--shadow);
   
   /* Accessibility */
   touch-action: manipulation;
@@ -124,21 +124,21 @@
 
 /* Button Variants */
 .quick-share-btn.primary {
-  background: linear-gradient(135deg, var(--color-primary-50), var(--color-white));
-  border-color: var(--color-primary-200);
-  color: var(--color-primary-700);
+  background: var(--primary);
+  border-color: var(--border);
+  color: var(--primary-foreground);
 }
 
 .quick-share-btn.secondary {
-  background: var(--color-gray-50);
-  border-color: var(--color-gray-200);
-  color: var(--color-gray-600);
+  background: var(--secondary);
+  border-color: var(--border);
+  color: var(--secondary-foreground);
 }
 
 .quick-share-btn.more-options {
-  background: linear-gradient(135deg, var(--color-gray-100), var(--color-white));
-  border-color: var(--color-gray-300);
-  color: var(--color-gray-500);
+  background: var(--muted);
+  border-color: var(--border);
+  color: var(--muted-foreground);
   border-style: dashed;
 }
 
@@ -169,8 +169,8 @@
 .loading-spinner {
   width: 16px;
   height: 16px;
-  border: 2px solid rgba(59, 130, 246, 0.3);
-  border-top-color: var(--color-primary-500);
+  border: 2px solid var(--muted);
+  border-top-color: var(--primary);
   border-radius: 50%;
   animation: spin 1s linear infinite;
 }
@@ -189,29 +189,29 @@
 }
 
 .quick-share-btn.primary:hover:not(:disabled) {
-  background: linear-gradient(135deg, var(--color-primary-100), var(--color-primary-50));
-  border-color: var(--color-primary-300);
-  color: var(--color-primary-800);
+  background: var(--accent);
+  border-color: var(--ring);
+  color: var(--accent-foreground);
 }
 
 .quick-share-btn.secondary:hover:not(:disabled) {
-  background: var(--color-gray-100);
-  border-color: var(--color-gray-300);
-  color: var(--color-gray-700);
+  background: var(--accent);
+  border-color: var(--ring);
+  color: var(--accent-foreground);
 }
 
 .quick-share-btn.more-options:hover:not(:disabled) {
-  background: var(--color-gray-100);
-  border-color: var(--color-gray-400);
-  color: var(--color-gray-600);
+  background: var(--accent);
+  border-color: var(--ring);
+  color: var(--accent-foreground);
   border-style: solid;
 }
 
 /* Focus States */
 .quick-share-btn:focus-visible {
-  outline: 3px solid var(--color-primary-500);
+  outline: 3px solid var(--ring);
   outline-offset: 2px;
-  border-color: var(--color-primary-300);
+  border-color: var(--ring);
 }
 
 /* Active States */
