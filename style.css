@@ -11,7 +11,7 @@
    ========================================================================== */
 
 .main-body {
-  background: var(--gradient-primary);
+  background: var(--background);
   min-height: 100vh;
   margin: 0;
   padding: 0;
@@ -30,10 +30,10 @@
   max-width: 1024px;
   margin: 0 auto;
   width: 100%;
-  background: rgba(255, 255, 255, 0.95);
+  background: var(--card);
   backdrop-filter: blur(16px);
-  box-shadow: var(--shadow-2xl);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: var(--shadow-lg);
+  border: 1px solid var(--border);
   position: relative;
   padding: var(--space-4);
   border-radius: 0;
