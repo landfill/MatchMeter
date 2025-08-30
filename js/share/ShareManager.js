@@ -161,11 +161,12 @@ class ShareManager {
 
   /**
    * 플랫폼별 공유 실행
-   * @param {string} platform - 공유 플랫폼 ('facebook', 'twitter', 'kakao', 'copy', 'image')
+   * @param {string} platform - 공유 플랫폼 ('facebook', 'twitter', 'kakao', 'copy', 'image', 'instagram', 'default')
    * @param {string} [customMessage] - 사용자 커스텀 메시지
+   * @param {string} [imageDataUrl] - 이미지 데이터 URL
    * @returns {Promise<void>}
    */
-  async shareToPlatform(platform, customMessage) {
+  async shareToPlatform(platform, customMessage, imageDataUrl) {
     try {
       const shareData = this.prepareShareData();
       
@@ -173,7 +174,7 @@ class ShareManager {
         throw new Error('Invalid share data');
       }
 
-      // 플랫폼별 어댑터 호출 (구현 예정)
+      // 플랫폼별 어댑터 호출
       switch (platform) {
         case 'facebook':
           await this.shareToFacebook(shareData, customMessage);
@@ -188,13 +189,18 @@ class ShareManager {
           await this.copyToClipboard(shareData, customMessage);
           break;
         case 'image':
-          await this.saveAsImage();
+          await this.saveAsImage(imageDataUrl);
+          break;
+        case 'instagram':
+          await this.shareToInstagram(shareData, imageDataUrl);
           break;
         case 'native':
           await this.shareNatively(shareData, customMessage);
           break;
+        case 'default':
         default:
-          throw new Error(`Unsupported platform: ${platform}`);
+          await this.shareNatively(shareData, customMessage);
+          break;
       }
 
       this.trackShareEvent(platform, shareData);
@@ -302,6 +308,53 @@ class ShareManager {
     } else {
       // 폴백: 임시 텍스트 영역 사용
       this.fallbackCopyToClipboard(textToCopy);
+    }
+  }
+
+  async shareToInstagram(shareData, imageDataUrl) {
+    try {
+      if (imageDataUrl) {
+        // 이미지가 제공된 경우 이미지 다운로드
+        const response = await fetch(imageDataUrl);
+        const blob = await response.blob();
+        this.downloadImage(blob);
+        
+        // Instagram 앱으로 연결 시도
+        const instagramUrl = 'instagram://camera';
+        const fallbackUrl = 'https://www.instagram.com';
+        
+        // 모바일에서 Instagram 앱 열기 시도
+        if (MobileShareOptimizer.isMobileDevice()) {
+          try {
+            window.location.href = instagramUrl;
+            // 앱이 없으면 웹으로 리다이렉트
+            setTimeout(() => {
+              window.open(fallbackUrl, '_blank');
+            }, 2000);
+          } catch (error) {
+            window.open(fallbackUrl, '_blank');
+          }
+        } else {
+          // 데스크톱에서는 웹 Instagram 열기
+          window.open(fallbackUrl, '_blank');
+        }
+        
+        // 사용자에게 안내 메시지 표시
+        const message = this.language === 'ko' 
+          ? '이미지가 다운로드되었습니다. Instagram에서 업로드해주세요!'
+          : 'Image downloaded! Please upload it to Instagram!';
+        
+        if (this.showToast) {
+          this.showToast(message, 'success');
+        } else {
+          alert(message);
+        }
+      } else {
+        throw new Error('No image data provided for Instagram sharing');
+      }
+    } catch (error) {
+      console.error('Failed to share to Instagram:', error);
+      throw error;
     }
   }
 

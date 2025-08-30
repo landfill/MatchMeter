@@ -89,17 +89,18 @@ class SharePreview {
    * @param {CanvasRenderingContext2D} ctx - 캔버스 컨텍스트
    */
   async drawBackground(ctx) {
-    // 그라데이션 배경
+    // Bubblegum 테마 그라데이션 배경
     const gradient = ctx.createLinearGradient(0, 0, 0, this.canvas.height);
-    gradient.addColorStop(0, '#667eea');
-    gradient.addColorStop(0.5, '#764ba2');
-    gradient.addColorStop(1, '#f093fb');
+    gradient.addColorStop(0, 'oklch(0.9582 0.0152 90.2357)'); // --background
+    gradient.addColorStop(0.3, 'oklch(0.8348 0.0426 88.8064)'); // --accent
+    gradient.addColorStop(0.7, 'oklch(0.8846 0.0302 85.5655)'); // --secondary
+    gradient.addColorStop(1, 'oklch(0.9914 0.0098 87.4695)'); // --card
     
     ctx.fillStyle = gradient;
     ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
     
     // 반투명 오버레이
-    ctx.fillStyle = 'rgba(255, 255, 255, 0.1)';
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.05)';
     ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
     
     // 장식적 요소들
@@ -138,8 +139,8 @@ class SharePreview {
     ctx.save();
     
     // 제목
-    ctx.fillStyle = '#ffffff';
-    ctx.font = 'bold 36px Arial, sans-serif';
+    ctx.fillStyle = 'oklch(0.3760 0.0225 64.3434)'; // --foreground
+    ctx.font = 'bold 36px Libre Baskerville, serif';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     
@@ -147,8 +148,8 @@ class SharePreview {
     ctx.fillText(title, this.canvas.width / 2, 80);
     
     // 부제목
-    ctx.font = '18px Arial, sans-serif';
-    ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
+    ctx.font = '18px Libre Baskerville, serif';
+    ctx.fillStyle = 'oklch(0.5391 0.0387 71.1655)'; // --muted-foreground
     const subtitle = language === 'ko' ? 
       '이름으로 알아보는 궁합 지수' : 
       'Name Compatibility Calculator';
@@ -170,8 +171,8 @@ class SharePreview {
     const centerY = this.canvas.height / 2;
     
     // 이름들
-    ctx.fillStyle = '#ffffff';
-    ctx.font = 'bold 32px Arial, sans-serif';
+    ctx.fillStyle = 'oklch(0.3760 0.0225 64.3434)'; // --foreground
+    ctx.font = 'bold 32px Libre Baskerville, serif';
     ctx.textAlign = 'center';
     
     const name1 = resultData.names.name1;
@@ -185,18 +186,18 @@ class SharePreview {
     ctx.fillText('💖', centerX, centerY - 50);
     
     // 점수
-    ctx.font = 'bold 64px Arial, sans-serif';
-    ctx.fillStyle = '#FFD700';
-    ctx.strokeStyle = '#8B4513';
-    ctx.lineWidth = 3;
+    ctx.font = 'bold 64px Libre Baskerville, serif';
+    ctx.fillStyle = 'oklch(0.6180 0.0778 65.5444)'; // --primary
+    ctx.strokeStyle = 'oklch(0.3760 0.0225 64.3434)'; // --foreground
+    ctx.lineWidth = 2;
     
     const scoreText = `${resultData.score}%`;
     ctx.strokeText(scoreText, centerX, centerY + 20);
     ctx.fillText(scoreText, centerX, centerY + 20);
     
     // 궁합 설명
-    ctx.font = '20px Arial, sans-serif';
-    ctx.fillStyle = '#ffffff';
+    ctx.font = '20px Libre Baskerville, serif';
+    ctx.fillStyle = 'oklch(0.5391 0.0387 71.1655)'; // --muted-foreground
     const compatibility = this.getCompatibilityText(resultData.score, language);
     ctx.fillText(compatibility, centerX, centerY + 60);
     
@@ -217,7 +218,7 @@ class SharePreview {
     const barY = this.canvas.height / 2 + 100;
     
     // 배경 바
-    ctx.fillStyle = 'rgba(255, 255, 255, 0.3)';
+    ctx.fillStyle = 'oklch(0.9239 0.0190 83.0636)'; // --muted with opacity
     ctx.roundRect(barX, barY, barWidth, barHeight, 10);
     ctx.fill();
     
@@ -226,14 +227,14 @@ class SharePreview {
     const barGradient = ctx.createLinearGradient(barX, 0, barX + fillWidth, 0);
     
     if (score >= 80) {
-      barGradient.addColorStop(0, '#ff6b6b');
-      barGradient.addColorStop(1, '#ff8e8e');
+      barGradient.addColorStop(0, 'oklch(0.6180 0.0778 65.5444)'); // --primary
+      barGradient.addColorStop(1, 'oklch(0.7264 0.0581 66.6967)'); // --chart-5
     } else if (score >= 60) {
-      barGradient.addColorStop(0, '#ffa726');
-      barGradient.addColorStop(1, '#ffcc02');
+      barGradient.addColorStop(0, 'oklch(0.6777 0.0624 64.7755)'); // --chart-4
+      barGradient.addColorStop(1, 'oklch(0.7264 0.0581 66.6967)'); // --chart-5
     } else {
-      barGradient.addColorStop(0, '#42a5f5');
-      barGradient.addColorStop(1, '#66bb6a');
+      barGradient.addColorStop(0, 'oklch(0.4851 0.0570 72.6827)'); // --chart-3
+      barGradient.addColorStop(1, 'oklch(0.5604 0.0624 68.5805)'); // --chart-2
     }
     
     ctx.fillStyle = barGradient;
@@ -241,8 +242,8 @@ class SharePreview {
     ctx.fill();
     
     // 점수 레이블
-    ctx.fillStyle = '#ffffff';
-    ctx.font = '14px Arial, sans-serif';
+    ctx.fillStyle = 'oklch(0.5391 0.0387 71.1655)'; // --muted-foreground
+    ctx.font = '14px Libre Baskerville, serif';
     ctx.textAlign = 'center';
     ctx.fillText('0%', barX, barY + 40);
     ctx.fillText('50%', barX + barWidth/2, barY + 40);
@@ -259,8 +260,8 @@ class SharePreview {
   async drawFooter(ctx, language) {
     ctx.save();
     
-    ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
-    ctx.font = '16px Arial, sans-serif';
+    ctx.fillStyle = 'oklch(0.5391 0.0387 71.1655)'; // --muted-foreground
+    ctx.font = '16px Libre Baskerville, serif';
     ctx.textAlign = 'center';
     
     const footerText = language === 'ko' ? 

@@ -55,8 +55,8 @@
   width: 1px;
   height: 1px;
   overflow: hidden;
-  background: #3b82f6;
-  color: white;
+  background: var(--primary);
+  color: var(--primary-foreground);
   padding: 8px;
   border-radius: 4px;
   text-decoration: none;
@@ -176,16 +176,16 @@
   top: 16px;
   right: 16px;
   z-index: 100;
-  background: rgba(255, 255, 255, 0.95);
+  background: var(--card);
   backdrop-filter: blur(10px);
-  border: 1px solid rgba(59, 130, 246, 0.2);
+  border: 1px solid var(--border);
   border-radius: 20px;
   padding: 8px 12px;
   min-height: 36px;
   min-width: 36px;
   font-size: 0.75rem;
   font-weight: 500;
-  color: #3b82f6;
+  color: var(--primary);
   cursor: pointer;
   transition: all 0.2s ease;
 }
@@ -731,11 +731,11 @@
 }
 
 .focus\:bg-blue-600:focus {
-  background-color: #2563eb !important;
+  background-color: var(--primary) !important;
 }
 
 .focus\:text-white:focus {
-  color: #ffffff !important;
+  color: var(--primary-foreground) !important;
 }
 
 .focus\:rounded:focus {
@@ -750,40 +750,40 @@
 @media (prefers-contrast: high) {
   .mobile-input {
     border-width: 3px;
-    border-color: #000000;
+    border-color: var(--foreground);
   }
   
   .mobile-button {
-    border: 3px solid #000000;
+    border: 3px solid var(--foreground);
   }
   
   .mobile-progress-fill {
-    border: 2px solid #000000;
+    border: 2px solid var(--foreground);
   }
 }
 
 /* Input validation states */
 .mobile-input.error {
-  border-color: #ef4444;
-  background-color: rgba(254, 242, 242, 0.8);
-  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+  border-color: var(--destructive);
+  background-color: var(--destructive-foreground);
+  box-shadow: 0 0 0 3px var(--destructive);
 }
 
 .mobile-input.success {
-  border-color: #10b981;
-  background-color: rgba(240, 253, 244, 0.8);
-  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+  border-color: var(--success);
+  background-color: var(--success-foreground);
+  box-shadow: 0 0 0 3px var(--success);
 }
 
 /* Error message styling */
 .mobile-input-group [role="alert"]:not(.sr-only) {
-  color: #ef4444;
+  color: var(--destructive);
   font-size: 0.875rem;
   margin-top: 0.25rem;
   padding: 0.25rem 0.5rem;
-  background-color: rgba(254, 242, 242, 0.8);
-  border-radius: 0.375rem;
-  border-left: 3px solid #ef4444;
+  background-color: var(--destructive-foreground);
+  border-radius: var(--radius);
+  border-left: 3px solid var(--destructive);
 }
 
 /* 모바일에서 입력 필드 좌우 배치 강제 적용 - 최고 우선순위 */
@@ -1296,10 +1296,10 @@
 
 /* Enhanced focus management for mobile results */
 .mobile-result-animation:focus {
-  outline: 3px solid #3b82f6;
+  outline: 3px solid var(--ring);
   outline-offset: 4px;
   border-radius: 8px;
-  background-color: rgba(59, 130, 246, 0.05);
+  background-color: var(--accent);
 }
 
 /* Smooth scroll behavior optimized for mobile */
@@ -1350,7 +1350,7 @@
 @media (hover: hover) and (pointer: fine) {
   .mobile-result-animation:hover {
     transform: translateY(-2px) scale(1.02);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    box-shadow: var(--shadow-xl);
   }
 }
 
