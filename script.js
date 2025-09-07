@@ -146,12 +146,12 @@ function sleep(ms) {
 const languageTexts = {
   ko: {
     subtitle: "매치미터 - 이름으로 알아보는 궁합 지수",
-    label1: "📝 첫 번째 이름",
-    label2: "📝 두 번째 이름",
+    label1: "첫 번째 이름",
+    label2: "두 번째 이름",
     placeholder1: "예: 김하늘",
     placeholder2: "예: 박바다",
-    calculateButton: "📊 Match 측정하기",
-    scoreLabel: "📊 매치 점수",
+    calculateButton: "Match 측정하기",
+    scoreLabel: "매치 점수",
     toggleText: "EN",
     inputBothNames: "두 이름을 모두 입력해주세요!",
     strokeInfo: "한글은 전통적 획수 계산 방식을 사용합니다",
@@ -161,12 +161,12 @@ const languageTexts = {
   },
   en: {
     subtitle: "Match Meter - Name Compatibility Calculator",
-    label1: "👽 Your Name",
-    label2: "🤖 Their Name", 
+    label1: "Your Name",
+    label2: "Their Name", 
     placeholder1: "e.g: Donald Trump",
     placeholder2: "e.g: Elon Musk",
-    calculateButton: "📊 Calculate Match",
-    scoreLabel: "📊 Match Score",
+    calculateButton: "Calculate Match",
+    scoreLabel: "Match Score",
     toggleText: "KR",
     inputBothNames: "Please enter both names!",
     strokeInfo: "English letters calculated by uppercase strokes",
@@ -215,16 +215,26 @@ function updateLanguageTexts() {
   const texts = languageTexts[currentLanguage];
   
   document.getElementById('subtitle').textContent = texts.subtitle;
-  document.getElementById('label1').textContent = texts.label1;
-  document.getElementById('label2').textContent = texts.label2;
+  document.getElementById('label1').innerHTML = `<i class="lucid-icon icon-sm" data-lucide="edit-3" aria-hidden="true"></i> ${texts.label1}`;
+  document.getElementById('label2').innerHTML = `<i class="lucid-icon icon-sm" data-lucide="edit-3" aria-hidden="true"></i> ${texts.label2}`;
+  
+  // Re-initialize icons after DOM update for labels
+  if (typeof lucide !== 'undefined') {
+    lucide.createIcons();
+  }
   
   const name1Input = document.getElementById('name1');
   const name2Input = document.getElementById('name2');
   name1Input.placeholder = texts.placeholder1;
   name2Input.placeholder = texts.placeholder2;
   
-  document.getElementById('calculateButton').innerHTML = `<span aria-hidden="true">📊</span> ${texts.calculateButton.replace('📊 ', '')}`;
-  document.getElementById('scoreLabel').innerHTML = `<span aria-hidden="true">📊</span> ${texts.scoreLabel.replace('📊 ', '')}`;
+  document.getElementById('calculateButton').innerHTML = `<i class="lucid-icon" data-lucide="bar-chart-3" aria-hidden="true"></i> ${texts.calculateButton}`;
+  document.getElementById('scoreLabel').innerHTML = `<i id="score-title" class="score-icon lucid-icon" data-lucide="bar-chart-3" aria-hidden="true"></i> ${texts.scoreLabel}`;
+  
+  // Re-initialize icons after DOM update
+  if (typeof lucide !== 'undefined') {
+    lucide.createIcons();
+  }
   document.getElementById('toggleText').textContent = texts.toggleText;
   document.getElementById('strokeInfoText').textContent = texts.strokeInfo;
   
@@ -803,135 +813,135 @@ function getMessage(score) {
     ko: [
       {
         condition: score >= 95,
-        positive: "우주가 인정한 운명의 상대! 🌟",
-        negative: `${negative}% 확률로 외계인이 방해할 수도... 👽`
+        positive: "우주가 인정한 운명의 상대! (별처럼 빛나는)",
+        negative: `${negative}% 확률로 외계인이 방해할 수도... (아무도 예상 못함)`
       },
       {
         condition: score >= 90,
-        positive: "천생연분이에요! 💍",
-        negative: `${negative}% 확률로 둘 다 짜장면을 좋아해서 싸울 수도... 🍜`
+        positive: "천생연분이에요! (결혼반지가 보임)",
+        negative: `${negative}% 확률로 둘 다 짜장면을 좋아해서 싸울 수도... (면요리 전쟁)`
       },
       {
         condition: score >= 80,
-        positive: "완벽한 궁합이에요! ✨",
-        negative: `${negative}% 확률로 리모컨 쟁탈전이 벌어질 수도... 📺`
+        positive: "완벽한 궁합이에요! (반짝반짝 빛남)",
+        negative: `${negative}% 확률로 리모컨 쟁탈전이 벌어질 수도... (TV 앞 전쟁)`
       },
       {
         condition: score >= 70,
-        positive: "잘 어울리는 커플이에요! 💘",
-        negative: `${negative}% 확률로 누가 설거지할지 가위바위보... ✂️`
+        positive: "잘 어울리는 커플이에요! (사랑의 화살 적중)",
+        negative: `${negative}% 확률로 누가 설거지할지 가위바위보... (영원한 승부)`
       },
       {
         condition: score >= 60,
-        positive: "좋은 인연이 될 수 있어요! 😊",
-        negative: `${negative}% 확률로 취향차이로 넷플릭스 선택 장애... 🎬`
+        positive: "좋은 인연이 될 수 있어요! (미소 지으며)",
+        negative: `${negative}% 확률로 취향차이로 넷플릭스 선택 장애... (영화 포스터들이 울고 있음)`
       },
       {
         condition: score >= 50,
-        positive: "노력하면 좋은 관계가 될 거예요! 💪",
-        negative: `${negative}% 확률로 화장실 변기시트 때문에 다툴 수도... 🚽`
+        positive: "노력하면 좋은 관계가 될 거예요! (팔뚝 힘 자랑)",
+        negative: `${negative}% 확률로 화장실 변기시트 때문에 다툴 수도... (집안의 영원한 숙제)`
       },
       {
         condition: score >= 40,
-        positive: "친구부터 시작해보세요! 👫",
-        negative: `${negative}% 확률로 서로 연락처를 까먹을 수도... 📱`
+        positive: "친구부터 시작해보세요! (손잡고 걷는 모습)",
+        negative: `${negative}% 확률로 서로 연락처를 까먹을 수도... (핸드폰 속 연락처 미아)`
       },
       {
         condition: score >= 30,
-        positive: "좋은 친구가 될 수 있어요! 👋",
-        negative: `${negative}% 확률로 서로를 아는 척 안 할 수도... 😅`
+        positive: "좋은 친구가 될 수 있어요! (손 흔들며 인사)",
+        negative: `${negative}% 확률로 서로를 아는 척 안 할 수도... (어색한 웃음)`
       },
       {
         condition: score >= 20,
-        positive: "인연이 있긴 있는 것 같아요... 🤔",
-        negative: `${negative}% 확률로 평행우주에서나 만날 인연... 🌌`
+        positive: "인연이 있긴 있는 것 같아요... (고민하는 표정)",
+        negative: `${negative}% 확률로 평행우주에서나 만날 인연... (은하수 건너편)`
       },
       {
         condition: score > 10,
-        positive: "아직 희망은 있어요! 🙃",
-        negative: `${negative}% 확률로 둘이 만나면 지구가 멸망할 수도... 🌍💥`
+        positive: "아직 희망은 있어요! (거꾸로 웃음)",
+        negative: `${negative}% 확률로 둘이 만나면 지구가 멸망할 수도... (지구 폭발 위험)`
       },
       {
         condition: score >= 5,
-        positive: "극한의 상황이지만... 기적은 일어난다고 해요! 🌟",
-        negative: `${negative}% 확률로 서로를 보면 시간이 멈출 수도... ⏰`
+        positive: "극한의 상황이지만... 기적은 일어난다고 해요! (기적의 별)",
+        negative: `${negative}% 확률로 서로를 보면 시간이 멈출 수도... (시계 바늘 정지)`
       },
       {
         condition: score > 0,
-        positive: "...음... 최소한 0%는 아니네요! 😰",
-        negative: `${negative}% 확률로 서로 다른 차원에서 살고 있을 가능성... 🌀`
+        positive: "...음... 최소한 0%는 아니네요! (식은땀 흘림)",
+        negative: `${negative}% 확률로 서로 다른 차원에서 살고 있을 가능성... (차원의 소용돌이)`
       },
       {
         condition: score === 0,
-        positive: "놀라워요! 완벽한 0%! 🎉",
-        negative: "축하합니다! 여러분은 수학적으로 완벽한 반대 조합을 발견했습니다! 이건 정말 레어한 케이스예요! 🏆✨"
+        positive: "놀라워요! 완벽한 0%! (축하 파티)",
+        negative: "축하합니다! 여러분은 수학적으로 완벽한 반대 조합을 발견했습니다! 이건 정말 레어한 케이스예요! (우승 트로피와 반짝이는 불빛)"
       }
     ],
     en: [
       {
         condition: score >= 95,
-        positive: "Destined soulmates approved by the universe! 🌟",
-        negative: `${negative}% chance aliens might interfere... 👽`
+        positive: "Destined soulmates approved by the universe! (shining like stars)",
+        negative: `${negative}% chance aliens might interfere... (totally unexpected)`
       },
       {
         condition: score >= 90,
-        positive: "Perfect match made in heaven! 💍",
-        negative: `${negative}% chance you'll fight over pizza toppings... 🍕`
+        positive: "Perfect match made in heaven! (wedding rings visible)",
+        negative: `${negative}% chance you'll fight over pizza toppings... (pizza wars ahead)`
       },
       {
         condition: score >= 80,
-        positive: "Amazing compatibility! ✨",
-        negative: `${negative}% chance of epic remote control battles... 📺`
+        positive: "Amazing compatibility! (sparkling bright)",
+        negative: `${negative}% chance of epic remote control battles... (TV warfare)`
       },
       {
         condition: score >= 70,
-        positive: "Great couple potential! 💘",
-        negative: `${negative}% chance of rock-paper-scissors for dishes... ✂️`
+        positive: "Great couple potential! (cupid's arrow hits)",
+        negative: `${negative}% chance of rock-paper-scissors for dishes... (eternal showdown)`
       },
       {
         condition: score >= 60,
-        positive: "Good relationship potential! 😊",
-        negative: `${negative}% chance of Netflix selection paralysis... 🎬`
+        positive: "Good relationship potential! (smiling warmly)",
+        negative: `${negative}% chance of Netflix selection paralysis... (movie posters crying)`
       },
       {
         condition: score >= 50,
-        positive: "Can work with some effort! 💪",
-        negative: `${negative}% chance of toilet seat arguments... 🚽`
+        positive: "Can work with some effort! (flexing muscles)",
+        negative: `${negative}% chance of toilet seat arguments... (household eternal mystery)`
       },
       {
         condition: score >= 40,
-        positive: "Start as friends! 👫",
-        negative: `${negative}% chance you'll forget each other's numbers... 📱`
+        positive: "Start as friends! (walking hand in hand)",
+        negative: `${negative}% chance you'll forget each other's numbers... (lost contacts in phone)`
       },
       {
         condition: score >= 30,
-        positive: "Good friendship potential! 👋",
-        negative: `${negative}% chance you'll pretend not to know each other... 😅`
+        positive: "Good friendship potential! (waving hello)",
+        negative: `${negative}% chance you'll pretend not to know each other... (awkward laugh)`
       },
       {
         condition: score >= 20,
-        positive: "There might be some connection... 🤔",
-        negative: `${negative}% chance you're meant for parallel universes... 🌌`
+        positive: "There might be some connection... (thinking hard)",
+        negative: `${negative}% chance you're meant for parallel universes... (across the galaxy)`
       },
       {
         condition: score > 10,
-        positive: "There's still hope! 🙃",
-        negative: `${negative}% chance the world ends if you two meet... 🌍💥`
+        positive: "There's still hope! (upside down smile)",
+        negative: `${negative}% chance the world ends if you two meet... (Earth explosion risk)`
       },
       {
         condition: score >= 5,
-        positive: "Extreme situation but... miracles do happen! 🌟",
-        negative: `${negative}% chance time stops when you look at each other... ⏰`
+        positive: "Extreme situation but... miracles do happen! (miracle star)",
+        negative: `${negative}% chance time stops when you look at each other... (clock hands frozen)`
       },
       {
         condition: score > 0,
-        positive: "...Well... at least it's not 0%! 😰",
-        negative: `${negative}% chance you live in different dimensions... 🌀`
+        positive: "...Well... at least it's not 0%! (nervous sweating)",
+        negative: `${negative}% chance you live in different dimensions... (dimensional whirlpool)`
       },
       {
         condition: score === 0,
-        positive: "Amazing! Perfect 0%! 🎉",
-        negative: "Congratulations! You've discovered the mathematically perfect opposite combination! This is truly a rare case! 🏆✨"
+        positive: "Amazing! Perfect 0%! (celebration party)",
+        negative: "Congratulations! You've discovered the mathematically perfect opposite combination! This is truly a rare case! (victory trophy with sparkling lights)"
       }
     ]
   };

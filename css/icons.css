@@ -1,0 +1,108 @@
+/* Lucid Icons Styling */
+.lucid-icon {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  vertical-align: -0.125em; /* Better alignment with text */
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* Fix for buttons and interactive elements */
+button .lucid-icon,
+.mobile-button .lucid-icon {
+  vertical-align: middle;
+}
+
+/* Icon sizes */
+.icon-sm {
+  width: 0.875em;
+  height: 0.875em;
+}
+
+.icon-lg {
+  width: 1.25em;
+  height: 1.25em;
+}
+
+.icon-xl {
+  width: 1.5em;
+  height: 1.5em;
+}
+
+/* Icon colors */
+.icon-primary {
+  color: var(--primary-color, #ff6b9d);
+}
+
+.icon-secondary {
+  color: var(--secondary-color, #ffd93d);
+}
+
+.icon-success {
+  color: var(--success-color, #6bcf7f);
+}
+
+.icon-warning {
+  color: var(--warning-color, #ffb347);
+}
+
+.icon-danger {
+  color: var(--danger-color, #ff6b6b);
+}
+
+/* Animation support */
+.icon-spin {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Title icons specific styling */
+.title-icon {
+  font-size: 1.2em;
+  margin: 0 0.25em;
+  vertical-align: middle;
+}
+
+/* Language toggle icons */
+.lang-icon {
+  margin-right: 0.5em;
+  vertical-align: middle;
+}
+
+/* Share button icons */
+.share-icon,
+.btn-icon {
+  margin-right: 0.5em;
+  vertical-align: middle;
+}
+
+/* Score icons */
+.score-icon {
+  margin-right: 0.25em;
+  font-size: 1.1em;
+  vertical-align: middle;
+}
+
+/* Form label icons */
+.mobile-label .lucid-icon {
+  margin-right: 0.5em;
+  vertical-align: middle;
+}
+
+/* Result container icons */
+.result-container .lucid-icon {
+  margin-right: 0.25em;
+  vertical-align: middle;
+}

@@ -71,7 +71,7 @@ class ShareRenderer {
     return `
       <div class="share-header">
         <div class="app-branding">
-          <span class="app-logo" aria-hidden="true">📊</span>
+          <i class="lucid-icon app-logo" data-lucide="bar-chart-3" aria-hidden="true"></i>
           <span class="app-name">Match Meter</span>
           <span class="app-subtitle">${this.language === 'ko' ? '매치미터' : 'Compatibility Test'}</span>
         </div>
@@ -92,7 +92,7 @@ class ShareRenderer {
           <span class="name1">${this.escapeHtml(names.name1)}</span>
         </div>
         <div class="heart-container">
-          <span class="heart" aria-hidden="true">💕</span>
+          <i class="lucid-icon heart" data-lucide="heart" aria-hidden="true"></i>
           <span class="score-emoji" aria-hidden="true">${scoreEmoji}</span>
         </div>
         <div class="name-container">
@@ -172,7 +172,7 @@ class ShareRenderer {
     return `
       <div class="share-result-compact">
         <div class="compact-header">
-          <span class="app-logo">📊</span>
+          <i class="lucid-icon app-logo" data-lucide="bar-chart-3"></i>
           <span class="app-name">Match Meter</span>
         </div>
         <div class="compact-content">
@@ -199,14 +199,14 @@ class ShareRenderer {
         <div class="story-background story-${scoreCategory}">
           <div class="story-content">
             <div class="story-header">
-              <span class="story-logo">📊</span>
+              <i class="lucid-icon story-logo" data-lucide="bar-chart-3"></i>
               <span class="story-title">Match Meter</span>
             </div>
             
             <div class="story-main">
               <div class="story-names">
                 <span class="story-name">${this.escapeHtml(names.name1)}</span>
-                <span class="story-heart">💕</span>
+                <i class="lucid-icon story-heart" data-lucide="heart"></i>
                 <span class="story-name">${this.escapeHtml(names.name2)}</span>
               </div>
               
@@ -469,7 +469,8 @@ class ShareRenderer {
     ctx.font = '32px Arial';
     ctx.textAlign = 'center';
     ctx.fillStyle = 'white';
-    ctx.fillText('📊', width / 2 - 60, y);
+    // Chart icon - using text fallback for canvas
+    ctx.fillText('📈', width / 2 - 60, y);
     
     // 앱 이름
     ctx.font = 'bold 28px Arial';
@@ -528,7 +529,8 @@ class ShareRenderer {
     
     // 하트 이모지
     ctx.font = `${fontSize + 8}px Arial`;
-    ctx.fillText('💕', width / 2, nameY);
+    // Heart symbol
+    ctx.fillText('♥', width / 2, nameY);
     
     // 두 번째 이름
     ctx.font = `bold ${fontSize}px Arial`;
@@ -723,14 +725,14 @@ class ShareRenderer {
    * @returns {string} 이모지
    */
   getScoreEmoji(score) {
-    if (score >= 90) return '🔥💕';
-    if (score >= 80) return '✨💖';
-    if (score >= 70) return '😊💝';
-    if (score >= 60) return '👍💛';
-    if (score >= 50) return '🤔💙';
-    if (score >= 40) return '😅💚';
-    if (score >= 30) return '🙃💜';
-    return '😰💔';
+    if (score >= 90) return '★★';
+    if (score >= 80) return '★♥';
+    if (score >= 70) return '♥♥';
+    if (score >= 60) return '♥+';
+    if (score >= 50) return '♥';
+    if (score >= 40) return '+';
+    if (score >= 30) return '~';
+    return '•';
   }
 
   /**

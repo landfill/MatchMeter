@@ -206,12 +206,17 @@ class AnimationController {
     // 결과 HTML 생성 (점수는 0%로 시작하여 애니메이션 준비, 처음에는 숨김)
     resultDiv.innerHTML = `
       <div class="result-container" style="display: block; visibility: hidden; opacity: 0;">
-        <div class="score-text">📊 ${names.name1} ⚡ ${names.name2}</div>
+        <div class="score-text"><i class="lucid-icon" data-lucide="bar-chart-3"></i> ${names.name1} <i class="lucid-icon" data-lucide="zap"></i> ${names.name2}</div>
         <div class="score-percentage">0%</div>
-        <div class="message-positive">✅ ${messages.positive}</div>
-        <div class="message-negative">⚠️ ${messages.negative}</div>
+        <div class="message-positive"><i class="lucid-icon" data-lucide="check-circle"></i> ${messages.positive}</div>
+        <div class="message-negative"><i class="lucid-icon" data-lucide="alert-triangle"></i> ${messages.negative}</div>
       </div>
     `;
+    
+    // Initialize Lucid icons after DOM update
+    if (typeof lucide !== 'undefined') {
+      lucide.createIcons();
+    }
   }
 
   /**

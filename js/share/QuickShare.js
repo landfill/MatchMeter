@@ -109,7 +109,7 @@ class QuickShare {
     // Instagram Stories (우선순위 최상위)
     options.push({
       platform: 'instagram-stories',
-      icon: '📷',
+      icon: 'camera',
       label: language === 'ko' ? '스토리' : 'Stories',
       description: language === 'ko' ? 'Instagram Stories로 공유' : 'Share to Instagram Stories',
       primary: true
@@ -119,7 +119,7 @@ class QuickShare {
     if (isMobile && navigator.share) {
       options.push({
         platform: 'native',
-        icon: '📱',
+        icon: 'share',
         label: language === 'ko' ? '공유' : 'Share',
         description: language === 'ko' ? '휴대폰 공유 메뉴' : 'Native share menu',
         primary: true
@@ -130,7 +130,7 @@ class QuickShare {
     if (language === 'ko' || this.isKoreanUser()) {
       options.push({
         platform: 'kakao',
-        icon: '💬',
+        icon: 'message-circle',
         label: language === 'ko' ? '카톡' : 'KakaoTalk',
         description: language === 'ko' ? '카카오톡으로 공유' : 'Share via KakaoTalk',
         primary: true
@@ -140,7 +140,7 @@ class QuickShare {
     // Twitter/X 공유
     options.push({
       platform: 'twitter',
-      icon: '🐦',
+      icon: 'twitter',
       label: language === 'ko' ? 'X' : 'X',
       description: language === 'ko' ? 'X(구 트위터)로 공유' : 'Share to X (Twitter)',
       primary: true
@@ -149,7 +149,7 @@ class QuickShare {
     // Facebook 공유
     options.push({
       platform: 'facebook',
-      icon: '📘',
+      icon: 'facebook',
       label: 'Facebook',
       description: language === 'ko' ? 'Facebook으로 공유' : 'Share to Facebook',
       primary: true
@@ -158,7 +158,7 @@ class QuickShare {
     // 링크 복사 (항상 포함)
     options.push({
       platform: 'copy',
-      icon: '🔗',
+      icon: 'link',
       label: language === 'ko' ? '링크' : 'Copy',
       description: language === 'ko' ? '링크 복사' : 'Copy link',
       primary: false
@@ -180,12 +180,17 @@ class QuickShare {
     button.setAttribute('title', option.description);
 
     button.innerHTML = `
-      <span class="btn-icon" aria-hidden="true">${option.icon}</span>
+      <i class="btn-icon lucid-icon" data-lucide="${option.icon}" aria-hidden="true"></i>
       <span class="btn-label">${option.label}</span>
       <div class="btn-loading" style="display: none;">
         <div class="loading-spinner"></div>
       </div>
     `;
+
+    // Initialize Lucid icons for this button
+    if (typeof lucide !== 'undefined') {
+      lucide.createIcons({ root: button });
+    }
 
     // 클릭 이벤트
     button.addEventListener('click', async (e) => {
@@ -411,9 +416,9 @@ class QuickShare {
     const language = this.shareManager.language;
     
     if (language === 'ko') {
-      return `🎉 ${names.name1}님과 ${names.name2}님의 궁합은 ${score}%! 과연 이 결과가 맞을까요? 😄`;
+      return `${names.name1}님과 ${names.name2}님의 궁합은 ${score}%! 과연 이 결과가 맞을까요?`;
     } else {
-      return `🎉 ${names.name1} & ${names.name2} scored ${score}% compatibility! What do you think? 😄`;
+      return `${names.name1} & ${names.name2} scored ${score}% compatibility! What do you think?`;
     }
   }
 

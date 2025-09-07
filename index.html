@@ -14,6 +14,9 @@
     <link rel="stylesheet" href="./css/share.css" />
     <link rel="stylesheet" href="./css/quick-share.css" />
     <link rel="stylesheet" href="./css/share-preview.css" />
+    <link rel="stylesheet" href="./css/icons.css" />
+    <!-- Lucid Icons CDN -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
   </head>
   <body class="main-body" role="document">
 
@@ -37,9 +40,9 @@
           <div class="header-content">
             <div class="title-section">
               <h1 class="app-title">
-                <span class="title-emoji" aria-hidden="true">📊</span>
+                <i class="title-icon lucid-icon" data-lucide="bar-chart-3" aria-hidden="true"></i>
                 <span class="title-text">Match Meter</span>
-                <span class="title-emoji" aria-hidden="true">📊</span>
+                <i class="title-icon lucid-icon" data-lucide="bar-chart-3" aria-hidden="true"></i>
               </h1>
               <p id="subtitle" class="app-subtitle">
                 매치미터 - 이름으로 알아보는 궁합 지수
@@ -56,7 +59,7 @@
                 aria-label="언어 변경 (현재: 한국어)"
                 aria-describedby="language-description"
               >
-                <span class="lang-icon" aria-hidden="true">🌍</span>
+                <i class="lang-icon lucid-icon" data-lucide="globe" aria-hidden="true"></i>
                 <span id="toggleText" class="lang-text">EN</span>
               </button>
             </div>
@@ -76,7 +79,7 @@
           <h2 id="form-title" class="sr-only">이름 입력 양식</h2>
           <div class="mobile-input-group">
             <label id="label1" for="name1" class="mobile-label"
-              >📝 첫 번째 이름</label
+              ><i class="lucid-icon icon-sm" data-lucide="edit-3" aria-hidden="true"></i> 첫 번째 이름</label
             >
             <input
               type="text"
@@ -105,7 +108,7 @@
           </div>
           <div class="mobile-input-group">
             <label id="label2" for="name2" class="mobile-label"
-              >📝 두 번째 이름</label
+              ><i class="lucid-icon icon-sm" data-lucide="edit-3" aria-hidden="true"></i> 두 번째 이름</label
             >
             <input
               type="text"
@@ -142,7 +145,7 @@
           aria-describedby="calculate-description"
           aria-label="두 이름의 궁합 점수 계산하기"
         >
-          <span aria-hidden="true">📊</span> Match 측정하기
+          <i class="lucid-icon" data-lucide="bar-chart-3" aria-hidden="true"></i> Match 측정하기
         </button>
         <div id="calculate-description" class="sr-only">
           입력한 두 이름의 궁합 점수를 계산합니다
@@ -165,7 +168,7 @@
             aria-labelledby="score-title"
           >
             <div id="scoreLabel" class="mobile-score-label">
-              <span id="score-title" aria-hidden="true">📊</span> 매치 점수
+              <i id="score-title" class="score-icon lucid-icon" data-lucide="bar-chart-3" aria-hidden="true"></i> 매치 점수
             </div>
             <div
               class="mobile-progress-bar"
@@ -192,7 +195,7 @@
           ></div>
 
           <div id="strokeInfo" class="mobile-stroke-info hidden" role="note">
-            <span aria-hidden="true">📝</span>
+            <i class="lucid-icon icon-sm" data-lucide="edit-3" aria-hidden="true"></i>
             <span id="strokeInfoText"
               >English letters calculated by uppercase strokes</span
             >
@@ -214,5 +217,15 @@
     <script src="js/share/FacebookPreviewOptimizer.js"></script>
     <script src="js/share/QuickShare.js"></script>
     <script src="script.js"></script>
+    
+    <!-- Initialize Lucid Icons -->
+    <script>
+      // Initialize all Lucid icons after DOM content is loaded
+      document.addEventListener('DOMContentLoaded', function() {
+        if (typeof lucide !== 'undefined') {
+          lucide.createIcons();
+        }
+      });
+    </script>
   </body>
 </html>
