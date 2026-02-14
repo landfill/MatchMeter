@@ -106,3 +106,32 @@ button .lucid-icon,
   margin-right: 0.25em;
   vertical-align: middle;
 }
+/* ==========================================================================
+   Custom Duotone Icons Standard
+   Style: Soft Pop Duotone (Outline + Offset Fill)
+   ========================================================================== */
+
+.custom-duotone-icon {
+  overflow: visible;
+}
+
+/* Dynamic Hover Effect */
+.custom-duotone-icon path[opacity] {
+  transition: opacity 0.3s ease, fill 0.3s ease;
+}
+
+/* Interactive elements hover state */
+button:hover .custom-duotone-icon path[opacity],
+a:hover .custom-duotone-icon path[opacity],
+.mobile-input-group:hover .custom-duotone-icon path[opacity] {
+  opacity: 0.25 !important;
+}
+
+/* Active/Focus state */
+button:active .custom-duotone-icon path[opacity] {
+  opacity: 0.35 !important;
+}
+
+/* Theme adaptation helpers */
+.icon-fill-primary { color: var(--primary); }
+.icon-fill-secondary { color: var(--secondary); }

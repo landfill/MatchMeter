@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
       animationController = new AnimationController();
       window.currentAnimationController = animationController;
     }
-    
+
   } catch (error) {
     console.error('Initialization error:', error);
   }
@@ -36,23 +36,23 @@ const koreanStrokeMap = {
 function getKoreanStrokes(char) {
   const code = char.charCodeAt(0) - 0xAC00;
   if (code < 0 || code > 11171) return 0; // 한글이 아님
-  
+
   const chosung = Math.floor(code / 588);
   const jungsung = Math.floor((code % 588) / 28);
   const jongsung = code % 28;
-  
+
   const chosungList = ['ㄱ', 'ㄲ', 'ㄴ', 'ㄷ', 'ㄸ', 'ㄹ', 'ㅁ', 'ㅂ', 'ㅃ', 'ㅅ', 'ㅆ', 'ㅇ', 'ㅈ', 'ㅉ', 'ㅊ', 'ㅋ', 'ㅌ', 'ㅍ', 'ㅎ'];
   const jungsungList = ['ㅏ', 'ㅐ', 'ㅑ', 'ㅒ', 'ㅓ', 'ㅔ', 'ㅕ', 'ㅖ', 'ㅗ', 'ㅘ', 'ㅙ', 'ㅚ', 'ㅛ', 'ㅜ', 'ㅝ', 'ㅞ', 'ㅟ', 'ㅠ', 'ㅡ', 'ㅢ', 'ㅣ'];
   const jongsungList = ['', 'ㄱ', 'ㄲ', 'ㄳ', 'ㄴ', 'ㄵ', 'ㄶ', 'ㄷ', 'ㄹ', 'ㄺ', 'ㄻ', 'ㄼ', 'ㄽ', 'ㄾ', 'ㄿ', 'ㅀ', 'ㅁ', 'ㅂ', 'ㅄ', 'ㅅ', 'ㅆ', 'ㅇ', 'ㅈ', 'ㅊ', 'ㅋ', 'ㅌ', 'ㅍ', 'ㅎ'];
-  
+
   let totalStrokes = 0;
-  
+
   // 초성
   totalStrokes += koreanStrokeMap[chosungList[chosung]] || 0;
-  
+
   // 중성
   totalStrokes += koreanStrokeMap[jungsungList[jungsung]] || 0;
-  
+
   // 종성 (복합 자음 처리)
   if (jongsung > 0) {
     const jong = jongsungList[jongsung];
@@ -69,7 +69,7 @@ function getKoreanStrokes(char) {
     else if (jong === 'ㅄ') totalStrokes += 6; // ㅂ + ㅅ
     else totalStrokes += koreanStrokeMap[jong] || 0;
   }
-  
+
   return totalStrokes;
 }
 
@@ -83,7 +83,7 @@ const strokeMap = {
   "원": 8, "천": 6, "방": 7, "공": 4, "현": 8, "함": 8, "변": 9, "염": 10,
   "마": 5, "길": 6, "연": 7, "위": 5, "표": 8, "명": 8, "기": 5, "반": 7,
   "왕": 6, "금": 5, "옥": 5, "육": 6, "인": 4, "맹": 8, "제": 9, "모": 5,
-  
+
   // 이름
   "민": 5, "수": 4, "영": 8, "진": 6, "현": 8, "준": 5, "우": 3, "지": 4, "성": 6, "호": 5,
   "경": 6, "석": 5, "철": 10, "용": 8, "건": 5, "희": 7, "연": 7, "혜": 10, "은": 8, "선": 6,
@@ -103,27 +103,27 @@ const englishStrokeMap = {
 
 function getStroke(char) {
   const lowerChar = char.toLowerCase();
-  
+
   // 영문자인 경우 (대문자 기준 획수 적용)
   if (englishStrokeMap[lowerChar]) {
     return englishStrokeMap[lowerChar];
   }
-  
+
   // 한글인 경우 - 먼저 빠른 참조 맵 확인
   if (strokeMap[char]) {
     return strokeMap[char];
   }
-  
+
   // 빠른 참조 맵에 없는 한글은 자모 분해로 계산
   if (/[가-힣]/.test(char)) {
     return getKoreanStrokes(char);
   }
-  
+
   // 기본값 (공백이나 특수문자 제외)
   if (char.trim() === '' || /[^a-zA-Z가-힣]/.test(char)) {
     return 0;
   }
-  
+
   return 8; // 기본값
 }
 
@@ -162,7 +162,7 @@ const languageTexts = {
   en: {
     subtitle: "Match Meter - Name Compatibility Calculator",
     label1: "Your Name",
-    label2: "Their Name", 
+    label2: "Their Name",
     placeholder1: "e.g: Donald Trump",
     placeholder2: "e.g: Elon Musk",
     calculateButton: "Calculate Match",
@@ -180,14 +180,9 @@ const languageTexts = {
 function toggleLanguage() {
   currentLanguage = currentLanguage === 'ko' ? 'en' : 'ko';
   updateLanguageTexts();
-  
-  // 공유 기능 언어 업데이트 (비동기로 처리하여 빠른 반응)
-  setTimeout(() => {
-    if (typeof updateShareLanguage === 'function') {
-      updateShareLanguage();
-    }
-  }, 10);
-  
+
+
+
   // 언어 변경 알림 (스크린 리더용)
   announceToScreenReader(
     currentLanguage === 'ko' ? '언어가 한국어로 변경되었습니다' : 'Language changed to English'
@@ -201,9 +196,9 @@ function announceToScreenReader(message) {
   announcement.setAttribute('aria-atomic', 'true');
   announcement.className = 'sr-only';
   announcement.textContent = message;
-  
+
   document.body.appendChild(announcement);
-  
+
   // 알림 후 제거
   setTimeout(() => {
     document.body.removeChild(announcement);
@@ -213,41 +208,41 @@ function announceToScreenReader(message) {
 // 언어별 텍스트 업데이트 (접근성 개선)
 function updateLanguageTexts() {
   const texts = languageTexts[currentLanguage];
-  
+
   document.getElementById('subtitle').textContent = texts.subtitle;
   document.getElementById('label1').innerHTML = `<i class="lucid-icon icon-sm" data-lucide="edit-3" aria-hidden="true"></i> ${texts.label1}`;
   document.getElementById('label2').innerHTML = `<i class="lucid-icon icon-sm" data-lucide="edit-3" aria-hidden="true"></i> ${texts.label2}`;
-  
+
   // Re-initialize icons after DOM update for labels
   if (typeof lucide !== 'undefined') {
     lucide.createIcons();
   }
-  
+
   const name1Input = document.getElementById('name1');
   const name2Input = document.getElementById('name2');
   name1Input.placeholder = texts.placeholder1;
   name2Input.placeholder = texts.placeholder2;
-  
+
   document.getElementById('calculateButton').innerHTML = `<i class="lucid-icon" data-lucide="bar-chart-3" aria-hidden="true"></i> ${texts.calculateButton}`;
   document.getElementById('scoreLabel').innerHTML = `<i id="score-title" class="score-icon lucid-icon" data-lucide="bar-chart-3" aria-hidden="true"></i> ${texts.scoreLabel}`;
-  
+
   // Re-initialize icons after DOM update
   if (typeof lucide !== 'undefined') {
     lucide.createIcons();
   }
   document.getElementById('toggleText').textContent = texts.toggleText;
   document.getElementById('strokeInfoText').textContent = texts.strokeInfo;
-  
+
   // 접근성 라벨 업데이트
   const languageToggle = document.getElementById('languageToggle');
   languageToggle.setAttribute('aria-label', texts.languageLabel);
   document.getElementById('language-description').textContent = texts.languageDescription;
   document.getElementById('calculate-description').textContent = texts.calculateDescription;
-  
+
   // 계산 버튼 aria-label 업데이트
   const calculateButton = document.getElementById('calculateButton');
   calculateButton.setAttribute('aria-label', texts.calculateDescription);
-  
+
   // 양쪽 언어 모두에서 획수 정보 표시
   const strokeInfo = document.getElementById('strokeInfo');
   strokeInfo.classList.remove('hidden');
@@ -258,7 +253,7 @@ function validateInput(inputElement, errorElementId) {
   const value = inputElement.value.trim();
   const errorElement = document.getElementById(errorElementId);
   const texts = languageTexts[currentLanguage];
-  
+
   if (value === '') {
     inputElement.setAttribute('aria-invalid', 'true');
     inputElement.classList.add('error');
@@ -280,14 +275,14 @@ function setupKeyboardNavigation() {
   const focusableElements = document.querySelectorAll(
     'button, input, select, textarea, a[href], [tabindex]:not([tabindex="-1"])'
   );
-  
+
   focusableElements.forEach((element, index) => {
     element.addEventListener('keydown', (e) => {
       // Tab 키 순서 관리
       if (e.key === 'Tab') {
         // 기본 동작 유지하되, 순서 확인
         const currentIndex = Array.from(focusableElements).indexOf(element);
-        
+
         if (e.shiftKey && currentIndex === 0) {
           // Shift+Tab으로 첫 번째 요소에서 마지막으로
           e.preventDefault();
@@ -298,7 +293,7 @@ function setupKeyboardNavigation() {
           focusableElements[0].focus();
         }
       }
-      
+
       // Enter 키로 버튼 활성화
       if (e.key === 'Enter' && element.tagName === 'BUTTON') {
         element.click();
@@ -311,26 +306,26 @@ function setupKeyboardNavigation() {
 function updateProgressBar(percentage) {
   const progressBar = document.querySelector('.mobile-progress-bar');
   const progressFill = document.getElementById('bar');
-  
+
   if (!progressBar || !progressFill) return;
-  
+
   // Reset progress bar for animation
   progressFill.style.width = '0%';
   progressFill.style.transition = 'none';
-  
+
   // Set accessibility attributes
   progressBar.setAttribute('aria-valuenow', percentage);
   progressBar.setAttribute('aria-valuetext', `${percentage}% 궁합도`);
-  
+
   // Mobile-optimized animation timing
   const animationDuration = MobileUX.getAnimationDuration(800);
   const animationDelay = MobileUX.isMobile() ? 200 : 300;
-  
+
   setTimeout(() => {
     // Apply mobile-appropriate transition
     progressFill.style.transition = `width ${animationDuration}ms cubic-bezier(0.4, 0, 0.2, 1), background-color 0.3s ease`;
     progressFill.style.width = percentage + '%';
-    
+
     // Enhanced color setting with smooth transitions
     if (percentage >= 80) {
       progressFill.style.backgroundColor = '#10b981'; // 초록색
@@ -339,7 +334,7 @@ function updateProgressBar(percentage) {
     } else {
       progressFill.style.backgroundColor = '#ef4444'; // 빨간색
     }
-    
+
     // Add visual feedback for mobile users
     if (MobileUX.isMobile()) {
       // Subtle pulse effect on completion
@@ -361,13 +356,13 @@ function initMobileUX() {
     const vh = window.innerHeight * 0.01;
     document.documentElement.style.setProperty('--vh', `${vh}px`);
   };
-  
+
   setViewportHeight();
   window.addEventListener('resize', setViewportHeight);
   window.addEventListener('orientationchange', () => {
     setTimeout(setViewportHeight, 100);
   });
-  
+
   // Enhanced touch feedback for buttons
   const buttons = document.querySelectorAll('.mobile-button');
   buttons.forEach(button => {
@@ -375,18 +370,18 @@ function initMobileUX() {
       button.classList.add('touch-active');
       MobileUX.provideFeedback('light');
     }, { passive: true });
-    
+
     button.addEventListener('touchend', () => {
       setTimeout(() => {
         button.classList.remove('touch-active');
       }, 150);
     }, { passive: true });
-    
+
     button.addEventListener('touchcancel', () => {
       button.classList.remove('touch-active');
     }, { passive: true });
   });
-  
+
   // Enhanced input focus management for mobile
   const inputs = document.querySelectorAll('.mobile-input');
   inputs.forEach(input => {
@@ -394,20 +389,20 @@ function initMobileUX() {
       // Scroll input into view on mobile to avoid keyboard overlap
       if (MobileUX.isMobile()) {
         setTimeout(() => {
-          input.scrollIntoView({ 
-            behavior: 'smooth', 
+          input.scrollIntoView({
+            behavior: 'smooth',
             block: 'center',
             inline: 'nearest'
           });
         }, 300); // Wait for keyboard animation
       }
     });
-    
+
     // Enhanced Enter key handling
     input.addEventListener('keydown', (e) => {
       if (e.key === 'Enter') {
         e.preventDefault();
-        
+
         // Move to next input or calculate if on last input
         const currentIndex = Array.from(inputs).indexOf(input);
         if (currentIndex < inputs.length - 1) {
@@ -422,7 +417,7 @@ function initMobileUX() {
       }
     });
   });
-  
+
   // Setup result area auto-scroll observer
   const resultSection = document.getElementById('result');
   if (resultSection) {
@@ -442,10 +437,10 @@ function initMobileUX() {
         }
       });
     });
-    
-    observer.observe(resultSection, { 
-      childList: true, 
-      subtree: true 
+
+    observer.observe(resultSection, {
+      childList: true,
+      subtree: true
     });
   }
 }
@@ -455,56 +450,56 @@ document.addEventListener('DOMContentLoaded', () => {
   updateLanguageTexts();
   setupKeyboardNavigation();
   initMobileUX();
-  
+
   // 입력 필드 이벤트 리스너 추가
   const name1Input = document.getElementById('name1');
   const name2Input = document.getElementById('name2');
-  
+
   name1Input.addEventListener('blur', () => validateInput(name1Input, 'name1-error'));
   name2Input.addEventListener('blur', () => validateInput(name2Input, 'name2-error'));
-  
+
   // 입력 시 실시간 유효성 검사
   name1Input.addEventListener('input', () => {
     if (name1Input.value.trim() !== '') {
       validateInput(name1Input, 'name1-error');
     }
   });
-  
+
   name2Input.addEventListener('input', () => {
     if (name2Input.value.trim() !== '') {
       validateInput(name2Input, 'name2-error');
     }
   });
-  
+
   // Enhanced mobile gesture support
   if (MobileUX.isMobile()) {
     // Add swipe-to-refresh hint for mobile users
     const container = document.querySelector('.mobile-container');
     let startY = 0;
     let isScrolling = false;
-    
+
     container.addEventListener('touchstart', (e) => {
       startY = e.touches[0].clientY;
       isScrolling = false;
     }, { passive: true });
-    
+
     container.addEventListener('touchmove', (e) => {
       if (!isScrolling) {
         const currentY = e.touches[0].clientY;
         const diffY = currentY - startY;
-        
+
         if (Math.abs(diffY) > 10) {
           isScrolling = true;
         }
       }
     }, { passive: true });
-    
+
     // Double-tap to focus first input (mobile convenience)
     let lastTap = 0;
     container.addEventListener('touchend', (e) => {
       const currentTime = new Date().getTime();
       const tapLength = currentTime - lastTap;
-      
+
       if (tapLength < 500 && tapLength > 0) {
         // Double tap detected
         const firstInput = document.getElementById('name1');
@@ -518,109 +513,20 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 });
 
-// 공유 기능 초기화
-function initializeShareFeature(name1, name2, score, messages) {
-  
-  // 결과 데이터 준비
-  const resultData = {
-    score: score,
-    names: {
-      name1: name1,
-      name2: name2
-    },
-    messages: {
-      positive: messages.positive,
-      negative: messages.negative
-    },
-    language: currentLanguage,
-    timestamp: new Date()
-  };
-
-  // ShareManager 인스턴스 생성
-  const shareManager = new ShareManager(resultData, currentLanguage);
-  
-  // 공유 버튼이 표시될 컨테이너 찾기
-  const resultsSection = document.querySelector('.mobile-results-section');
-  
-  // SharePreview 인스턴스 생성
-  const sharePreview = new SharePreview(shareManager);
-  
-  // Instagram Stories Optimizer 인스턴스 생성
-  const instagramOptimizer = new InstagramStoriesOptimizer(shareManager);
-  
-  // Twitter Card Optimizer 인스턴스 생성
-  const twitterOptimizer = new TwitterCardOptimizer(shareManager);
-  
-  // Facebook Preview Optimizer 인스턴스 생성
-  const facebookOptimizer = new FacebookPreviewOptimizer(shareManager);
-  
-  // QuickShare 인스턴스 생성 및 빠른 공유 버튼 렌더링
-  const quickShare = new QuickShare(resultsSection, shareManager);
-  quickShare.renderQuickShareButtons();
-  
-  // 기존 ShareUI도 유지 (더보기 옵션용)
-  const shareUI = new ShareUI(resultsSection, shareManager);
-  
-  // 전역 참조 저장 (언어 변경 시 업데이트용)
-  window.currentShareManager = shareManager;
-  window.currentShareUI = shareUI;
-  window.currentQuickShare = quickShare;
-  window.currentSharePreview = sharePreview;
-  window.currentInstagramOptimizer = instagramOptimizer;
-  window.currentTwitterOptimizer = twitterOptimizer;
-  window.currentFacebookOptimizer = facebookOptimizer;
-}
-
-// 언어 변경 시 공유 텍스트 업데이트
-function updateShareLanguage() {
-  if (window.currentShareManager) {
-    // ShareManager 언어 업데이트
-    window.currentShareManager.language = currentLanguage;
-    
-    // QuickShare 인스턴스가 있으면 업데이트
-    if (window.currentQuickShare) {
-      // 빠른 공유 버튼 다시 렌더링
-      window.currentQuickShare.renderQuickShareButtons();
-    }
-    
-    // 기존 공유 버튼 텍스트 업데이트
-    const shareButton = document.querySelector('.share-button-text');
-    if (shareButton) {
-      shareButton.textContent = currentLanguage === 'ko' ? '결과 공유하기' : 'Share Results';
-    }
-    
-    // 공유 버튼 라벨 업데이트
-    const shareButtonElement = document.querySelector('.share-button');
-    if (shareButtonElement) {
-      shareButtonElement.setAttribute('aria-label', 
-        currentLanguage === 'ko' ? '결과 공유하기' : 'Share Results'
-      );
-    }
-    
-    // 설명 텍스트 업데이트
-    const shareDescription = document.getElementById('share-description');
-    if (shareDescription) {
-      shareDescription.textContent = currentLanguage === 'ko' ? 
-        '궁합 결과를 소셜 미디어에 공유합니다' : 
-        'Share compatibility results on social media';
-    }
-  }
-}
-
 // Mobile UX utilities for enhanced user experience
 const MobileUX = {
   // Check if device is mobile
   isMobile: () => window.innerWidth < 768 || 'ontouchstart' in window,
-  
+
   // Check if device prefers reduced motion
   prefersReducedMotion: () => window.matchMedia('(prefers-reduced-motion: reduce)').matches,
-  
+
   // Get optimal animation duration based on device and user preferences
   getAnimationDuration: (baseMs = 300) => {
     if (MobileUX.prefersReducedMotion()) return 50;
     return MobileUX.isMobile() ? Math.min(baseMs * 0.8, 250) : baseMs;
   },
-  
+
   // Enhanced scroll to element with mobile optimization
   scrollToElement: (element, options = {}) => {
     const defaultOptions = {
@@ -628,17 +534,17 @@ const MobileUX = {
       block: 'center',
       inline: 'nearest'
     };
-    
+
     const finalOptions = { ...defaultOptions, ...options };
-    
+
     // For mobile, add slight delay to ensure keyboard is hidden
     if (MobileUX.isMobile()) {
       // Hide any active input focus first
       document.activeElement?.blur();
-      
+
       setTimeout(() => {
         element.scrollIntoView(finalOptions);
-        
+
         // Additional focus management for mobile
         if (options.focusAfterScroll) {
           setTimeout(() => {
@@ -655,7 +561,7 @@ const MobileUX = {
       }
     }
   },
-  
+
   // Enhanced haptic feedback for mobile devices
   provideFeedback: (type = 'light') => {
     if ('vibrate' in navigator && MobileUX.isMobile()) {
@@ -677,7 +583,7 @@ async function calculateMatch() {
   if (isCalculating) {
     return;
   }
-  
+
   isCalculating = true;
 
   try {
@@ -697,106 +603,105 @@ async function calculateMatch() {
     if (!name1 || !name2) {
       resultDiv.textContent = languageTexts[currentLanguage].inputBothNames;
       resultDiv.style.display = 'block';  // 에러 메시지는 표시
-      
+
       // 에러 애니메이션
       if (window.currentAnimationController) {
         const emptyInput = !name1 ? document.getElementById("name1") : document.getElementById("name2");
         window.currentAnimationController.showErrorFeedback(emptyInput);
       }
-      
+
       return;
     }
-  
-  // 계산 시작 피드백
-  if (calculateButton && window.currentAnimationController) {
-    window.currentAnimationController.showSuccessFeedback(calculateButton);
-  }
 
-  // 공백 제거 후 처리
-  const cleanName1 = name1.replace(/\s+/g, '');
-  const cleanName2 = name2.replace(/\s+/g, '');
-  
-  const name1Strokes = [...cleanName1].map(getStroke).filter(stroke => stroke > 0);
-  const name2Strokes = [...cleanName2].map(getStroke).filter(stroke => stroke > 0);
-  const all = [...name1Strokes, ...name2Strokes];
-  const visualSteps = [];
-  visualSteps.push(all);
-  const final = reduceStrokes(all, visualSteps);
-
-  explanation.innerHTML = "";
-  
-  // AnimationController가 활성화된 경우 단계 애니메이션 완전히 건너뛰기
-  if (!window.currentAnimationController) {
-    // 각 단계별로 순차적으로 표시 (fallback)
-    for (let i = 0; i < visualSteps.length; i++) {
-      await sleep(400);
-      
-      const line = document.createElement("div");
-      line.className = "line";
-      
-      const totalSteps = visualSteps.length - 1;
-      const isMobile = window.innerWidth < 768;
-      const maxWidth = isMobile ? 300 : 600;
-      const minWidth = isMobile ? 60 : 80;
-      const currentWidth = i === 0 ? maxWidth : maxWidth - ((i - 1) / totalSteps) * (maxWidth - minWidth);
-      
-      line.style.width = currentWidth + "px";
-      line.style.position = "relative";
-      line.style.height = "40px";
-      line.style.margin = "0.8rem auto";
-      line.style.zIndex = "1";
-      
-      const numbersCount = visualSteps[i].length;
-      const spacing = currentWidth / (numbersCount + 1);
-      
-      for (let j = 0; j < visualSteps[i].length; j++) {
-        const span = document.createElement("span");
-        span.textContent = visualSteps[i][j];
-        span.style.position = "absolute";
-        span.style.left = (spacing * (j + 1)) + "px";
-        span.style.transform = "translateX(-50%)";
-        line.appendChild(span);
-      }
-      
-      explanation.appendChild(line);
+    // 계산 시작 피드백
+    if (calculateButton && window.currentAnimationController) {
+      window.currentAnimationController.showSuccessFeedback(calculateButton);
     }
-  }
-  // AnimationController가 있으면 explanation 섹션을 완전히 비워둠 (AnimationController가 처리)
 
-  const score = final[0] * 10 + final[1];
-  const messages = getMessage(score);
-  
-  // 결과 데이터 준비 (HTML 생성 전에)
-  const resultData = {
-    score: score,
-    names: {
-      name1: name1,
-      name2: name2
-    },
-    messages: messages,
-    steps: visualSteps,
-    language: currentLanguage,
-    timestamp: new Date(),
-    resultDiv: resultDiv  // 결과 div 참조 전달
-  };
-  
-  // 커스텀 이벤트 발생 (애니메이션 컨트롤러에서 감지)
-  // AnimationController가 획수 애니메이션 후 결과 HTML을 생성할 것임
-  document.dispatchEvent(new CustomEvent('matchCalculated', {
-    detail: resultData
-  }));
-  
-  // 기존 애니메이션 효과는 AnimationController에서 처리됨
-  // setTimeout(() => {
-  //   resultDiv.querySelector('.result-container').classList.add('animate');
-  // }, 100);
-  
-  // 진행바는 AnimationController에서 애니메이션 처리
-  // bar.style.width = score + "%";
-  
-  // 공유 기능 통합
-  initializeShareFeature(name1, name2, score, messages);
-  
+    // 공백 제거 후 처리
+    const cleanName1 = name1.replace(/\s+/g, '');
+    const cleanName2 = name2.replace(/\s+/g, '');
+
+    const name1Strokes = [...cleanName1].map(getStroke).filter(stroke => stroke > 0);
+    const name2Strokes = [...cleanName2].map(getStroke).filter(stroke => stroke > 0);
+    const all = [...name1Strokes, ...name2Strokes];
+    const visualSteps = [];
+    visualSteps.push(all);
+    const final = reduceStrokes(all, visualSteps);
+
+    explanation.innerHTML = "";
+
+    // AnimationController가 활성화된 경우 단계 애니메이션 완전히 건너뛰기
+    if (!window.currentAnimationController) {
+      // 각 단계별로 순차적으로 표시 (fallback)
+      for (let i = 0; i < visualSteps.length; i++) {
+        await sleep(400);
+
+        const line = document.createElement("div");
+        line.className = "line";
+
+        const totalSteps = visualSteps.length - 1;
+        const isMobile = window.innerWidth < 768;
+        const maxWidth = isMobile ? 300 : 600;
+        const minWidth = isMobile ? 60 : 80;
+        const currentWidth = i === 0 ? maxWidth : maxWidth - ((i - 1) / totalSteps) * (maxWidth - minWidth);
+
+        line.style.width = currentWidth + "px";
+        line.style.position = "relative";
+        line.style.height = "40px";
+        line.style.margin = "0.8rem auto";
+        line.style.zIndex = "1";
+
+        const numbersCount = visualSteps[i].length;
+        const spacing = currentWidth / (numbersCount + 1);
+
+        for (let j = 0; j < visualSteps[i].length; j++) {
+          const span = document.createElement("span");
+          span.textContent = visualSteps[i][j];
+          span.style.position = "absolute";
+          span.style.left = (spacing * (j + 1)) + "px";
+          span.style.transform = "translateX(-50%)";
+          line.appendChild(span);
+        }
+
+        explanation.appendChild(line);
+      }
+    }
+    // AnimationController가 있으면 explanation 섹션을 완전히 비워둠 (AnimationController가 처리)
+
+    const score = final[0] * 10 + final[1];
+    const messages = getMessage(score);
+
+    // 결과 데이터 준비 (HTML 생성 전에)
+    const resultData = {
+      score: score,
+      names: {
+        name1: name1,
+        name2: name2
+      },
+      messages: messages,
+      steps: visualSteps,
+      language: currentLanguage,
+      timestamp: new Date(),
+      resultDiv: resultDiv  // 결과 div 참조 전달
+    };
+
+    // 커스텀 이벤트 발생 (애니메이션 컨트롤러에서 감지)
+    // AnimationController가 획수 애니메이션 후 결과 HTML을 생성할 것임
+    document.dispatchEvent(new CustomEvent('matchCalculated', {
+      detail: resultData
+    }));
+
+    // 기존 애니메이션 효과는 AnimationController에서 처리됨
+    // setTimeout(() => {
+    //   resultDiv.querySelector('.result-container').classList.add('animate');
+    // }, 100);
+
+    // 진행바는 AnimationController에서 애니메이션 처리
+    // bar.style.width = score + "%";
+
+
+
   } catch (error) {
     console.error('Calculation error:', error);
   } finally {
@@ -807,7 +712,7 @@ async function calculateMatch() {
 function getMessage(score) {
   const positive = score;
   const negative = 100 - score;
-  
+
   // 언어별 메시지 정의
   const messagesByLanguage = {
     ko: [
@@ -945,7 +850,7 @@ function getMessage(score) {
       }
     ]
   };
-  
+
   const messages = messagesByLanguage[currentLanguage];
   const message = messages.find(m => m.condition);
   return {

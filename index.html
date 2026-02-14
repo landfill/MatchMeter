@@ -1,231 +1,140 @@
 <!DOCTYPE html>
 <html lang="ko">
-  <head>
-    <meta charset="UTF-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
-    />
-    <title>Match Meter - 매치미터</title>
-    <link rel="stylesheet" href="./css/design-system.css" />
-    <link rel="stylesheet" href="./css/animations.css" />
-    <link rel="stylesheet" href="./css/header.css" />
-    <link rel="stylesheet" href="style.css" />
-    <link rel="stylesheet" href="./css/share.css" />
-    <link rel="stylesheet" href="./css/quick-share.css" />
-    <link rel="stylesheet" href="./css/share-preview.css" />
-    <link rel="stylesheet" href="./css/icons.css" />
-    <!-- Lucid Icons CDN -->
-    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
-  </head>
-  <body class="main-body" role="document">
 
-    <!-- Skip to main content link for screen readers -->
-    <a
-      href="#main-content"
-      class="skip-link"
-    >
-      메인 콘텐츠로 건너뛰기
-    </a>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Match Meter - 매치미터</title>
+  <link rel="stylesheet"
+    href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+  <link rel="stylesheet" href="./css/design-system.css" />
+  <link rel="stylesheet" href="./css/animations.css" />
+  <link rel="stylesheet" href="./css/header.css" />
+  <link rel="stylesheet" href="style.css" />
 
-    <!-- Mobile-first container with proper padding and safe area handling -->
-    <div class="main-wrapper">
-      <main
-        id="main-content"
-        class="mobile-container"
-        role="main"
-      >
-        <!-- Enhanced Header with improved mobile layout -->
-        <header class="app-header" role="banner">
-          <div class="header-content">
-            <div class="title-section">
-              <h1 class="app-title">
-                <i class="title-icon lucid-icon" data-lucide="bar-chart-3" aria-hidden="true"></i>
-                <span class="title-text">Match Meter</span>
-                <i class="title-icon lucid-icon" data-lucide="bar-chart-3" aria-hidden="true"></i>
-              </h1>
-              <p id="subtitle" class="app-subtitle">
-                매치미터 - 이름으로 알아보는 궁합 지수
-              </p>
-            </div>
-            
-            <!-- Header Controls -->
-            <div class="header-controls">
-              <!-- Language Toggle -->
-              <button
-                id="languageToggle"
-                onclick="toggleLanguage()"
-                class="lang-toggle"
-                aria-label="언어 변경 (현재: 한국어)"
-                aria-describedby="language-description"
-              >
-                <i class="lang-icon lucid-icon" data-lucide="globe" aria-hidden="true"></i>
-                <span id="toggleText" class="lang-text">EN</span>
-              </button>
-            </div>
-            
-            <div id="language-description" class="sr-only">
-              현재 언어는 한국어입니다. 클릭하면 영어로 변경됩니다.
-            </div>
+  <link rel="stylesheet" href="./css/icons.css" />
+  <script src="js/custom-icons.js"></script>
+</head>
+
+<body class="main-body" role="document">
+
+  <!-- Skip to main content link for screen readers -->
+  <a href="#main-content" class="skip-link">
+    메인 콘텐츠로 건너뛰기
+  </a>
+
+  <!-- Mobile-first container with proper padding and safe area handling -->
+  <div class="main-wrapper">
+    <main id="main-content" class="mobile-container" role="main">
+      <!-- Enhanced Header with improved mobile layout -->
+      <header class="app-header" role="banner">
+        <div class="header-content">
+          <div class="title-section">
+            <h1 class="app-title">
+              <i class="title-icon lucid-icon" data-lucide="bar-chart-3" aria-hidden="true"></i>
+              <span class="title-text">Match Meter</span>
+              <i class="title-icon lucid-icon" data-lucide="bar-chart-3" aria-hidden="true"></i>
+            </h1>
+            <p id="subtitle" class="app-subtitle">
+              매치미터 - 이름으로 알아보는 궁합 지수
+            </p>
           </div>
-        </header>
 
-        <!-- Input section with mobile-first layout -->
-        <section
-          class="mobile-input-section"
-          role="form"
-          aria-labelledby="form-title"
-        >
-          <h2 id="form-title" class="sr-only">이름 입력 양식</h2>
-          <div class="mobile-input-group">
-            <label id="label1" for="name1" class="mobile-label"
-              ><i class="lucid-icon icon-sm" data-lucide="edit-3" aria-hidden="true"></i> 첫 번째 이름</label
-            >
-            <input
-              type="text"
-              id="name1"
-              name="name1"
-              placeholder="예: 김하늘"
-              class="mobile-input"
-              autocomplete="given-name"
-              autocapitalize="words"
-              autocorrect="off"
-              spellcheck="false"
-              inputmode="text"
-              aria-describedby="name1-hint name1-error"
-              aria-required="true"
-              aria-invalid="false"
-            />
-            <div id="name1-hint" class="sr-only">
-              첫 번째 사람의 이름을 입력하세요
-            </div>
-            <div
-              id="name1-error"
-              class="sr-only"
-              role="alert"
-              aria-live="polite"
-            ></div>
+          <!-- Header Controls -->
+          <div class="header-controls">
+            <!-- Language Toggle -->
+            <button id="languageToggle" onclick="toggleLanguage()" class="lang-toggle" aria-label="언어 변경 (현재: 한국어)"
+              aria-describedby="language-description">
+              <i class="lang-icon lucid-icon" data-lucide="globe" aria-hidden="true"></i>
+              <span id="toggleText" class="lang-text">EN</span>
+            </button>
           </div>
-          <div class="mobile-input-group">
-            <label id="label2" for="name2" class="mobile-label"
-              ><i class="lucid-icon icon-sm" data-lucide="edit-3" aria-hidden="true"></i> 두 번째 이름</label
-            >
-            <input
-              type="text"
-              id="name2"
-              name="name2"
-              placeholder="예: 박바다"
-              class="mobile-input"
-              autocomplete="given-name"
-              autocapitalize="words"
-              autocorrect="off"
-              spellcheck="false"
-              inputmode="text"
-              aria-describedby="name2-hint name2-error"
-              aria-required="true"
-              aria-invalid="false"
-            />
-            <div id="name2-hint" class="sr-only">
-              두 번째 사람의 이름을 입력하세요
-            </div>
-            <div
-              id="name2-error"
-              class="sr-only"
-              role="alert"
-              aria-live="polite"
-            ></div>
-          </div>
-        </section>
 
-        <!-- Calculate button with mobile optimization -->
-        <button
-          id="calculateButton"
-          onclick="calculateMatch()"
-          class="mobile-button mobile-button-primary"
-          aria-describedby="calculate-description"
-          aria-label="두 이름의 궁합 점수 계산하기"
-        >
-          <i class="lucid-icon" data-lucide="bar-chart-3" aria-hidden="true"></i> Match 측정하기
-        </button>
-        <div id="calculate-description" class="sr-only">
-          입력한 두 이름의 궁합 점수를 계산합니다
+          <div id="language-description" class="sr-only">
+            현재 언어는 한국어입니다. 클릭하면 영어로 변경됩니다.
+          </div>
+        </div>
+      </header>
+
+      <!-- Input section with mobile-first layout -->
+      <section class="mobile-input-section" role="form" aria-labelledby="form-title">
+        <h2 id="form-title" class="sr-only">이름 입력 양식</h2>
+        <div class="mobile-input-group">
+          <label id="label1" for="name1" class="mobile-label"><i class="lucid-icon icon-sm" data-lucide="edit-3"
+              aria-hidden="true"></i> 첫 번째 이름</label>
+          <input type="text" id="name1" name="name1" placeholder="예: 김하늘" class="mobile-input" autocomplete="given-name"
+            autocapitalize="words" autocorrect="off" spellcheck="false" inputmode="text"
+            aria-describedby="name1-hint name1-error" aria-required="true" aria-invalid="false" />
+          <div id="name1-hint" class="sr-only">
+            첫 번째 사람의 이름을 입력하세요
+          </div>
+          <div id="name1-error" class="sr-only" role="alert" aria-live="polite"></div>
+        </div>
+        <div class="mobile-input-group">
+          <label id="label2" for="name2" class="mobile-label"><i class="lucid-icon icon-sm" data-lucide="edit-3"
+              aria-hidden="true"></i> 두 번째 이름</label>
+          <input type="text" id="name2" name="name2" placeholder="예: 박바다" class="mobile-input" autocomplete="given-name"
+            autocapitalize="words" autocorrect="off" spellcheck="false" inputmode="text"
+            aria-describedby="name2-hint name2-error" aria-required="true" aria-invalid="false" />
+          <div id="name2-hint" class="sr-only">
+            두 번째 사람의 이름을 입력하세요
+          </div>
+          <div id="name2-error" class="sr-only" role="alert" aria-live="polite"></div>
+        </div>
+      </section>
+
+      <!-- Calculate button with mobile optimization -->
+      <button id="calculateButton" onclick="calculateMatch()" class="mobile-button mobile-button-primary"
+        aria-describedby="calculate-description" aria-label="두 이름의 궁합 점수 계산하기">
+        <i class="lucid-icon" data-lucide="bar-chart-3" aria-hidden="true"></i> Match 측정하기
+      </button>
+      <div id="calculate-description" class="sr-only">
+        입력한 두 이름의 궁합 점수를 계산합니다
+      </div>
+
+      <!-- Results section with mobile-optimized layout -->
+      <section class="mobile-results-section" role="region" aria-labelledby="results-title" aria-live="polite">
+        <h2 id="results-title" class="sr-only">궁합 측정 결과</h2>
+        <div id="explanation" class="mobile-explanation" role="status"></div>
+
+        <!-- Score bar with mobile-friendly design -->
+        <div class="mobile-score-container" role="group" aria-labelledby="score-title">
+          <div id="scoreLabel" class="mobile-score-label">
+            <i id="score-title" class="score-icon lucid-icon" data-lucide="bar-chart-3" aria-hidden="true"></i> 매치 점수
+          </div>
+          <div class="mobile-progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"
+            aria-labelledby="scoreLabel">
+            <div id="bar" class="mobile-progress-fill"></div>
+          </div>
+          <div class="mobile-progress-labels" aria-hidden="true">
+            <span>0%</span>
+            <span>50%</span>
+            <span>100%</span>
+          </div>
         </div>
 
-        <!-- Results section with mobile-optimized layout -->
-        <section
-          class="mobile-results-section"
-          role="region"
-          aria-labelledby="results-title"
-          aria-live="polite"
-        >
-          <h2 id="results-title" class="sr-only">궁합 측정 결과</h2>
-          <div id="explanation" class="mobile-explanation" role="status"></div>
+        <div id="result" class="mobile-result" role="status" aria-live="polite"></div>
 
-          <!-- Score bar with mobile-friendly design -->
-          <div
-            class="mobile-score-container"
-            role="group"
-            aria-labelledby="score-title"
-          >
-            <div id="scoreLabel" class="mobile-score-label">
-              <i id="score-title" class="score-icon lucid-icon" data-lucide="bar-chart-3" aria-hidden="true"></i> 매치 점수
-            </div>
-            <div
-              class="mobile-progress-bar"
-              role="progressbar"
-              aria-valuemin="0"
-              aria-valuemax="100"
-              aria-valuenow="0"
-              aria-labelledby="scoreLabel"
-            >
-              <div id="bar" class="mobile-progress-fill"></div>
-            </div>
-            <div class="mobile-progress-labels" aria-hidden="true">
-              <span>0%</span>
-              <span>50%</span>
-              <span>100%</span>
-            </div>
-          </div>
+        <div id="strokeInfo" class="mobile-stroke-info hidden" role="note">
+          <i class="lucid-icon icon-sm" data-lucide="edit-3" aria-hidden="true"></i>
+          <span id="strokeInfoText">English letters calculated by uppercase strokes</span>
+        </div>
+      </section>
+    </main>
+  </div>
 
-          <div
-            id="result"
-            class="mobile-result"
-            role="status"
-            aria-live="polite"
-          ></div>
+  <script src="js/animations/AnimationController.js"></script>
+  <script src="script.js"></script>
 
-          <div id="strokeInfo" class="mobile-stroke-info hidden" role="note">
-            <i class="lucid-icon icon-sm" data-lucide="edit-3" aria-hidden="true"></i>
-            <span id="strokeInfoText"
-              >English letters calculated by uppercase strokes</span
-            >
-          </div>
-        </section>
-      </main>
-    </div>
+  <!-- Initialize Lucid Icons -->
+  <script>
+    // Initialize all Lucid icons after DOM content is loaded
+    document.addEventListener('DOMContentLoaded', function () {
+      if (typeof lucide !== 'undefined') {
+        lucide.createIcons();
+      }
+    });
+  </script>
+</body>
 
-    <script src="js/animations/AnimationController.js"></script>
-    <script src="js/share/ShareTemplates.js"></script>
-    <script src="js/share/MobileShareOptimizer.js"></script>
-    <script src="js/share/ShareTextEditor.js"></script>
-    <script src="js/share/ShareManager.js"></script>
-    <script src="js/share/ShareUI.js"></script>
-    <script src="js/share/ShareRenderer.js"></script>
-    <script src="js/share/SharePreview.js"></script>
-    <script src="js/share/InstagramStoriesOptimizer.js"></script>
-    <script src="js/share/TwitterCardOptimizer.js"></script>
-    <script src="js/share/FacebookPreviewOptimizer.js"></script>
-    <script src="js/share/QuickShare.js"></script>
-    <script src="script.js"></script>
-    
-    <!-- Initialize Lucid Icons -->
-    <script>
-      // Initialize all Lucid icons after DOM content is loaded
-      document.addEventListener('DOMContentLoaded', function() {
-        if (typeof lucide !== 'undefined') {
-          lucide.createIcons();
-        }
-      });
-    </script>
-  </body>
 </html>

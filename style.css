@@ -114,9 +114,9 @@
 .mobile-input {
   width: 100%;
   min-height: 48px;
-  padding: var(--space-3) var(--space-4);
+  padding: var(--space-3) var(--space-6);
   border: 2px solid var(--border);
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-full);
   font-size: var(--text-base);
   font-family: var(--font-sans);
   background: var(--input);
@@ -146,11 +146,11 @@
   .mobile-input-section {
     gap: 0.75rem;
   }
-  
+
   .mobile-label {
     font-size: 0.9rem;
   }
-  
+
   .mobile-input {
     min-height: 44px;
     font-size: 16px;
@@ -161,7 +161,7 @@
   .mobile-input-section {
     gap: 0.5rem;
   }
-  
+
   .mobile-label {
     font-size: 0.85rem;
   }
@@ -230,7 +230,7 @@
 .mobile-button {
   min-height: 48px;
   padding: var(--space-4) var(--space-6);
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-full);
   font-weight: var(--font-semibold);
   font-size: var(--text-base);
   font-family: var(--font-sans);
@@ -428,8 +428,15 @@
 }
 
 @keyframes gradientShift {
-  0%, 100% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
+
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
 }
 
 /* 기존 계산 과정 스타일 - 버블검 테마 적용 */
@@ -491,19 +498,43 @@
 /* 중복된 스타일들은 이미 위에서 정의되었으므로 제거 */
 
 @keyframes gradientShift {
-  0%, 100% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
+
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
 }
 
 @keyframes pulseGreen {
-  0%, 100% { transform: translateZ(10px) scale(1); }
-  50% { transform: translateZ(15px) scale(1.02); }
+
+  0%,
+  100% {
+    transform: translateZ(10px) scale(1);
+  }
+
+  50% {
+    transform: translateZ(15px) scale(1.02);
+  }
 }
 
 @keyframes shake {
-  0%, 100% { transform: translateZ(5px) translateX(0); }
-  25% { transform: translateZ(5px) translateX(-2px); }
-  75% { transform: translateZ(5px) translateX(2px); }
+
+  0%,
+  100% {
+    transform: translateZ(5px) translateX(0);
+  }
+
+  25% {
+    transform: translateZ(5px) translateX(-2px);
+  }
+
+  75% {
+    transform: translateZ(5px) translateX(2px);
+  }
 }
 
 #result {
@@ -524,49 +555,49 @@
   .mobile-container {
     padding: 1rem;
   }
-  
+
   .mobile-header {
     padding: 1rem 0;
   }
-  
+
   .mobile-title {
     font-size: clamp(1.5rem, 4vw, 2rem);
     margin-bottom: 0.5rem;
   }
-  
+
   .mobile-subtitle {
     font-size: clamp(0.875rem, 2.5vw, 1rem);
     margin-bottom: 1rem;
   }
-  
+
   .mobile-input-section {
     display: flex;
     gap: 1rem;
     margin: 1rem 0;
   }
-  
+
   .mobile-input-group {
     flex: 1;
     margin-bottom: 0;
   }
-  
+
   .mobile-results-section {
     margin-top: 1rem;
   }
-  
+
   .mobile-score-container {
     margin: 1rem 0;
   }
-  
+
   .result-container {
     padding: 1rem;
   }
-  
+
   .score-percentage {
     font-size: 2.5rem;
     margin: 0.5rem 0;
   }
-  
+
   .message-positive,
   .message-negative {
     padding: 0.5rem;
@@ -635,7 +666,7 @@
     gap: 1rem !important;
     margin: 1rem 0 !important;
   }
-  
+
   main .mobile-input-section .mobile-input-group {
     flex: 1 !important;
     flex-direction: column !important;
@@ -752,11 +783,11 @@
     border-width: 3px;
     border-color: var(--foreground);
   }
-  
+
   .mobile-button {
     border: 3px solid var(--foreground);
   }
-  
+
   .mobile-progress-fill {
     border: 2px solid var(--foreground);
   }
@@ -797,23 +828,25 @@
     user-select: none;
     -webkit-tap-highlight-color: transparent;
   }
-  
-  input, textarea, button {
+
+  input,
+  textarea,
+  button {
     -webkit-user-select: text;
     -moz-user-select: text;
     -ms-user-select: text;
     user-select: text;
   }
-  
+
   .mobile-header {
     padding: 0.25rem 0 !important;
   }
-  
+
   .mobile-title-container {
     margin-bottom: 0.25rem !important;
     gap: 0.1rem !important;
   }
-  
+
   main .mobile-input-section {
     display: flex !important;
     flex-direction: row !important;
@@ -821,38 +854,38 @@
     margin: 0.5rem 0 !important;
     width: 100% !important;
   }
-  
+
   .line {
     margin: 0.05rem auto !important;
     line-height: 1.1 !important;
     text-align: center !important;
   }
-  
+
   .line span {
     padding: 0.15rem 0.3rem !important;
     font-size: 0.9rem !important;
     margin: 0 0.1rem !important;
     min-width: 1rem !important;
   }
-  
+
   main .mobile-input-section .mobile-input-group {
     flex: 1 !important;
     flex-direction: column !important;
     margin-bottom: 0 !important;
     width: auto !important;
   }
-  
+
   main .mobile-input-section .mobile-input {
     width: 100% !important;
     min-height: 48px !important;
   }
-  
+
   main .mobile-input-section .mobile-label {
     font-size: 0.875rem !important;
     margin-bottom: 0.25rem !important;
     display: block !important;
   }
-  
+
   .mobile-button-primary {
     margin: 0.25rem auto !important;
     max-width: 200px !important;
@@ -860,20 +893,20 @@
     padding: 10px 16px !important;
     font-size: 0.875rem !important;
   }
-  
+
   .mobile-results-section {
     margin-top: 0.5rem !important;
     gap: 0.5rem !important;
   }
-  
+
   .mobile-score-container {
     gap: 8px !important;
   }
-  
+
   .mobile-progress-labels {
     margin-top: 1px !important;
   }
-  
+
   .result-container {
     padding: 0.75rem !important;
     margin-top: 0.25rem !important;
@@ -885,42 +918,42 @@
   .mobile-header {
     padding: 0.25rem 0 !important;
   }
-  
+
   main .mobile-input-section {
     display: flex !important;
     flex-direction: row !important;
     gap: 0.5rem !important;
     margin: 0.4rem 0 !important;
   }
-  
+
   .line {
     margin: 0.03rem auto !important;
     text-align: center !important;
   }
-  
+
   .line span {
     padding: 0.1rem 0.25rem !important;
     font-size: 0.85rem !important;
     margin: 0 0.08rem !important;
   }
-  
+
   main .mobile-input-section .mobile-input-group {
     flex: 1 !important;
     flex-direction: column !important;
     margin-bottom: 0 !important;
   }
-  
+
   main .mobile-input-section .mobile-label {
     font-size: 0.8rem !important;
     margin-bottom: 0.2rem !important;
   }
-  
+
   main .mobile-input-section .mobile-input {
     font-size: 0.9rem !important;
     min-height: 40px !important;
     padding: 10px 12px !important;
   }
-  
+
   .mobile-button-primary {
     margin: 0.2rem auto !important;
     max-width: 180px !important;
@@ -928,7 +961,7 @@
     padding: 8px 14px !important;
     font-size: 0.8rem !important;
   }
-  
+
   .mobile-results-section {
     margin-top: 0.4rem !important;
     gap: 0.4rem !important;
@@ -943,23 +976,23 @@
     gap: 0.3rem !important;
     margin: 0.3rem 0 !important;
   }
-  
+
   main .mobile-input-section .mobile-input-group {
     flex: 1 !important;
     flex-direction: column !important;
   }
-  
+
   main .mobile-input-section .mobile-label {
     font-size: 0.75rem !important;
     margin-bottom: 0.15rem !important;
   }
-  
+
   main .mobile-input-section .mobile-input {
     font-size: 0.85rem !important;
     padding: 8px 10px !important;
     min-height: 36px !important;
   }
-  
+
   .mobile-button-primary {
     margin: 0.15rem auto !important;
     max-width: 160px !important;
@@ -973,7 +1006,7 @@
 .mobile-input:focus-visible {
   outline: 3px solid var(--ring);
   outline-offset: 2px;
-  box-shadow: 
+  box-shadow:
     0 0 0 3px var(--ring),
     var(--shadow-md);
 }
@@ -999,7 +1032,7 @@
 .mobile-button:focus-visible {
   outline: 3px solid var(--ring);
   outline-offset: 2px;
-  box-shadow: 
+  box-shadow:
     0 0 0 6px var(--ring),
     var(--shadow-lg);
 }
@@ -1007,13 +1040,16 @@
 /* Improved touch targets for better accessibility */
 .mobile-input,
 .mobile-button {
-  min-height: 48px; /* WCAG AA minimum touch target */
+  min-height: 48px;
+  /* WCAG AA minimum touch target */
 }
 
 @media (min-width: 768px) {
+
   .mobile-input,
   .mobile-button {
-    min-height: 44px; /* Desktop can be slightly smaller */
+    min-height: 44px;
+    /* Desktop can be slightly smaller */
   }
 }
 
@@ -1037,28 +1073,28 @@
     transition-duration: 0.4s;
     transform: translateY(20px) scale(0.98);
   }
-  
+
   .result-container {
     transition-duration: 0.5s;
   }
-  
+
   .score-percentage {
     animation-duration: 2s;
   }
-  
+
   .message-positive {
     animation-duration: 1.5s;
   }
-  
+
   .message-negative {
     animation-duration: 2s;
   }
-  
+
   /* Faster button feedback on mobile */
   .mobile-button {
     transition-duration: 0.15s;
   }
-  
+
   .mobile-input {
     transition-duration: 0.2s;
   }
@@ -1084,13 +1120,13 @@
     scroll-padding-top: 20px;
     scroll-padding-bottom: 20px;
   }
-  
+
   /* Ensure results are visible above mobile keyboards */
   .mobile-results-section {
     scroll-margin-top: 60px;
     scroll-margin-bottom: 60px;
   }
-  
+
   /* Optimize for one-handed use */
   .mobile-container {
     scroll-behavior: smooth;
@@ -1103,18 +1139,18 @@
     transition-duration: 0.3s;
     transition-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94);
   }
-  
+
   .mobile-result-animation {
     transition-duration: 0.35s;
     transition-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94);
   }
-  
+
   /* Reduce complex animations on touch devices */
   .score-percentage {
     animation-duration: 1.8s;
     animation-timing-function: ease-out;
   }
-  
+
   .message-positive,
   .message-negative {
     animation-duration: 1.2s;
@@ -1128,16 +1164,16 @@
     transition-duration: 0.25s;
     transform: translateY(15px) scale(0.99);
   }
-  
+
   .result-container {
     transition-duration: 0.3s;
   }
-  
+
   /* Faster animations in landscape for better UX */
   .score-percentage {
     animation-duration: 1.5s;
   }
-  
+
   .message-positive,
   .message-negative {
     animation-duration: 1s;
@@ -1156,32 +1192,34 @@
 
 /* Mobile UX enhancements */
 @media (max-width: 767px) {
+
   /* Prevent zoom on input focus */
   .mobile-input {
     font-size: max(16px, 1rem);
   }
-  
+
   /* Enhanced touch targets */
   .mobile-button,
   .mobile-input {
     min-height: 48px;
   }
-  
+
   /* Improved spacing for one-handed use */
   .mobile-results-section {
     margin-top: 1.5rem;
     padding-bottom: 2rem;
   }
-  
+
   /* Better visual feedback for touch interactions */
   .mobile-button.touch-active {
     transform: scale(0.96);
     transition: transform 0.1s ease;
   }
-  
+
   /* Optimize for mobile keyboards */
   .mobile-input:focus {
-    transform: translateZ(0); /* Force hardware acceleration */
+    transform: translateZ(0);
+    /* Force hardware acceleration */
     backface-visibility: hidden;
   }
 }
@@ -1198,6 +1236,7 @@
     opacity: 0;
     transform: translateY(20px) scale(0.98);
   }
+
   100% {
     opacity: 1;
     transform: translateY(0) scale(1);
@@ -1213,6 +1252,7 @@
 
 /* Reduced motion support */
 @media (prefers-reduced-motion: reduce) {
+
   *,
   *::before,
   *::after {
@@ -1221,26 +1261,25 @@
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
-  
+
   .result-container,
   .mobile-result-animation {
     transition: none;
     transform: none;
     opacity: 1;
   }
-  
+
   .score-percentage {
     animation: none;
   }
-  
+
   .message-positive,
   .message-negative {
     animation: none;
   }
 }
-/
-* Enhanced mobile UX improvements - Task 7 Implementation */
 
+/ * Enhanced mobile UX improvements - Task 7 Implementation */
 /* Mobile-optimized result animations with enhanced timing */
 .mobile-result-animation {
   opacity: 0;
@@ -1259,19 +1298,19 @@
     transition-duration: 0.3s;
     transition-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94);
   }
-  
+
   .result-container {
     transition: all 0.3s ease-out;
   }
-  
+
   .score-percentage {
     animation-duration: 2s;
   }
-  
+
   .message-positive {
     animation-duration: 1.5s;
   }
-  
+
   .message-negative {
     animation-duration: 2s;
   }
@@ -1283,11 +1322,11 @@
     transition-duration: 0.25s;
     transition-timing-function: ease-out;
   }
-  
+
   .score-percentage {
     animation-duration: 1.5s;
   }
-  
+
   .message-positive,
   .message-negative {
     animation-duration: 1s;
@@ -1308,11 +1347,11 @@
     scroll-behavior: smooth;
     scroll-padding-top: 20px;
   }
-  
+
   .mobile-results-section {
     scroll-margin-top: 20px;
   }
-  
+
   #result {
     scroll-margin-top: 30px;
     scroll-margin-bottom: 20px;
@@ -1324,7 +1363,7 @@
   #result {
     scroll-margin-top: 40px;
   }
-  
+
   .mobile-results-section {
     scroll-margin-top: 30px;
   }
@@ -1334,7 +1373,7 @@
   #result {
     scroll-margin-top: 20px;
   }
-  
+
   .mobile-results-section {
     scroll-margin-top: 15px;
   }
@@ -1365,7 +1404,7 @@
   .mobile-results-section {
     padding-bottom: 2rem;
   }
-  
+
   .result-container {
     padding: var(--space-6);
     margin: var(--space-4) 0;
@@ -1382,7 +1421,7 @@
   .result-container:focus-visible {
     outline: 3px solid var(--ring);
     outline-offset: 2px;
-    box-shadow: 
+    box-shadow:
       0 0 0 6px var(--ring),
       var(--shadow-xl);
   }
@@ -1390,12 +1429,13 @@
 
 /* Animation performance optimizations for mobile */
 @media (max-width: 767px) {
+
   .mobile-result-animation,
   .result-container,
   .score-percentage {
     will-change: transform, opacity;
   }
-  
+
   .mobile-result-animation.animate {
     will-change: auto;
   }
@@ -1403,30 +1443,33 @@
 
 /* Reduced motion support with mobile considerations */
 @media (prefers-reduced-motion: reduce) {
+
   .mobile-result-animation,
   .result-container {
     transition: none !important;
     transform: none !important;
     animation: none !important;
   }
-  
+
   html {
     scroll-behavior: auto !important;
   }
-  
+
   .score-percentage,
   .message-positive,
   .message-negative {
     animation: none !important;
   }
-}/* Mobil
+}
+
+/* Mobil
 e header layout fixes for better text wrapping */
 @media (max-width: 767px) {
   .mobile-header {
     padding: 1rem 0.5rem;
     gap: 0.75rem;
   }
-  
+
   .mobile-title {
     font-size: clamp(1.25rem, 5vw, 1.75rem) !important;
     line-height: 1.2;
@@ -1437,14 +1480,14 @@ e header layout fixes for better text wrapping */
     text-overflow: ellipsis;
     max-width: 100%;
   }
-  
+
   .mobile-subtitle {
     font-size: clamp(0.75rem, 3vw, 0.9rem) !important;
     line-height: 1.3;
     margin-bottom: 0.75rem;
     padding: 0 0.5rem;
   }
-  
+
   /* Compact language toggle button for mobile */
   .mobile-button-secondary {
     min-height: 40px !important;
@@ -1454,7 +1497,7 @@ e header layout fixes for better text wrapping */
     border-radius: 8px !important;
     margin-top: 0.5rem;
   }
-  
+
   #toggleText {
     font-size: 0.8rem;
     white-space: nowrap;
@@ -1466,19 +1509,19 @@ e header layout fixes for better text wrapping */
   .mobile-title {
     font-size: clamp(1rem, 4.5vw, 1.5rem) !important;
   }
-  
+
   .mobile-subtitle {
     font-size: clamp(0.7rem, 2.5vw, 0.8rem) !important;
     padding: 0 0.25rem;
   }
-  
+
   .mobile-button-secondary {
     min-height: 36px !important;
     min-width: 56px !important;
     padding: 6px 10px !important;
     font-size: 0.8rem !important;
   }
-  
+
   #toggleText {
     font-size: 0.75rem;
   }
@@ -1490,17 +1533,17 @@ e header layout fixes for better text wrapping */
     padding: 0.5rem 0.5rem 0.75rem 0.5rem;
     gap: 0.5rem;
   }
-  
+
   .mobile-title {
     font-size: clamp(1rem, 4vw, 1.5rem) !important;
     margin-bottom: 0.25rem;
   }
-  
+
   .mobile-subtitle {
     font-size: clamp(0.7rem, 2.5vw, 0.85rem) !important;
     margin-bottom: 0.5rem;
   }
-  
+
   .mobile-button-secondary {
     min-height: 36px !important;
     margin-top: 0.25rem;
@@ -1513,18 +1556,20 @@ e header layout fixes for better text wrapping */
     word-wrap: break-word;
     overflow-wrap: break-word;
   }
-  
+
   .mobile-title {
     word-break: keep-all !important;
     hyphens: none;
   }
-  
+
   /* Ensure language toggle stays on one line */
   .mobile-button-secondary {
     white-space: nowrap;
     flex-shrink: 0;
   }
-}/*
+}
+
+/*
  Mobile title container for better layout control */
 .mobile-title-container {
   display: flex;
@@ -1556,12 +1601,14 @@ e header layout fixes for better text wrapping */
     align-items: center;
     justify-content: center;
   }
-  
+
   .mobile-button-secondary {
     align-self: center;
     margin-top: 0.5rem;
   }
-}/* Mobi
+}
+
+/* Mobi
 le title and language toggle layout fixes */
 .mobile-title-container {
   margin-bottom: 1rem;
@@ -1578,20 +1625,20 @@ le title and language toggle layout fixes */
     text-overflow: ellipsis;
     max-width: 100%;
   }
-  
+
   /* Smaller emoji on very small screens */
   @media (max-width: 360px) {
     .mobile-title {
       font-size: clamp(1rem, 4.5vw, 1.5rem) !important;
     }
   }
-  
+
   .mobile-subtitle {
     font-size: clamp(0.75rem, 3vw, 0.875rem) !important;
     line-height: 1.3;
     margin-bottom: 1rem;
   }
-  
+
   /* Language toggle button optimization */
   .mobile-button-secondary {
     min-height: 40px !important;
@@ -1603,7 +1650,7 @@ le title and language toggle layout fixes */
     align-items: center;
     justify-content: center;
   }
-  
+
   #toggleText {
     font-size: inherit;
     white-space: nowrap;
@@ -1615,11 +1662,11 @@ le title and language toggle layout fixes */
   .mobile-title {
     font-size: 1rem !important;
   }
-  
+
   .mobile-subtitle {
     font-size: 0.75rem !important;
   }
-  
+
   .mobile-button-secondary {
     min-width: 50px !important;
     padding: 6px 10px !important;
@@ -1632,17 +1679,17 @@ le title and language toggle layout fixes */
   .mobile-header {
     padding: 0.5rem 0 !important;
   }
-  
+
   .mobile-title {
     font-size: clamp(1rem, 4vw, 1.5rem) !important;
     margin-bottom: 0.25rem;
   }
-  
+
   .mobile-subtitle {
     font-size: clamp(0.75rem, 2.5vw, 0.875rem) !important;
     margin-bottom: 0.5rem;
   }
-  
+
   .mobile-title-container {
     margin-bottom: 0.5rem;
   }
@@ -1653,21 +1700,21 @@ le title and language toggle layout fixes */
   .mobile-header {
     overflow-x: hidden;
   }
-  
+
   .mobile-title,
   .mobile-subtitle {
     padding: 0 1rem;
     box-sizing: border-box;
   }
-  
+
   /* Ensure language button doesn't cause overflow */
   .mobile-button-secondary {
     flex-shrink: 0;
     margin: 0 auto;
   }
-}/
-* Language toggle button specific styling */
-.mobile-lang-toggle {
+}
+
+/ * Language toggle button specific styling */ .mobile-lang-toggle {
   margin-top: 0.75rem;
   align-self: center;
 }
@@ -1692,11 +1739,13 @@ le title and language toggle layout fixes */
     align-items: center;
     gap: 0;
   }
-  
-  .mobile-title-container > * {
+
+  .mobile-title-container>* {
     flex-shrink: 0;
   }
-}/* Mo
+}
+
+/* Mo
 bile title and language toggle layout fixes */
 @media (max-width: 767px) {
   .mobile-title {
@@ -1709,14 +1758,14 @@ bile title and language toggle layout fixes */
     text-overflow: ellipsis;
     max-width: 100%;
   }
-  
+
   .mobile-subtitle {
     font-size: clamp(0.75rem, 3vw, 1rem) !important;
     line-height: 1.3 !important;
     margin-bottom: 1rem !important;
     word-break: keep-all;
   }
-  
+
   .mobile-lang-toggle {
     min-height: 40px !important;
     min-width: 60px !important;
@@ -1725,7 +1774,7 @@ bile title and language toggle layout fixes */
     border-radius: 8px !important;
     margin-top: 0.5rem !important;
   }
-  
+
   .mobile-header {
     padding: 1rem 0.5rem !important;
     gap: 0.5rem !important;
@@ -1738,19 +1787,19 @@ bile title and language toggle layout fixes */
     font-size: clamp(1.25rem, 5vw, 1.75rem) !important;
     margin-bottom: 0.25rem !important;
   }
-  
+
   .mobile-subtitle {
     font-size: clamp(0.7rem, 2.5vw, 0.875rem) !important;
     margin-bottom: 0.75rem !important;
   }
-  
+
   .mobile-lang-toggle {
     min-height: 36px !important;
     min-width: 50px !important;
     padding: 6px 10px !important;
     font-size: 0.8rem !important;
   }
-  
+
   .mobile-header {
     padding: 0.75rem 0.25rem !important;
   }
@@ -1762,13 +1811,13 @@ bile title and language toggle layout fixes */
     font-size: 1.25rem !important;
     margin-bottom: 0.25rem !important;
   }
-  
+
   .mobile-subtitle {
     font-size: 0.75rem !important;
     margin-bottom: 0.5rem !important;
     line-height: 1.2 !important;
   }
-  
+
   .mobile-lang-toggle {
     min-height: 32px !important;
     min-width: 45px !important;
@@ -1783,18 +1832,18 @@ bile title and language toggle layout fixes */
     font-size: clamp(1rem, 4vw, 1.5rem) !important;
     margin-bottom: 0.25rem !important;
   }
-  
+
   .mobile-subtitle {
     font-size: clamp(0.7rem, 2vw, 0.875rem) !important;
     margin-bottom: 0.5rem !important;
   }
-  
+
   .mobile-lang-toggle {
     min-height: 32px !important;
     padding: 4px 8px !important;
     font-size: 0.75rem !important;
   }
-  
+
   .mobile-header {
     padding: 0.5rem 0.25rem !important;
   }
@@ -1802,24 +1851,27 @@ bile title and language toggle layout fixes */
 
 /* Prevent text wrapping and ensure single line display */
 @media (max-width: 767px) {
+
   .mobile-title,
   .mobile-subtitle {
     text-align: center;
     display: block;
     width: 100%;
   }
-  
+
   .mobile-lang-toggle span {
     white-space: nowrap;
     display: inline-block;
   }
-  
+
   /* Ensure button doesn't wrap */
   .mobile-lang-toggle {
     flex-shrink: 0;
     white-space: nowrap;
   }
-}/* 
+}
+
+/* 
 Mobile title and language toggle layout fixes */
 .mobile-title-container {
   display: flex;
@@ -1841,7 +1893,7 @@ Mobile title and language toggle layout fixes */
     text-overflow: ellipsis;
     max-width: 100%;
   }
-  
+
   .mobile-subtitle {
     font-size: clamp(0.75rem, 3.5vw, 1rem) !important;
     line-height: 1.2;
@@ -1849,7 +1901,7 @@ Mobile title and language toggle layout fixes */
     text-align: center;
     padding: 0 1rem;
   }
-  
+
   /* Compact language toggle for mobile */
   .mobile-lang-toggle {
     min-height: 40px !important;
@@ -1859,7 +1911,7 @@ Mobile title and language toggle layout fixes */
     border-radius: 8px !important;
     margin-top: 0.25rem;
   }
-  
+
   .mobile-lang-toggle span {
     font-size: 0.875rem;
     white-space: nowrap;
@@ -1871,19 +1923,19 @@ Mobile title and language toggle layout fixes */
   .mobile-title {
     font-size: clamp(1.25rem, 5vw, 1.75rem) !important;
   }
-  
+
   .mobile-subtitle {
     font-size: clamp(0.7rem, 3vw, 0.875rem) !important;
     padding: 0 0.5rem;
   }
-  
+
   .mobile-lang-toggle {
     min-height: 36px !important;
     min-width: 56px !important;
     padding: 6px 10px !important;
     font-size: 0.8rem !important;
   }
-  
+
   .mobile-header {
     padding: 0.5rem 0 !important;
     gap: 0.25rem !important;
@@ -1896,12 +1948,12 @@ Mobile title and language toggle layout fixes */
     font-size: 1.25rem !important;
     margin-bottom: 0.25rem;
   }
-  
+
   .mobile-subtitle {
     font-size: 0.75rem !important;
     margin-bottom: 0.5rem;
   }
-  
+
   .mobile-lang-toggle {
     min-height: 32px !important;
     min-width: 52px !important;
@@ -1918,13 +1970,13 @@ Mobile title and language toggle layout fixes */
     align-items: center;
     gap: 1rem;
   }
-  
+
   .mobile-title {
     font-size: clamp(1rem, 4vw, 1.5rem) !important;
     margin-bottom: 0;
     flex-shrink: 0;
   }
-  
+
   .mobile-subtitle {
     font-size: clamp(0.7rem, 2.5vw, 0.875rem) !important;
     margin-bottom: 0;
@@ -1932,12 +1984,12 @@ Mobile title and language toggle layout fixes */
     flex: 1;
     padding: 0 0.5rem;
   }
-  
+
   .mobile-lang-toggle {
     margin-top: 0;
     flex-shrink: 0;
   }
-  
+
   .mobile-header {
     padding: 0.75rem 0 !important;
   }
@@ -1945,17 +1997,18 @@ Mobile title and language toggle layout fixes */
 
 /* Prevent text wrapping and overflow issues */
 @media (max-width: 767px) {
+
   .mobile-title,
   .mobile-subtitle {
     word-break: keep-all;
     overflow-wrap: normal;
   }
-  
+
   .mobile-lang-toggle {
     flex-shrink: 0;
     white-space: nowrap;
   }
-  
+
   .mobile-lang-toggle span {
     display: inline-block;
     white-space: nowrap;
@@ -1976,7 +2029,7 @@ Mobile title and language toggle layout fixes */
     margin: 1rem 0 !important;
     width: 100% !important;
   }
-  
+
   body main#main-content section.mobile-input-section div.mobile-input-group {
     flex: 1 1 50% !important;
     display: flex !important;
@@ -1997,7 +2050,7 @@ Mobile title and language toggle layout fixes */
     gap: 0.75rem !important;
     margin: 1rem 0 !important;
   }
-  
+
   body main#main-content section.mobile-input-section div.mobile-input-group {
     flex: 1 1 50% !important;
     display: flex !important;
