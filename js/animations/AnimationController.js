@@ -14,7 +14,7 @@ class AnimationController {
     this.isAnimating = false;
     this.counters = new Map();
     this.observers = new Map();
-    
+
     this.init();
   }
 
@@ -76,7 +76,7 @@ class AnimationController {
     this.supportsAnimations = CSS.supports('animation', 'none');
     this.supportsTransforms = CSS.supports('transform', 'translateX(0)');
     this.supportsBackdropFilter = CSS.supports('backdrop-filter', 'blur(1px)');
-    
+
     // 성능 기반 애니메이션 레벨 설정
     this.animationLevel = this.getAnimationLevel();
   }
@@ -118,13 +118,13 @@ class AnimationController {
     if (this.isAnimating) {
       return;
     }
-    
+
     this.isAnimating = true;
-    
+
     try {
       // 순차적 애니메이션 실행 (결과 섹션 표시는 결과 생성 후에)
       await this.animateResultsSequence(resultData);
-      
+
       // 공유 버튼 애니메이션
       await this.animateShareButtons();
     } catch (error) {
@@ -142,13 +142,13 @@ class AnimationController {
     if (!resultsSection) {
       return;
     }
-    
+
     // 강제로 표시하기
     resultsSection.style.display = 'block';
     resultsSection.style.visibility = 'visible';
     resultsSection.style.opacity = '1';
     resultsSection.classList.add('show');
-    
+
     // 애니메이션 완료 대기
     return new Promise(resolve => {
       setTimeout(resolve, 300);
@@ -167,22 +167,39 @@ class AnimationController {
 
     // 1. 결과 섹션 표시 (한 번만)
     await this.showResultsSection();
-    
+
     // 2. 획수 계산 단계 애니메이션
     if (resultData.steps && resultData.steps.length > 0) {
       await this.animateCalculationSteps(resultData.steps);
     }
-    
-    // 3. 진행바 애니메이션 (획수 계산 후)
-    await this.animateProgressBar(resultData.score);
-    
+
+    // 3. 진행바 애니메이션 (마지막 숫자 줌인과 동기화)
+    // animateCalculationSteps 내에서 마지막 단계에 트리거하거나, 여기서 타이밍 조절
+
     // 4. 결과 HTML 생성 후 바로 점수 카운트업 애니메이션
     await this.generateResultHTML(resultData);
+
+    // 마지막 숫자가 그려진 후 잠시 대기
+    await new Promise(resolve => setTimeout(resolve, 800));
+
+    // 줌인 효과와 동시에 게이지 상승
+    const finalDigits = document.querySelectorAll('.final-score-digit');
+    finalDigits.forEach(digit => {
+      digit.style.transition = 'all 0.8s var(--ease-spring)';
+      digit.style.transform = 'scale(2.5)';
+      digit.style.color = 'var(--primary)';
+      digit.style.fontWeight = '800';
+    });
+
+    // 게이지 상승 애니메이션 시작 (줌인과 동시에)
+    await this.animateProgressBar(resultData.score);
+
+    // 5. 결과 컨테이너 표시 (점수 카운터 기능은 제거되었으나 컨테이너 노출을 위해 호출)
     await this.animateScoreCounter(resultData.score);
-    
+
     // 5. 설명 텍스트 애니메이션
     await this.animateExplanation();
-    
+
     // 6. 결과 텍스트 애니메이션
     await this.animateResultText();
   }
@@ -193,26 +210,24 @@ class AnimationController {
    */
   async generateResultHTML(resultData) {
     const { score, names, messages, resultDiv } = resultData;
-    
+
     if (!resultDiv) {
       return;
     }
-    
+
     // 결과 영역 자체를 먼저 표시 (빈 상태)
     resultDiv.style.display = 'block';
     resultDiv.style.visibility = 'visible';
     resultDiv.style.opacity = '1';
-    
+
     // 결과 HTML 생성 (점수는 0%로 시작하여 애니메이션 준비, 처음에는 숨김)
     resultDiv.innerHTML = `
       <div class="result-container" style="display: block; visibility: hidden; opacity: 0;">
-        <div class="score-text"><i class="lucid-icon" data-lucide="bar-chart-3"></i> ${names.name1} <i class="lucid-icon" data-lucide="zap"></i> ${names.name2}</div>
-        <div class="score-percentage">0%</div>
         <div class="message-positive"><i class="lucid-icon" data-lucide="check-circle"></i> ${messages.positive}</div>
         <div class="message-negative"><i class="lucid-icon" data-lucide="alert-triangle"></i> ${messages.negative}</div>
       </div>
     `;
-    
+
     // Initialize Lucid icons after DOM update
     if (typeof lucide !== 'undefined') {
       lucide.createIcons();
@@ -228,49 +243,43 @@ class AnimationController {
     if (!explanation) return;
 
     explanation.innerHTML = "";
-    
+
     // 단계별로 순차 애니메이션 (빠른 속도)
     for (let i = 0; i < steps.length; i++) {
       // 첫 번째 단계는 바로 시작, 나머지는 짧은 대기
       if (i > 0) {
         await new Promise(resolve => setTimeout(resolve, 150));
       }
-      
+
       const line = document.createElement("div");
       line.className = "line";
-      
-      const totalSteps = steps.length - 1;
-      const isMobile = window.innerWidth < 768;
-      const maxWidth = isMobile ? 300 : 600;
-      const minWidth = isMobile ? 60 : 80;
-      const currentWidth = i === 0 ? maxWidth : maxWidth - ((i - 1) / totalSteps) * (maxWidth - minWidth);
-      
+
+      // Inverted triangle alignment logic is handled by CSS flex/grid and fixed margins
+      // We don't need complex width calculations anymore as we use flow layout with center alignment
+
       line.style.cssText = `
-        width: ${currentWidth}px;
-        position: relative;
-        height: 40px;
-        margin: 0.8rem auto;
-        z-index: 1;
+        display: flex;
+        justify-content: center;
+        gap: 0.3rem; /* 간격 고정 */
+        margin: 0.5rem auto;
         opacity: 0;
         transform: translateY(20px);
       `;
-      
-      const numbersCount = steps[i].length;
-      const spacing = currentWidth / (numbersCount + 1);
-      
+
+      // Spacing is handled by flex gap property in previous cssText block
+
       for (let j = 0; j < steps[i].length; j++) {
         const span = document.createElement("span");
         span.textContent = steps[i][j];
-        span.style.cssText = `
-          position: absolute;
-          left: ${(spacing * (j + 1))}px;
-          transform: translateX(-50%);
-        `;
+        // 마지막 숫자에 대한 특별 처리 (줌인 효과 준비)
+        if (i === steps.length - 1) {
+          span.classList.add('final-score-digit');
+        }
         line.appendChild(span);
       }
-      
+
       explanation.appendChild(line);
-      
+
       // 애니메이션으로 나타내기 (빠른 속도)
       await this.animateElement(line, {
         opacity: '1',
@@ -288,7 +297,7 @@ class AnimationController {
 
     explanation.style.opacity = '0';
     explanation.style.transform = 'translateX(-20px)';
-    
+
     // 점진적 표시
     await this.animateElement(explanation, {
       opacity: '1',
@@ -303,7 +312,7 @@ class AnimationController {
   async animateProgressBar(score) {
     const progressBar = document.querySelector('.mobile-progress-fill');
     const progressContainer = document.querySelector('.mobile-progress-bar');
-    
+
     if (!progressBar || !progressContainer) return;
 
     // 초기 상태
@@ -333,19 +342,19 @@ class AnimationController {
 
     // DOM 업데이트 대기
     await new Promise(resolve => setTimeout(resolve, 200));
-    
-    // 결과 컨테이너를 먼저 보이게 하고 카운트업 애니메이션 시작
+
+    // 결과 컨테이너를 먼저 검사
     const resultContainer = resultElement.querySelector('.result-container');
-    const scoreElement = resultElement.querySelector('.score-percentage');
-    
-    if (scoreElement && resultContainer) {
-      // 결과 컨테이너를 보이게 하면서 카운트업 시작
+
+    if (resultContainer) {
+      // 결과 컨테이너 가시화
       resultContainer.style.visibility = 'visible';
       resultContainer.style.opacity = '1';
       resultElement.classList.add('counting');
-      
-      await this.countUpElement(scoreElement, 0, targetScore, 1500);
-      
+
+      // 잠시 대기
+      await new Promise(resolve => setTimeout(resolve, 500));
+
       // 완료 효과
       resultElement.classList.add('success-feedback');
       setTimeout(() => {
@@ -365,19 +374,19 @@ class AnimationController {
     return new Promise(resolve => {
       const startTime = performance.now();
       const originalText = element.textContent;
-      
+
       const animate = (currentTime) => {
         const elapsed = currentTime - startTime;
         const progress = Math.min(elapsed / duration, 1);
-        
+
         // 이징 함수 적용 (ease-out)
         const easeProgress = 1 - Math.pow(1 - progress, 3);
         const currentValue = Math.round(start + (end - start) * easeProgress);
-        
+
         // 텍스트 업데이트 (기존 형식 유지)
         const scoreText = originalText.replace(/\d+/, currentValue);
         element.textContent = scoreText;
-        
+
         if (progress < 1) {
           requestAnimationFrame(animate);
         } else {
@@ -387,7 +396,7 @@ class AnimationController {
           resolve();
         }
       };
-      
+
       requestAnimationFrame(animate);
     });
   }
@@ -402,18 +411,18 @@ class AnimationController {
   async countUpElement(element, start, end, duration) {
     return new Promise(resolve => {
       const startTime = performance.now();
-      
+
       const animate = (currentTime) => {
         const elapsed = currentTime - startTime;
         const progress = Math.min(elapsed / duration, 1);
-        
+
         // 이징 함수 적용 (ease-out)
         const easeProgress = 1 - Math.pow(1 - progress, 3);
         const currentValue = Math.round(start + (end - start) * easeProgress);
-        
+
         // 점수만 업데이트
         element.textContent = `${currentValue}%`;
-        
+
         if (progress < 1) {
           requestAnimationFrame(animate);
         } else {
@@ -422,7 +431,7 @@ class AnimationController {
           resolve();
         }
       };
-      
+
       requestAnimationFrame(animate);
     });
   }
@@ -465,12 +474,12 @@ class AnimationController {
   showResultsImmediately(resultData) {
     const resultsSection = document.querySelector('.mobile-results-section');
     const progressBar = document.querySelector('.mobile-progress-fill');
-    
+
     if (resultsSection) {
       resultsSection.style.opacity = '1';
       resultsSection.style.transform = 'none';
     }
-    
+
     if (progressBar) {
       progressBar.style.width = `${resultData.score}%`;
     }
@@ -492,10 +501,10 @@ class AnimationController {
 
       // 트랜지션 설정
       element.style.transition = `all ${duration}ms ${easing}`;
-      
+
       // 속성 적용
       Object.assign(element.style, properties);
-      
+
       // 완료 대기
       setTimeout(resolve, duration);
     });
@@ -509,7 +518,7 @@ class AnimationController {
     if (element.classList.contains('animated')) return;
 
     element.classList.add('fade-in', 'animated');
-    
+
     // 관찰 중단
     const observer = this.observers.get('intersection');
     if (observer) {
@@ -523,7 +532,7 @@ class AnimationController {
    */
   adjustAnimationsForTheme(theme) {
     const root = document.documentElement;
-    
+
     if (theme === 'dark') {
       // 다크 모드에서는 더 부드러운 애니메이션
       root.style.setProperty('--anim-base', '0.4s');

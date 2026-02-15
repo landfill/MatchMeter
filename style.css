@@ -115,7 +115,9 @@
   width: 100%;
   min-height: 48px;
   padding: var(--space-3) var(--space-6);
-  border: 2px solid var(--border);
+  border: 1px solid var(--border);
+  border: 0.5px solid var(--border);
+  /* Thinner border */
   border-radius: var(--radius-full);
   font-size: var(--text-base);
   font-family: var(--font-sans);
@@ -132,8 +134,8 @@
 
 .mobile-input:focus {
   outline: none;
-  border-color: var(--ring);
-  box-shadow: 0 0 0 3px var(--ring);
+  border-color: var(--primary);
+  box-shadow: 0 0 0 2px var(--primary-100, rgba(var(--primary), 0.2));
 }
 
 .mobile-input::placeholder {
@@ -290,25 +292,33 @@
    결과 섹션 스타일
    ========================================================================== */
 
-.mobile-results-section {
+/* Unified Result Card Style */
+.mobile-result-card {
+  background: var(--card);
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-md);
+  padding: var(--space-6);
+  margin-top: var(--space-4);
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: var(--space-6);
+  min-height: 480px;
+  /* Minimum height to prevent layout shift */
+  transition: all 0.3s ease;
+}
+
+.mobile-results-section {
   width: 100%;
-  margin-top: 0.75rem;
 }
 
 .mobile-score-container {
   display: flex;
   flex-direction: column;
-  gap: 12px;
   width: 100%;
-  background: var(--card);
-  padding: var(--space-4);
-  border-radius: var(--radius-lg);
-  border: 1px solid var(--border);
-  box-shadow: var(--shadow);
-  margin: var(--space-4) 0;
+  margin: 0;
+  padding: 0;
+  /* Reduced visual noise: transparent background */
 }
 
 .mobile-score-label {
@@ -353,17 +363,10 @@
 
 .result-container {
   opacity: 0;
-  transform: translateY(20px);
-  transition: all 0.8s ease;
-  position: relative;
-  background: var(--card);
-  border-radius: var(--radius-xl);
-  padding: var(--space-6);
-  margin-top: var(--space-4);
-  backdrop-filter: blur(10px);
-  border: 1px solid var(--border);
+  transform: translateY(10px);
+  transition: all 0.5s ease;
   width: 100%;
-  box-shadow: var(--shadow-lg);
+  /* Removed individual card styling */
 }
 
 .result-container.animate {
@@ -443,12 +446,9 @@
 #explanation {
   text-align: center;
   width: 100%;
-  background: var(--card);
-  padding: var(--space-4);
-  border-radius: var(--radius-lg);
-  border: 1px solid var(--border);
-  box-shadow: var(--shadow-sm);
-  margin: var(--space-4) 0;
+  /* Removed individual card styling */
+  padding: 0;
+  margin: 0;
 }
 
 .line {
@@ -1279,7 +1279,7 @@
   }
 }
 
-/ * Enhanced mobile UX improvements - Task 7 Implementation */
+/* Enhanced mobile UX improvements - Task 7 Implementation */
 /* Mobile-optimized result animations with enhanced timing */
 .mobile-result-animation {
   opacity: 0;

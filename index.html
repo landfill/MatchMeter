@@ -31,9 +31,7 @@
         <div class="header-content">
           <div class="title-section">
             <h1 class="app-title">
-              <i class="title-icon lucid-icon" data-lucide="bar-chart-3" aria-hidden="true"></i>
               <span class="title-text">Match Meter</span>
-              <i class="title-icon lucid-icon" data-lucide="bar-chart-3" aria-hidden="true"></i>
             </h1>
             <p id="subtitle" class="app-subtitle">
               매치미터 - 이름으로 알아보는 궁합 지수
@@ -60,8 +58,7 @@
       <section class="mobile-input-section" role="form" aria-labelledby="form-title">
         <h2 id="form-title" class="sr-only">이름 입력 양식</h2>
         <div class="mobile-input-group">
-          <label id="label1" for="name1" class="mobile-label"><i class="lucid-icon icon-sm" data-lucide="edit-3"
-              aria-hidden="true"></i> 첫 번째 이름</label>
+          <label id="label1" for="name1" class="mobile-label">첫 번째 이름</label>
           <input type="text" id="name1" name="name1" placeholder="예: 김하늘" class="mobile-input" autocomplete="given-name"
             autocapitalize="words" autocorrect="off" spellcheck="false" inputmode="text"
             aria-describedby="name1-hint name1-error" aria-required="true" aria-invalid="false" />
@@ -71,8 +68,7 @@
           <div id="name1-error" class="sr-only" role="alert" aria-live="polite"></div>
         </div>
         <div class="mobile-input-group">
-          <label id="label2" for="name2" class="mobile-label"><i class="lucid-icon icon-sm" data-lucide="edit-3"
-              aria-hidden="true"></i> 두 번째 이름</label>
+          <label id="label2" for="name2" class="mobile-label">두 번째 이름</label>
           <input type="text" id="name2" name="name2" placeholder="예: 박바다" class="mobile-input" autocomplete="given-name"
             autocapitalize="words" autocorrect="off" spellcheck="false" inputmode="text"
             aria-describedby="name2-hint name2-error" aria-required="true" aria-invalid="false" />
@@ -95,25 +91,22 @@
       <!-- Results section with mobile-optimized layout -->
       <section class="mobile-results-section" role="region" aria-labelledby="results-title" aria-live="polite">
         <h2 id="results-title" class="sr-only">궁합 측정 결과</h2>
-        <div id="explanation" class="mobile-explanation" role="status"></div>
 
-        <!-- Score bar with mobile-friendly design -->
-        <div class="mobile-score-container" role="group" aria-labelledby="score-title">
-          <div id="scoreLabel" class="mobile-score-label">
-            <i id="score-title" class="score-icon lucid-icon" data-lucide="bar-chart-3" aria-hidden="true"></i> 매치 점수
+        <!-- Unified Result Card -->
+        <div class="mobile-result-card">
+          <!-- 1. Calculation Process (Inverted Triangle) -->
+          <div id="explanation" class="mobile-explanation" role="status"></div>
+
+          <!-- 2. Score Bar -->
+          <div class="mobile-score-container" role="group" aria-label="매치 점수">
+            <div class="mobile-progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+              <div id="bar" class="mobile-progress-fill"></div>
+            </div>
           </div>
-          <div class="mobile-progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"
-            aria-labelledby="scoreLabel">
-            <div id="bar" class="mobile-progress-fill"></div>
-          </div>
-          <div class="mobile-progress-labels" aria-hidden="true">
-            <span>0%</span>
-            <span>50%</span>
-            <span>100%</span>
-          </div>
+
+          <!-- 3. Final Message -->
+          <div id="result" class="mobile-result" role="status" aria-live="polite"></div>
         </div>
-
-        <div id="result" class="mobile-result" role="status" aria-live="polite"></div>
 
         <div id="strokeInfo" class="mobile-stroke-info hidden" role="note">
           <i class="lucid-icon icon-sm" data-lucide="edit-3" aria-hidden="true"></i>

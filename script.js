@@ -210,10 +210,8 @@ function updateLanguageTexts() {
   const texts = languageTexts[currentLanguage];
 
   document.getElementById('subtitle').textContent = texts.subtitle;
-  document.getElementById('label1').innerHTML = `<i class="lucid-icon icon-sm" data-lucide="edit-3" aria-hidden="true"></i> ${texts.label1}`;
-  document.getElementById('label2').innerHTML = `<i class="lucid-icon icon-sm" data-lucide="edit-3" aria-hidden="true"></i> ${texts.label2}`;
-
-  // Re-initialize icons after DOM update for labels
+  document.getElementById('label1').textContent = texts.label1;
+  document.getElementById('label2').textContent = texts.label2;
   if (typeof lucide !== 'undefined') {
     lucide.createIcons();
   }
@@ -224,7 +222,7 @@ function updateLanguageTexts() {
   name2Input.placeholder = texts.placeholder2;
 
   document.getElementById('calculateButton').innerHTML = `<i class="lucid-icon" data-lucide="bar-chart-3" aria-hidden="true"></i> ${texts.calculateButton}`;
-  document.getElementById('scoreLabel').innerHTML = `<i id="score-title" class="score-icon lucid-icon" data-lucide="bar-chart-3" aria-hidden="true"></i> ${texts.scoreLabel}`;
+  // document.getElementById('scoreLabel').innerHTML = `<i id="score-title" class="score-icon lucid-icon" data-lucide="bar-chart-3" aria-hidden="true"></i> ${texts.scoreLabel}`;
 
   // Re-initialize icons after DOM update
   if (typeof lucide !== 'undefined') {
